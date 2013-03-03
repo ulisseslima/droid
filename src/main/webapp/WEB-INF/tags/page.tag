@@ -18,15 +18,13 @@
 			</c:otherwise>
 		</c:choose>
 		</title>
-		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">
-		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-		
-		<spring:url var="Main_js" value="/static/script/Main.js" />
-		<spring:url var="Event_js" value="/static/script/Event.js" />
-		<spring:url var="Main_css" value="/static/style/Main.css" />
-		<script async="async" type="text/javascript" src="${Main_js}"></script>
-		<script type="text/javascript" src="${Event_js}"></script>
-		<style type="text/css">@import url("${Main_css}");</style>
+		<spring:url var="jspath" value="/static/script" />
+		<spring:url var="csspath" value="/static/style" />
+		<link rel="stylesheet" type="text/css" href="${csspath}/reset.css">
+		<script type="text/javascript" src="${jspath}/jquery.js"></script>
+		<script async="async" type="text/javascript" src="${jspath}/Main.js"></script>
+		<script type="text/javascript" src="${jspath}/Event.js"></script>
+		<style type="text/css">@import url("${csspath}/Main.css");</style>
 	</head>
 	<body>
 		<section id="main-content">
