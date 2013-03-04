@@ -74,6 +74,7 @@
 				<prop key="hibernate.c3p0.timeout">600</prop>
 				<prop key="hibernate.c3p0.max_statement">50</prop>
 				<prop key="hibernate.c3p0.testConnectionOnCheckout">false</prop>
+				<prop key="hibernate.c3p0.idle_test_period">3600</prop>				
 				<prop key="hibernate.c3p0.preferredTestQuery">select 1;</prop>
 			</props>
 		</property>

@@ -1,19 +1,19 @@
-body {
+body {	
 	font-family: "Helvetica Neue",Helvetica,"Liberation Sans", sans-serif;	
 	margin: 0;	
-	text-align: center;
+	text-align: center;		
 }
 
 h1 {
-	font-size: xx-large;
-	border-bottom: 2px solid black;
+	font-size: xx-large;	
 	margin-bottom: 0.5em;
 	font-weight: bold;
+	border-bottom: 2px solid black;
 }
 
-.main-content, textarea {
+textarea {
 	margin: 0 auto;
-	text-align: left;
+	text-align: left;	
 }
 
 .transparent {
@@ -27,39 +27,72 @@ h1 {
 	transition: opacity 1s;
 }
 
-input, button {
-	padding: 0.3em;
-	margin: 0.3em;
-	border: 1px solid gray;
+input, textarea, button {
+	border: 1px solid white;
 	border-radius: 4px;
 }
+input {
+	padding: 0.3em;
+	margin: 0.3em;	
+}
 
-input.priority {
+input:focus, .title:focus ~ .description {
+	border: 1px solid gray;
+}
+input:focus, button {
+	padding: 0.3em;
+	margin: 0.3em;		
+}
+
+.description {
+	right: 16px;
+}
+.priority, .description {
+	position: relative;	
+}
+.priority {
+	visibility: hidden;
 	width: 20px;
 	text-align: center;
+	background-color: gray;		
+	bottom: 16px;
+	border-radius: 18px;
+	font-size: small;
+	padding: 1px;
+	margin: 2px;
+	color: white;
+	right: 206px;
 }
+
+input:hover ~ .priority {
+	visibility: visible;
+}
+
 button {	
 	display: inline-block;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 	font-weight: bold;
-	color: gray;
+	color: white;
+	border: none;
+	background: hsl(0, 5%, 80%);
 }
 textarea {
 	display: block;
-	width: 309px;
-	height: 15px;
+	width: 264px;
+	height: 17px;
 	opacity: .3;
 	-webkit-transition: height 0.4s;
 	transition: height 0.4s;
 }
-textarea:focus {
+
+.description:focus, .title:focus ~ .description {
 	height: 50px;
 	opacity: 1;
 	-webkit-transition: height 0.5s;
 	transition: height 0.5s;
 }
 
-.event-vote-div, .event-vote{
+.event-vote-div, .event-vote {
 	display: inline-block;
 }
