@@ -1,4 +1,4 @@
-package com.dvlcube.droid.bean;
+package com.dvlcube.bean;
 
 /**
  * 

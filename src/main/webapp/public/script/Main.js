@@ -6,9 +6,9 @@ function Request() {}
  * @param formId Id of the element that contains the properties to send.
  * @param action Desired action URL. Will use the forms name if not specified.
  */
-function doSubmit(form, action, callback) {
+function doSubmit(form, actionName, callback) {
 	var request = new Request();
-	var actionName = getActionName(action, form); 
+	var action = getActionName(actionName, form); 
 	
 	$(form).children(".property").each(function(i) {
 		if (this.name && this.value) {
@@ -16,29 +16,23 @@ function doSubmit(form, action, callback) {
 		}
 	});
 	
-	$.getJSON("./" + actionName, request, function(response) {
+	$.ajax({
+	  type: "POST",
+	  url: action,
+	  data: request,
+	  success: function(response) {
 		if (callback) {
 			callback(response);
 		}
-	});
-}
-
-function scroll(containerId) {
-	var container = document.getElementById(containerId);
-	$.getJSON("./scroll", null, function(response) {
-		$.each(response.contents, function(i, item) {
-			var div = document.createElement("DIV");
-			div.innerHTML = item.title;
-			container.appendChild(div);
-		});
+	  }
 	});
 }
 
 function getActionName(action, form) {
-	if (action) return action;
+	if (action) return "./"+action;
 
 	else if (form && form.getAttribute("name")) {
-		return form.getAttribute("name");
+		return "./"+form.getAttribute("name");
 	} else {
 		console.log("Missing action name");
 	}

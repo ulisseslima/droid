@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dvlcube.droid.bean.Event;
 import com.dvlcube.droid.service.EventService;
+import com.dvlcube.droid.service.NewEventsRequest;
 import com.dvlcube.service.Response;
 
 /**
@@ -41,5 +42,12 @@ public class EventServlet {
 		final Response<Event> response = service.listByPriority();
 		map.put("response", response);
 		return index;
+	}
+
+	@RequestMapping("/refresh")
+	public @ResponseBody
+	Response<Event> refresh(final NewEventsRequest request) {
+		final Response<Event> updatedEvents = service.listNew(request);
+		return updatedEvents;
 	}
 }

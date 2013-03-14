@@ -17,4 +17,12 @@ public interface EventService extends ServiceCRUD<Event> {
 	 * @since 02/03/2013
 	 */
 	Response<Event> listByPriority();
+
+	/**
+	 * @param request
+	 * @return
+	 * @author wonka
+	 * @since 13/03/2013
+	 */
+	Response<Event> listNew(NewEventsRequest request);
 }

@@ -172,7 +172,8 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		final Integer maxResults,
 		final List<Order> orders,
 		final Criterion... conditions) {
-		return new CubeCriteria<E>(entity, start, maxResults, orders, conditions).list();
+		final List<E> results = new CubeCriteria<E>(entity, start, maxResults, orders, conditions).list();
+		return results;
 	}
 
 	@Override

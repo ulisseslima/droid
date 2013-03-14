@@ -1,17 +1,18 @@
 package com.dvlcube.droid.bean;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import com.dvlcube.bean.Identifiable;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.dvlcube.bean.Privacy;
 import com.dvlcube.bean.Repetition;
+import com.dvlcube.bean.Validatable;
 import com.dvlcube.reflection.FieldName;
+import com.dvlcube.service.BasicBean;
 import com.dvlcube.utils.StringUtils;
 
 /**
@@ -20,26 +21,26 @@ import com.dvlcube.utils.StringUtils;
  * @since 23/02/2013
  */
 @Entity
-public class Event implements Identifiable, Validatable {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Event implements BasicBean, Validatable {
 	public enum Field implements FieldName {
-		creator, dateEnd, dateStart, description, done, guests, id, priority, reminders, repetition, title
+		creator, dateEnd, dateModified, dateStart, description, done, guests, id, priority, reminders, repetition, title
 	}
 
 	private static final long serialVersionUID = 6362154457938757910L;
 	private User creator; // ref_many2one #not null
 	private Date dateEnd; // timestamp
+	private Date dateModified; // timestamp
 	private Date dateStart; // timestamp
 	private String description;
 	private boolean done;
-	@OneToMany
-	private List<User> guests; // ref_one2many
+	// OneToMany private List<User> guests; // ref_one2many
 	@Id
 	@GeneratedValue
 	private Long id; // id
 	private int priority;
 	private Privacy privacy; // String
-	@OneToMany
-	private List<Reminder> reminders;
+	// OneToMany private List<Reminder> reminders;
 	private Repetition repetition; // String
 	private String title;
 
@@ -58,6 +59,14 @@ public class Event implements Identifiable, Validatable {
 	}
 
 	/**
+	 * @return the dateModified
+	 */
+	@Override
+	public Date getDateModified() {
+		return dateModified;
+	}
+
+	/**
 	 * @return the dateStart
 	 */
 	public Date getDateStart() {
@@ -69,13 +78,6 @@ public class Event implements Identifiable, Validatable {
 	 */
 	public String getDescription() {
 		return description;
-	}
-
-	/**
-	 * @return the guests
-	 */
-	public List<User> getGuests() {
-		return guests;
 	}
 
 	/**
@@ -103,13 +105,6 @@ public class Event implements Identifiable, Validatable {
 	 */
 	public Privacy getPrivacy() {
 		return privacy;
-	}
-
-	/**
-	 * @return the reminders
-	 */
-	public List<Reminder> getReminders() {
-		return reminders;
 	}
 
 	/**
@@ -158,6 +153,15 @@ public class Event implements Identifiable, Validatable {
 	}
 
 	/**
+	 * @param dateModified
+	 *            the dateModified to set
+	 */
+	@Override
+	public void setDateModified(final Date dateModified) {
+		this.dateModified = dateModified;
+	}
+
+	/**
 	 * @param dateStart
 	 *            the dateStart to set
 	 */
@@ -179,14 +183,6 @@ public class Event implements Identifiable, Validatable {
 	 */
 	public void setDone(final boolean done) {
 		this.done = done;
-	}
-
-	/**
-	 * @param guests
-	 *            the guests to set
-	 */
-	public void setGuests(final List<User> guests) {
-		this.guests = guests;
 	}
 
 	/**
@@ -217,14 +213,6 @@ public class Event implements Identifiable, Validatable {
 	 */
 	public void setPrivacy(final Privacy privacy) {
 		this.privacy = privacy;
-	}
-
-	/**
-	 * @param reminders
-	 *            the reminders to set
-	 */
-	public void setReminders(final List<Reminder> reminders) {
-		this.reminders = reminders;
 	}
 
 	/**

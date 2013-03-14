@@ -8,21 +8,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.dvlcube.bean.Identifiable;
 import com.dvlcube.reflection.FieldName;
+import com.dvlcube.service.BasicBean;
 
 /**
  * @author wonka
  * @since 07/08/2012
  */
 @Entity
-public class User implements Identifiable {
+public class User implements BasicBean {
 	public enum Field implements FieldName {
 		birth, email, events, id, name, telephone
 	}
 
 	private static final long serialVersionUID = 3262522508885048363L;
 	private Date birth; // datetime
+	private Date dateModified; // timestamp
 	private String email;
 	@OneToMany
 	private List<Event> events;
@@ -45,6 +46,14 @@ public class User implements Identifiable {
 	 */
 	public Date getBirth() {
 		return birth;
+	}
+
+	/**
+	 * @return the dateModified
+	 */
+	@Override
+	public Date getDateModified() {
+		return dateModified;
 	}
 
 	/**
@@ -94,6 +103,15 @@ public class User implements Identifiable {
 	 */
 	public void setBirth(final Date birth) {
 		this.birth = birth;
+	}
+
+	/**
+	 * @param dateModified
+	 *            the dateModified to set
+	 */
+	@Override
+	public void setDateModified(final Date dateModified) {
+		this.dateModified = dateModified;
 	}
 
 	/**

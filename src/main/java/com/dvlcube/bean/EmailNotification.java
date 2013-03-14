@@ -16,7 +16,7 @@ public class EmailNotification implements Notification {
 	@Id
 	@GeneratedValue
 	private Long id; // id
-	private Date when; // timestamp
+	private Date sendDate; // timestamp
 
 	/**
 	 * @return the id
@@ -26,10 +26,10 @@ public class EmailNotification implements Notification {
 	}
 
 	/**
-	 * @return the when
+	 * @return the sendDate
 	 */
-	public Date getWhen() {
-		return when;
+	public Date getSendDate() {
+		return sendDate;
 	}
 
 	/**
@@ -41,10 +41,10 @@ public class EmailNotification implements Notification {
 	}
 
 	/**
-	 * @param when
-	 *            the when to set
+	 * @param sendDate
+	 *            the sendDate to set
 	 */
-	public void setWhen(final Date when) {
-		this.when = when;
+	public void setSendDate(final Date sendDate) {
+		this.sendDate = sendDate;
 	}
 }

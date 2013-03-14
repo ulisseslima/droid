@@ -1,5 +1,8 @@
 package com.dvlcube.droid.service;
 
+import java.util.Date;
+
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +36,12 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 	@Override
 	public Response<Event> listByPriority() {
 		return list(CubeOrder.desc(Event.Field.priority));
+	}
+
+	@Override
+	public Response<Event> listNew(final NewEventsRequest request) {
+		return list(
+				Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate() - 30000)),
+				Restrictions.ne(Event.Field.title.name(), request.getFocusedEventTitle()));
 	}
 }

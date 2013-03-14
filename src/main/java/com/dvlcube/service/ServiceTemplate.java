@@ -2,6 +2,7 @@ package com.dvlcube.service;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Criterion;
@@ -9,7 +10,6 @@ import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dvlcube.bean.Identifiable;
 import com.dvlcube.dao.DaoCRUD;
 import com.dvlcube.util.I18n;
 
@@ -20,7 +20,7 @@ import com.dvlcube.util.I18n;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public abstract class ServiceTemplate<T extends Identifiable> implements ServiceCRUD<T> {
+public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRUD<T> {
 	private static final int NO_PAGINATION = -1;
 
 	@Override
@@ -35,6 +35,9 @@ public abstract class ServiceTemplate<T extends Identifiable> implements Service
 	@Override
 	public Response<T> addOrUpdate(final T entity) {
 		final T content = get(entity).getContent();
+
+		track(entity);
+
 		if (content != null) {
 			return update(entity);
 		} else {
@@ -119,6 +122,17 @@ public abstract class ServiceTemplate<T extends Identifiable> implements Service
 	@Override
 	public Response<T> list(final Order... orders) {
 		return list(NO_PAGINATION, NO_PAGINATION, Arrays.asList(orders), new Criterion[0]);
+	}
+
+	/**
+	 * "Tracks" an entity, updating its modified date.
+	 * 
+	 * @param entity
+	 * @author wonka
+	 * @since 12/03/2013
+	 */
+	private void track(final T entity) {
+		entity.setDateModified(new Date());
 	}
 
 	@Override
