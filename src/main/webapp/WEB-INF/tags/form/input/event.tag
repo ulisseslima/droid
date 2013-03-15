@@ -18,7 +18,7 @@
 		<div id="event-${var.id}" class="event">
 			<input:vote priority="${var.priority}" />
 			<input type="hidden" class="event-input property id" name="id" value="${var.id}">
-			<input type="text" class="event-input property title" name="title" value="${var.title}">
+			<input type="text" class="event-input property title" name="title" value="${var.titleHtml}">
 			<textarea class="event-input property description" name="description" style="border-right: none">${var.description}</textarea>
 		</div>
 	</c:otherwise>

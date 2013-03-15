@@ -121,6 +121,10 @@ public class Event implements BasicBean, Validatable {
 		return title;
 	}
 
+	public String getTitleHtml() {
+		return StringUtils.escapeHTML(getTitle());
+	}
+
 	@Override
 	public boolean hasRequiredAttributes() {
 		if (StringUtils.isBlank(title)) {

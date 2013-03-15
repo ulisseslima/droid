@@ -39,4 +39,10 @@ public class NewEventsRequest {
 	public void setLastUpdate(final long lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+
+	@Override
+	public String toString() {
+		return "NewEventsRequest [focusedEventTitle=" + focusedEventTitle + ", lastUpdate=" + lastUpdate
+				+ "]";
+	}
 }
