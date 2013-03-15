@@ -31,10 +31,12 @@ function refresh() {
 					newEvent.appendTo("#events");
 				}
 			}
-		  } else if (response.indexOf("!doctype") != -1){
-			console.log("logged off");
+		  } else if (response.indexOf("!doctype") != -1) {
 			document.location.reload(true);
 		  }
+	  },
+	  error: function(jqXHR, textStatus, errorThrown) {
+		  document.location.reload(true);
 	  }
 	});
 }
