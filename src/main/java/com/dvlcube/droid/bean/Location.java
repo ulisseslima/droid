@@ -127,4 +127,9 @@ public class Location {
 	public void setUrl(final String url) {
 		this.url = url;
 	}
+
+	@Override
+	public String toString() {
+		return "Location [description=" + description + ", title=" + title + ", url=" + url + "]";
+	}
 }

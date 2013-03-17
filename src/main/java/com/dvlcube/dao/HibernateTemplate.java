@@ -142,11 +142,6 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 	}
 
 	@Override
-	public List<E> list() {
-		throw new UnsupportedOperationException("not implemented yet");
-	}
-
-	@Override
 	public List<E> list(final Class<E> entity) {
 		return new CubeCriteria<E>(entity).list();
 	}

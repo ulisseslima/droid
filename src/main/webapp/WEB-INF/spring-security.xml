@@ -6,8 +6,11 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
- 
+	
 	<http security="none" pattern="/login" />
+	<http security="none" pattern="/logout" />
+	<http security="none" pattern="/loginfailed" />
+	<http security="none" pattern="/denied" />
 	
 	<http auto-config="true" access-denied-page="/denied">
 		<intercept-url pattern="/**" access="ROLE_USER" />
@@ -23,10 +26,14 @@
  
 	<authentication-manager>
 	  <authentication-provider>
-		<user-service>
-			<user name="wonka" password="murah" authorities="ROLE_USER" />
-			<user name="mlle" password="mufufu" authorities="ROLE_USER" />
-		</user-service>
+		<jdbc-user-service data-source-ref="dataSource"
+		   users-by-username-query="
+		      select username, password, enabled 
+		      from user where username=?" 
+		   authorities-by-username-query="
+		      select u.username, ur.authority from user u, role ur 
+		      where u.id = ur.user and u.username =? " 
+		/>
 	  </authentication-provider>
 	</authentication-manager>
 </beans:beans>

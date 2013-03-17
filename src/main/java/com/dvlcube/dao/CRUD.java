@@ -25,13 +25,6 @@ public interface CRUD<E> {
 	void delete(E entity);
 
 	/**
-	 * @return
-	 * @author wonka
-	 * @since 15/09/2012
-	 */
-	List<E> list();
-
-	/**
 	 * @param start
 	 * @param maxResults
 	 * @return

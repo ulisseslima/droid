@@ -4,7 +4,7 @@
 	<groupId>droid</groupId>
 	<artifactId>droid</artifactId>
 	<packaging>war</packaging>
-	<version>1.2</version>
+	<version>1.3</version>
 	<name>droid</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -74,9 +74,9 @@
 		
 		<!-- hibernate -->
 		<dependency>
-			<groupId>hibernate</groupId>
+			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.4.0.GA</version>
+			<version>4.1.10.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -84,10 +84,6 @@
 			<version>3.6.3.Final</version>
 		</dependency>
 		
-		<!-- Logging <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> <version>1.2.15</version> </dependency><dependency> 
-			<groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> <version>1.5.8</version> </dependency> <dependency> 
-			<groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> <version>1.4.2</version> </dependency> -->
-
 		<!-- Misc -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

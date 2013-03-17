@@ -1,3 +1,6 @@
-2013.03.15 DONE
+2013.03.16
 Wonka
-	Use JNDI.
+	Implement message accessor: protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor(); // class must implement MessageSourceAware
+2013.03.15
+Wonka
+	DONE. Use JNDI.

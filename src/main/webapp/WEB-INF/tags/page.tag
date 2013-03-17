@@ -4,6 +4,8 @@
 
 <%@ attribute name="title" required="true" description="Page title message key." %>
 <%@ attribute name="titleBody" required="false" description="Page title as string." %>
+<%@ attribute name="js" description="Comma separated list of script files, sans extension." %>
+<%@ attribute name="css" description="Comma separated list of css files, sans extension." %>
 
 <!doctype html>
 <html>
@@ -24,8 +26,26 @@
 		<link rel="stylesheet" type="text/css" href="${csspath}/reset.css">
 		<script type="text/javascript" src="${jspath}/jquery.js"></script>
 		<script async="async" type="text/javascript" src="${jspath}/Main.js"></script>
-		<script type="text/javascript" src="${jspath}/Event.js"></script>
-		<style type="text/css">@import url("${csspath}/Main.css");</style>
+		<%
+		if (js != null && !js.isEmpty()) {
+			String[] scripts = js.split(",");
+			for (String script : scripts) {
+				String scriptName = script.trim() + ".js";
+				%><script type="text/javascript" src="${jspath}/<% out.print(scriptName);%>"></script><% 
+			}
+		}
+		%>
+		<style type="text/css">@import url("${csspath}/Main.css");
+			<%
+			if (css != null && !css.isEmpty()) {
+				String[] styles = css.split(",");
+				for (String style : styles) {
+					String cssName = style.trim() + ".css";
+					%>@import url("${csspath}/<% out.print(cssName);%>");<% 
+				}
+			}
+			%>
+		</style>
 	</head>
 	<body>
 		<section id="main-content">

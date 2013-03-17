@@ -25,13 +25,16 @@ public class User implements BasicBean {
 	private Date birth; // datetime
 	private Date dateModified; // timestamp
 	private String email;
+	private boolean enabled;
 	@OneToMany
 	private List<Event> events;
 	@Id
 	@GeneratedValue
 	private Long id; // id
 	private String name;
+	private String password;
 	private int telephone;
+	private String username;
 
 	public User() {
 
@@ -39,6 +42,7 @@ public class User implements BasicBean {
 
 	public User(final String name) {
 		this.name = name;
+		username = name;
 	}
 
 	/**
@@ -91,10 +95,31 @@ public class User implements BasicBean {
 	}
 
 	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
 	 * @return the telephone
 	 */
 	public int getTelephone() {
 		return telephone;
+	}
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+	/**
+	 * @return the enabled
+	 */
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	/**
@@ -120,6 +145,14 @@ public class User implements BasicBean {
 	 */
 	public void setEmail(final String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @param enabled
+	 *            the enabled to set
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	/**
@@ -153,11 +186,27 @@ public class User implements BasicBean {
 	}
 
 	/**
+	 * @param password
+	 *            the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
 	 * @param telephone
 	 *            the telephone to set
 	 */
 	public void setTelephone(final int telephone) {
 		this.telephone = telephone;
+	}
+
+	/**
+	 * @param username
+	 *            the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override

@@ -1,6 +1,20 @@
 function Request() {}
 
 /**
+ * @param obj
+ * @param selector
+ * @param optional value. If set, will set instead of returning the value.
+ * @returns the value of the result of the query selection.
+ */
+function $qs(obj, selector, value) {
+	if (value) {
+		obj.querySelector(selector).value = value;
+	} else {
+		return obj.querySelector(selector).value;
+	}
+}
+
+/**
  * Iterates over all inputs (whose class contains "property") of the given element,
  * adding each name and value from the inputs.
  * @param formId Id of the element that contains the properties to send.

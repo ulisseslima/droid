@@ -18,18 +18,19 @@ function refresh() {
 				var event = response.contents[i];
 				var outdatedEvent = $("#event-"+event.id)[0];
 				if (outdatedEvent) {
-					outdatedEvent.querySelector(".title").value = event.title;
-					outdatedEvent.querySelector(".priority").value = event.priority;
-					outdatedEvent.querySelector(".description").value = event.description;
+					$qs(outdatedEvent, ".title", event.title);
+					$qs(outdatedEvent, ".priority", event.priority);
+					$qs(outdatedEvent, ".description", event.description);
 				} else {
 					var newEvent = $("#events").children(":first").clone(true);
 					newEvent[0].id = "event-"+event.id;
-					newEvent[0].querySelector(".id").value = event.id;
-					newEvent[0].querySelector(".title").value = event.title;
-					newEvent[0].querySelector(".priority").value = event.priority;
-					newEvent[0].querySelector(".description").value = event.description;
+					$qs(newEvent[0], ".id", event.id);
+					$qs(newEvent[0], ".title", event.title);
+					$qs(newEvent[0], ".priority", event.priority);
+					$qs(newEvent[0], ".description", event.description);
 					newEvent.appendTo("#events");
 				}
+				reorder();
 			}
 		  } else if (response.indexOf("!doctype") != -1) {
 			document.location.reload(true);
@@ -62,12 +63,12 @@ $(document).ready(function () {
  * @param input The component that holds the "priority" property value. 
  * @param times Increase the "priority" property by "times" times.
  */
-function vote(input, times) {
-	var previousValue = input.value? parseInt(input.value) : 0;
+function vote(priority, times) {
+	var previousValue = priority.value? parseInt(priority.value) : 0;
 	var newValue = previousValue + times;
-	input.value = newValue;
+	priority.value = newValue;
 	reorder();
-	var event = input.parentNode;
+	var event = priority.parentNode;
 	add(event);
 }
 
@@ -80,10 +81,10 @@ function add(event) {
 			var savedEvent = response.content;
 			if (savedEvent) {
 				event.id = "event-"+savedEvent.id;
-				event.querySelector(".id").value = savedEvent.id;
-				event.querySelector(".title").value = savedEvent.title;
-				event.querySelector(".priority").value = savedEvent.priority;
-				event.querySelector(".description").value = savedEvent.description;
+				$qs(event, ".id", savedEvent.id);
+				$qs(event, ".title", savedEvent.title);
+				$qs(event, ".priority", savedEvent.priority);
+				$qs(event, ".description", savedEvent.description);
 			}
 		});
 	}
@@ -108,7 +109,17 @@ function reorder() {
 	var events = $("#events");
 	var event = events.children(".event");
 	event.detach().sort(function (a, b) {	
-		return parseInt(a.querySelector(".priority").value) < parseInt(b.querySelector(".priority").value);
+		var av = parseInt($qs(a, ".priority"));
+        var bv = parseInt($qs(b, ".priority"));
+        if (av > bv) return -1;
+        else if (av < bv) return 1;
+        else {
+            var at = $qs(a, ".title");
+            var bt = $qs(b, ".title");
+            if (at > bt) return 1;
+            else if (at < bt) return -1;
+            else return 0;
+        }
 	});
 	events.append(event);	
 }

@@ -1,3 +1,7 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib prefix="dvl" tagdir="/WEB-INF/tags"%>
+
 <!doctype html>
 <html>
 	<head>
@@ -13,6 +17,11 @@
 			border-bottom: 2px solid black;
 			margin-bottom: 0.5em;
 			font-weight: bold;
+		}
+		h2 {
+		    border-top: 2px solid red;
+		    border-bottom: 2px solid red;
+		    color: red;
 		}
 		.main-content, textarea {
 			margin: 0 auto;
@@ -37,6 +46,8 @@
 				<br> 
 				<input name="submit" type="submit" value="submit">
 			</form>
+						
+			<dvl:error key="AbstractUserDetailsAuthenticationProvider.badCredentials" test="${error}" />
 		</section>
 	</body>
 </html>

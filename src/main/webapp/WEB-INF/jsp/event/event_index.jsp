@@ -2,7 +2,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<dvl:page title="stuff.title">
+<dvl:page title="stuff.title" js="Event">
 	<dvl:body subtitle="stuff.subtitle">
 		<div id="events">
 			<c:if test="${not empty response.contents}">
