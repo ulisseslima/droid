@@ -20,7 +20,7 @@ Note: Every time you push, everything in your remote repo dir gets recreated
 
 
 Details about layout and deployment options
-==================
+===========================================
 There are two options for deploying content to the JBoss Application Server within OpenShift:
 
 1) (Preferred) You can upload your content in a Maven src structure as is this sample project and on 
