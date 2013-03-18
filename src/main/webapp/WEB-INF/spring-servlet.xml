@@ -51,10 +51,6 @@
 		<property name="paramName" value="lang" />
 	</bean>
 
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-		<property name="defaultLocale" value="en" />
-	</bean>
-
 	<!-- Data Access -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
     	<property name="jndiName" value="java:jboss/datasources/MysqlDS"/>
