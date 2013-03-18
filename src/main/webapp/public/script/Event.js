@@ -30,7 +30,6 @@ function refresh() {
 					$qs(newEvent[0], ".description", event.description);
 					newEvent.appendTo("#events");
 				}
-				reorder();
 			}
 		  } else if (response.indexOf("!doctype") != -1) {
 			document.location.reload(true);
@@ -43,9 +42,9 @@ function refresh() {
 }
 
 $(document).ready(function () {
-	$(".event-draft").bind("focus", newEvent);
+	$(".draft").children(".title").bind("focus", newEvent);
 	
-    $(".event-input").bind("blur", function () {
+    $(".property").bind("blur", function () {
 		add(this.parentNode);
     });
     $(".event-input").bind("focus", function () {
@@ -96,9 +95,9 @@ function add(event) {
 function newEvent() {
 	var clone = $(this.parentNode).clone(true);
 	$(this.parentNode).removeClass("transparent");
-	$("input").removeClass("event-draft");
+	$("input").parent().removeClass("draft");
 	$("input").off("focus");
-	clone[0].querySelector(".priority").value = "0";
+	clone.children(".priority").value = "0";
 	clone.appendTo("#events");
 }
 
@@ -109,8 +108,8 @@ function reorder() {
 	var events = $("#events");
 	var event = events.children(".event");
 	event.detach().sort(function (a, b) {	
-		var av = parseInt($qs(a, ".priority"));
-        var bv = parseInt($qs(b, ".priority"));
+		var av = $qsInt(a, ".priority");
+        var bv = $qsInt(b, ".priority");
         if (av > bv) return -1;
         else if (av < bv) return 1;
         else {
