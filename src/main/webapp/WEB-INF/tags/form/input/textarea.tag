@@ -3,13 +3,11 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <%@ attribute name="field" required="true" description="Field name." %>
-<%@ attribute name="placeholder" required="false" description="Placeholder text." %>
 <%@ attribute name="code" required="false" description="Message code prefix." %>
-<%@ attribute name="value" required="false" description="Input value." %>
 
 <c:if test="${not empty code}">
 	<label for="${code}.${field}">
 		<spring:message code="label.${field}" />
 	</label>
 </c:if>
-<input type="text" class="property ${field}" name="${field}" value="${value}" placeholder="${placeholder}">
+<textarea class="property ${field}" name="${field}"><jsp:doBody /></textarea>
