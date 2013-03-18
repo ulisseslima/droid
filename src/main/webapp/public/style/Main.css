@@ -4,6 +4,8 @@ body {
     text-align: center;     
 }
 
+.hidden {display:none;}
+
 h1 {
     font-size: xx-large;    
     margin-bottom: 0.5em;
@@ -17,7 +19,7 @@ h2 {
     color: red;
 }
 
-#events, .event, textarea {margin: 0 auto;}
+#events, .event, .description {margin: 0 auto;}
 
 #events {
     width: 305px;
@@ -34,22 +36,21 @@ h2 {
     transition: opacity 1s;
 }
 
-input, textarea {
+.title, .priority, .description {
     border: 1px solid white;
     border-radius: 4px;
 }
-input {
+.title, .priority {
     padding: 0.3em;
     margin: 0.3em;  
-    font-size: auto;
 }
 .title {
     width: 230px;
 }
-input:focus, .title:focus ~ .description {
+.title:focus, .priority:focus, .title:focus ~ .description {
     border: 1px solid gray;
 }
-input:focus {
+.title:focus, .priority:focus {
     padding: 0.3em;
     margin: 0.3em;      
 }
@@ -63,7 +64,7 @@ input:focus {
     border: 1px solid white;
     border-radius: 15px;
 }
-textarea {
+.description {
     text-align: left;
     display: block;
     width: inherit;
@@ -72,6 +73,8 @@ textarea {
     -webkit-transition: height 0.4s;
     transition: height 0.4s;
     border-right: none;
+    overflow: hidden;
+    resize: none;
 }
 
 .description:focus, .title:focus ~ .description {
@@ -91,4 +94,8 @@ textarea {
     border-right: 2px black;
     border-right-style: dotted;
     border-top-right-radius: 10px;
+}
+
+.description {
+    border-right: none;
 }
