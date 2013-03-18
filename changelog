@@ -1,3 +1,15 @@
+v1.4
+2013.03.18
+@wonka
+	Removed localeResolver.
+	Restyled textareas.
+	Introduced locale pt_BR messages.
+v1.3
+2013.03.17
+@wonka
+	Spring security using dataSource.
+
+v1.2
 2013.03.15
-Wonka
+@wonka
 	Changelog introduced. Tag v1_1 created.
