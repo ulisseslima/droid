@@ -1,5 +1,14 @@
 function Request() {}
 
+function post(action, request, onSuccess) {
+	$.ajax({
+	  type: "POST",
+	  url: action,
+	  data: request,
+	  success: onSuccess
+	});
+}
+
 /**
  * @param obj
  * @param selector
@@ -12,6 +21,9 @@ function $qs(obj, selector, value) {
 	} else {
 		return obj.querySelector(selector).value;
 	}
+}
+function $qsInt(obj, selector) {
+	return parseInt($qs(obj, selector)); 
 }
 
 /**
@@ -30,15 +42,8 @@ function doSubmit(form, actionName, callback) {
 		}
 	});
 	
-	$.ajax({
-	  type: "POST",
-	  url: action,
-	  data: request,
-	  success: function(response) {
-		if (callback) {
-			callback(response);
-		}
-	  }
+	post(action, request, function(response) {
+		if (callback) callback(response);
 	});
 }
 
