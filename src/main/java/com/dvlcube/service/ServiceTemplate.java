@@ -34,11 +34,11 @@ public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRU
 
 	@Override
 	public Response<T> addOrUpdate(final T entity) {
-		final T content = get(entity).getContent();
+		final T match = get(entity).getContent();
 
 		track(entity);
 
-		if (content != null) {
+		if (match != null) {
 			return update(entity);
 		} else {
 			return add(entity);
