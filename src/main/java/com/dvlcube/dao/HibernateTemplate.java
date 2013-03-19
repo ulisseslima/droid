@@ -182,9 +182,9 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 			return retrieve(entityName, (Long) entity.getId());
 		} else {
 			Criteria criteria = getSession().createCriteria(entityName).add(Example.create(entity));
-			final List<E> list = criteria.list();
-			if (list != null && !list.isEmpty()) {
-				return list.get(0);
+			final List<E> matches = criteria.list();
+			if (matches != null && !matches.isEmpty()) {
+				return matches.get(0);
 			} else {
 				return null;
 			}
