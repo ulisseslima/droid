@@ -2,43 +2,52 @@ var refreshTimerId = setInterval(refresh, 5000);
 var focusedEventTitle = "";
 
 function refresh() {
-	var request = new Request();
-	request["lastUpdate"] = new Date().getTime();
-	if (focusedEventTitle) {
-		request["focusedEventTitle"] = focusedEventTitle;
-	}
-
-	$.ajax({
-	  type: "POST",
-	  url: "./refresh",
-	  data: request,
-	  success: function(response) {
-		  if (response.contents) {
-			for (var i in response.contents) {
-				var event = response.contents[i];
-				var outdatedEvent = $("#event-"+event.id)[0];
-				if (outdatedEvent) {
-					$qs(outdatedEvent, ".title", event.title);
-					$qs(outdatedEvent, ".priority", event.priority);
-					$qs(outdatedEvent, ".description", event.description);
-				} else {
-					var newEvent = $("#events").children(":first").clone(true);
-					newEvent[0].id = "event-"+event.id;
-					$qs(newEvent[0], ".id", event.id);
-					$qs(newEvent[0], ".title", event.title);
-					$qs(newEvent[0], ".priority", event.priority);
-					$qs(newEvent[0], ".description", event.description);
-					newEvent.appendTo("#events");
+	if (!busy) {
+		busy = true;
+		console.log("busy!");
+		var request = new Request();
+		request["lastUpdate"] = new Date().getTime();
+		if (focusedEventTitle) {
+			request["focusedEventTitle"] = focusedEventTitle;
+		}
+	
+		$.ajax({
+		  type: "POST",
+		  url: "./refresh",
+		  data: request,
+		  success: function(response) {
+			  if (response.contents) {
+				for (var i in response.contents) {
+					var event = response.contents[i];
+					var outdatedEvent = $("#event-"+event.id)[0];
+					if (outdatedEvent) {
+						$qs(outdatedEvent, ".title", event.title);
+						$qs(outdatedEvent, ".priority", event.priority);
+						$qs(outdatedEvent, ".description", event.description);
+					} else {
+						var newEvent = $("#events").children(":first").clone(true);
+						newEvent[0].id = "event-"+event.id;
+						$qs(newEvent[0], ".id", event.id);
+						$qs(newEvent[0], ".title", event.title);
+						$qs(newEvent[0], ".priority", event.priority);
+						$qs(newEvent[0], ".description", event.description);
+						newEvent.appendTo("#events");
+					}
 				}
-			}
-		  } else if (response.indexOf("!doctype") != -1) {
-			document.location.reload(true);
+			  } else if (response.indexOf("!doctype") != -1) {
+				document.location.reload(true);
+			  }
+			  console.log("completed refresh");
+			  console.log("!busy");
+			  busy = false;
+		  },
+		  error: function(jqXHR, textStatus, errorThrown) {
+			  document.location.reload(true);
 		  }
-	  },
-	  error: function(jqXHR, textStatus, errorThrown) {
-		  document.location.reload(true);
-	  }
-	});
+		});
+	} else {
+		console.log("busy...");
+	}
 }
 
 $(document).ready(function () {

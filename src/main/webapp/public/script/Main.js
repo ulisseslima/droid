@@ -1,3 +1,5 @@
+busy = false;
+
 function Request() {}
 
 function post(action, request, onSuccess) {

@@ -1,9 +1,12 @@
-2013.03.17
+2013-03-19
+Wonka
+	Make async work with spring security.
+2013-03-17
 Wonka
 	Encrypt passwords.
-2013.03.16
+2013-03-16
 Wonka
 	Implement message accessor: protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor(); // class must implement MessageSourceAware
-2013.03.15
+2013-03-15
 Wonka
 	DONE. Use JNDI.

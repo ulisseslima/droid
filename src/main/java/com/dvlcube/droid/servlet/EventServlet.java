@@ -1,6 +1,7 @@
 package com.dvlcube.droid.servlet;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,8 +47,21 @@ public class EventServlet {
 
 	@RequestMapping("/refresh")
 	public @ResponseBody
-	Response<Event> refresh(final NewEventsRequest request) {
-		final Response<Event> updatedEvents = service.listNew(request);
-		return updatedEvents;
+	Callable<Response<Event>> refresh(final NewEventsRequest request) {
+		return new Callable<Response<Event>>() {
+			@Override
+			public Response<Event> call() throws Exception {
+				synchronized (service.getLock()) {
+					System.out.println("refresh? " + request.getLastUpdate());
+					while (!service.hasUpdates(request.getLastUpdate())) {
+						System.out.println("waiting...");
+						service.getLock().wait();
+					}
+					final Response<Event> updatedEvents = service.listNew(request);
+					System.out.println(updatedEvents.getContents().size() + " new, refreshing...");
+					return updatedEvents;
+				}
+			}
+		};
 	}
 }

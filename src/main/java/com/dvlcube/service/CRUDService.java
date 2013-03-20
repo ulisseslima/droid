@@ -10,7 +10,7 @@ import org.hibernate.criterion.Order;
  * @author wonka
  * @since 15/09/2012
  */
-public interface ServiceCRUD<T extends BasicBean> {
+public interface CRUDService<T extends BasicBean> {
 	/**
 	 * @param entity
 	 * @return

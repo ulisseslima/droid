@@ -40,8 +40,8 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 
 	@Override
 	public Response<Event> listNew(final NewEventsRequest request) {
-		return list(
-				Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate() - 30000)),
+		System.out.println("listing ge " + request.getLastUpdate());
+		return list(Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate())),
 				Restrictions.ne(Event.Field.title.name(), request.getFocusedEventTitle()));
 	}
 }

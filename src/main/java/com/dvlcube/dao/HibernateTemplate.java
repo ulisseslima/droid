@@ -21,7 +21,6 @@ import com.dvlcube.bean.Identifiable;
  * @since 11/08/2012
  */
 @Repository
-@SuppressWarnings("unchecked")
 public abstract class HibernateTemplate<E extends Identifiable> implements DaoCRUD<E> {
 	public class CubeCriteria<T> {
 		private final Criteria query;
@@ -172,11 +171,6 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 	}
 
 	@Override
-	public List<E> list(final Integer start, final Integer maxResults) {
-		throw new UnsupportedOperationException("not implemented yet");
-	}
-
-	@Override
 	public E retrieve(final Class<E> entityName, final E entity) {
 		if (entity.getId() != null) {
 			return retrieve(entityName, (Long) entity.getId());
@@ -193,19 +187,16 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 
 	@Override
 	public E retrieve(final Class<E> entity, final long id) {
-		return (E) getSession().load(entity, id);
-	}
-
-	@Override
-	public E retrieve(final long id) {
-		throw new UnsupportedOperationException("not implemented yet");
+		E e = (E) getSession().load(entity, id);
+		return e;
 	}
 
 	@Override
 	public E update(final Class<E> entity, final long id) {
 		final E object = (E) getSession().load(entity, id);
 		if (null != object) {
-			return (E) getSession().merge(object);
+			E updated = (E) getSession().merge(object);
+			return updated;
 		} else {
 			return null;
 		}
@@ -213,7 +204,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 
 	@Override
 	public E update(final E entity) {
-		final E merge = (E) getSession().merge(entity);
-		return merge;
+		final E updated = (E) getSession().merge(entity);
+		return updated;
 	}
 }

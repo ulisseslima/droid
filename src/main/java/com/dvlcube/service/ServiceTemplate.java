@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dvlcube.bean.Trackable;
 import com.dvlcube.dao.DaoCRUD;
 import com.dvlcube.util.I18n;
 
@@ -20,8 +21,10 @@ import com.dvlcube.util.I18n;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRUD<T> {
+public abstract class ServiceTemplate<T extends BasicBean> implements AsyncCRUDService<T> {
 	private static final int NO_PAGINATION = -1;
+	private long lastModified = 0;
+	public volatile Object lock = new Object();
 
 	@Override
 	public Response<T> add(final T entity) {
@@ -34,14 +37,20 @@ public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRU
 
 	@Override
 	public Response<T> addOrUpdate(final T entity) {
-		final T match = get(entity).getContent();
+		synchronized (lock) {
+			try {
+				final T match = get(entity).getContent();
 
-		track(entity);
-
-		if (match != null) {
-			return update(entity);
-		} else {
-			return add(entity);
+				track(entity);
+				if (match != null) {
+					return update(entity);
+				} else {
+					return add(entity);
+				}
+			} finally {
+				lock.notifyAll();
+				System.out.println("lock.notifyAll();");
+			}
 		}
 	}
 
@@ -76,12 +85,23 @@ public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRU
 	 */
 	protected abstract DaoCRUD<T> getDao();
 
+	@Override
+	public Object getLock() {
+		return lock;
+	}
+
 	/**
 	 * @return The implementing class type.
 	 * @author wonka
 	 * @since 16/09/2012
 	 */
 	protected abstract Class<T> getT();
+
+	@Override
+	public boolean hasUpdates(long date) {
+		System.out.println("hasUpdates? " + (date < lastModified));
+		return date < lastModified;
+	}
 
 	@Override
 	public Response<T> list() {
@@ -125,14 +145,16 @@ public abstract class ServiceTemplate<T extends BasicBean> implements ServiceCRU
 	}
 
 	/**
-	 * "Tracks" an entity, updating its modified date.
+	 * "Tracks" an entity by updating its modified date.
 	 * 
 	 * @param entity
 	 * @author wonka
 	 * @since 12/03/2013
 	 */
-	private void track(final T entity) {
-		entity.setDateModified(new Date());
+	private void track(Trackable entity) {
+		Date date = new Date();
+		entity.setDateModified(date);
+		lastModified = date.getTime();
 	}
 
 	@Override
