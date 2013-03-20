@@ -9,14 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.dvlcube.reflection.FieldName;
-import com.dvlcube.service.BasicBean;
+import com.dvlcube.service.BasicInfo;
 
 /**
  * @author wonka
  * @since 07/08/2012
  */
 @Entity
-public class User implements BasicBean {
+public class User implements BasicInfo {
 	public enum Field implements FieldName {
 		birth, email, events, id, name, telephone
 	}
@@ -60,6 +60,11 @@ public class User implements BasicBean {
 		return dateModified;
 	}
 
+	@Override
+	public String getDescription() {
+		return toString();
+	}
+
 	/**
 	 * @return the email
 	 */
@@ -72,6 +77,11 @@ public class User implements BasicBean {
 	 */
 	public List<Event> getEvents() {
 		return events;
+	}
+
+	@Override
+	public FieldName[] getFields() {
+		return Field.values();
 	}
 
 	/**
@@ -108,6 +118,11 @@ public class User implements BasicBean {
 		return telephone;
 	}
 
+	@Override
+	public String getTitle() {
+		return getName();
+	}
+
 	/**
 	 * @return the username
 	 */
@@ -137,6 +152,10 @@ public class User implements BasicBean {
 	@Override
 	public void setDateModified(final Date dateModified) {
 		this.dateModified = dateModified;
+	}
+
+	@Override
+	public void setDescription(String description) {
 	}
 
 	/**
@@ -199,6 +218,11 @@ public class User implements BasicBean {
 	 */
 	public void setTelephone(final int telephone) {
 		this.telephone = telephone;
+	}
+
+	@Override
+	public void setTitle(String title) {
+		setName(title);
 	}
 
 	/**

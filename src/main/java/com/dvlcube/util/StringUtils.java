@@ -1,4 +1,4 @@
-package com.dvlcube.utils;
+package com.dvlcube.util;
 
 /**
  * 

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dvlcube.bean.Identifiable;
+import com.dvlcube.util.CubeGenerics;
 
 /**
  * 
@@ -58,7 +59,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		}
 
 		public List<T> list() {
-			return query.list();
+			return CubeGenerics.<T> uncheckedList(query.list());
 		}
 
 		/**
@@ -102,7 +103,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		}
 
 		public List<T> list() {
-			return query.list();
+			return CubeGenerics.<T> uncheckedList(query.list());
 		}
 	}
 
@@ -117,7 +118,8 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 
 	@Override
 	public boolean delete(final Class<E> entity, final long id) {
-		final E object = (E) getSession().load(entity, id);
+		Object load = getSession().load(entity, id);
+		final E object = CubeGenerics.<E> unchecked(load);
 		if (null != object) {
 			getSession().delete(object);
 			return true;
@@ -176,7 +178,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 			return retrieve(entityName, (Long) entity.getId());
 		} else {
 			Criteria criteria = getSession().createCriteria(entityName).add(Example.create(entity));
-			final List<E> matches = criteria.list();
+			final List<E> matches = CubeGenerics.<E> uncheckedList(criteria.list());
 			if (matches != null && !matches.isEmpty()) {
 				return matches.get(0);
 			} else {
@@ -187,15 +189,18 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 
 	@Override
 	public E retrieve(final Class<E> entity, final long id) {
-		E e = (E) getSession().load(entity, id);
+		Object object = getSession().load(entity, id);
+		E e = CubeGenerics.<E> unchecked(object);
 		return e;
 	}
 
 	@Override
 	public E update(final Class<E> entity, final long id) {
-		final E object = (E) getSession().load(entity, id);
-		if (null != object) {
-			E updated = (E) getSession().merge(object);
+		Object object = getSession().load(entity, id);
+		final E e = CubeGenerics.<E> unchecked(object);
+		if (null != e) {
+			Object updatedObject = getSession().merge(e);
+			E updated = CubeGenerics.<E> unchecked(updatedObject);
 			return updated;
 		} else {
 			return null;
@@ -204,7 +209,8 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 
 	@Override
 	public E update(final E entity) {
-		final E updated = (E) getSession().merge(entity);
+		Object object = getSession().merge(entity);
+		final E updated = CubeGenerics.<E> unchecked(object);
 		return updated;
 	}
 }

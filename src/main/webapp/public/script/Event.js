@@ -4,7 +4,6 @@ var focusedEventTitle = "";
 function refresh() {
 	if (!busy) {
 		busy = true;
-		console.log("busy!");
 		var request = new Request();
 		request["lastUpdate"] = new Date().getTime();
 		if (focusedEventTitle) {
@@ -37,16 +36,12 @@ function refresh() {
 			  } else if (response.indexOf("!doctype") != -1) {
 				document.location.reload(true);
 			  }
-			  console.log("completed refresh");
-			  console.log("!busy");
 			  busy = false;
 		  },
 		  error: function(jqXHR, textStatus, errorThrown) {
 			  document.location.reload(true);
 		  }
 		});
-	} else {
-		console.log("busy...");
 	}
 }
 

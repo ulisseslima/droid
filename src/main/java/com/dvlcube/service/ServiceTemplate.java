@@ -21,7 +21,7 @@ import com.dvlcube.util.I18n;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public abstract class ServiceTemplate<T extends BasicBean> implements AsyncCRUDService<T> {
+public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDService<T> {
 	private static final int NO_PAGINATION = -1;
 	private long lastModified = 0;
 	public volatile Object lock = new Object();

@@ -12,8 +12,8 @@ import com.dvlcube.bean.Privacy;
 import com.dvlcube.bean.Repetition;
 import com.dvlcube.bean.Validatable;
 import com.dvlcube.reflection.FieldName;
-import com.dvlcube.service.BasicBean;
-import com.dvlcube.utils.StringUtils;
+import com.dvlcube.service.BasicInfo;
+import com.dvlcube.util.StringUtils;
 
 /**
  * 
@@ -22,7 +22,7 @@ import com.dvlcube.utils.StringUtils;
  */
 @Entity
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Event implements BasicBean, Validatable {
+public class Event implements BasicInfo, Validatable {
 	public enum Field implements FieldName {
 		creator, dateEnd, dateModified, dateStart, description, done, guests, id, priority, reminders, repetition, title
 	}
@@ -76,8 +76,14 @@ public class Event implements BasicBean, Validatable {
 	/**
 	 * @return the description
 	 */
+	@Override
 	public String getDescription() {
 		return description;
+	}
+
+	@Override
+	public FieldName[] getFields() {
+		return Field.values();
 	}
 
 	/**
@@ -117,6 +123,7 @@ public class Event implements BasicBean, Validatable {
 	/**
 	 * @return the title
 	 */
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -177,6 +184,7 @@ public class Event implements BasicBean, Validatable {
 	 * @param description
 	 *            the description to set
 	 */
+	@Override
 	public void setDescription(final String description) {
 		this.description = description;
 	}
@@ -231,6 +239,7 @@ public class Event implements BasicBean, Validatable {
 	 * @param title
 	 *            the title to set
 	 */
+	@Override
 	public void setTitle(final String title) {
 		this.title = title;
 	}

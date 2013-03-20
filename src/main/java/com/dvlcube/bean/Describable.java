@@ -1,5 +1,7 @@
 package com.dvlcube.bean;
 
+import com.dvlcube.reflection.FieldName;
+
 /**
  * 
  * @author wonka
@@ -7,6 +9,8 @@ package com.dvlcube.bean;
  */
 public interface Describable {
 	String getDescription();
+
+	FieldName[] getFields();
 
 	String getTitle();
 

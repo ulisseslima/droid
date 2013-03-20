@@ -45,6 +45,17 @@ public class EventServlet {
 		return index;
 	}
 
+	/**
+	 * Long polled.
+	 * <p>
+	 * Will return a list of new entries as soon as new entries become available.
+	 * 
+	 * @param request
+	 *            request for new events.
+	 * @return A list with new entries since the last client update.
+	 * @author wonka
+	 * @since 19/03/2013
+	 */
 	@RequestMapping("/refresh")
 	public @ResponseBody
 	Callable<Response<Event>> refresh(final NewEventsRequest request) {
@@ -52,13 +63,10 @@ public class EventServlet {
 			@Override
 			public Response<Event> call() throws Exception {
 				synchronized (service.getLock()) {
-					System.out.println("refresh? " + request.getLastUpdate());
 					while (!service.hasUpdates(request.getLastUpdate())) {
-						System.out.println("waiting...");
 						service.getLock().wait();
 					}
 					final Response<Event> updatedEvents = service.listNew(request);
-					System.out.println(updatedEvents.getContents().size() + " new, refreshing...");
 					return updatedEvents;
 				}
 			}

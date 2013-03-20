@@ -5,7 +5,7 @@ package com.dvlcube.service;
  * @author wonka
  * @since 15/09/2012
  */
-public interface AsyncCRUDService<T extends BasicBean> extends CRUDService<T> {
+public interface AsyncCRUDService<T extends BasicInfo> extends CRUDService<T> {
 	/**
 	 * @return
 	 * @author wonka
