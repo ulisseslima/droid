@@ -10,15 +10,6 @@
 		</jsp-property-group>
 	</jsp-config>
 
-	<servlet>
-		<servlet-name>testServlet</servlet-name>
-		<servlet-class>com.dvlcube.servlet.TestServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>testServlet</servlet-name>
-		<url-pattern>/event/test</url-pattern>
-	</servlet-mapping>
-	
   	<servlet>
 	    <servlet-name>spring</servlet-name>
 	    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -60,6 +51,8 @@
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+  		<dispatcher>ASYNC</dispatcher>
 	</filter-mapping>
 	
 	<listener>
