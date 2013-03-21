@@ -1,4 +1,4 @@
-var refreshTimerId = setInterval(refresh, 5000);
+var refreshTimerId = setInterval(refresh, 60);
 var focusedEventTitle = "";
 
 function refresh() {
@@ -24,11 +24,13 @@ function refresh() {
 						$qs(outdatedEvent, ".priority", event.priority);
 						$qs(outdatedEvent, ".description", event.description);
 					} else {
-						var newEvent = $("#events").children(":first").clone(true);
+						var newEvent = $("#events").children(":last").clone(true);
 						newEvent[0].id = "event-"+event.id;
 						$qs(newEvent[0], ".id", event.id);
 						$qs(newEvent[0], ".title", event.title);
 						$qs(newEvent[0], ".priority", event.priority);
+						console.log("setting priority to "+event.priority);
+						console.log("set "+newEvent[0].querySelector(".priority").value);
 						$qs(newEvent[0], ".description", event.description);
 						newEvent.appendTo("#events");
 					}

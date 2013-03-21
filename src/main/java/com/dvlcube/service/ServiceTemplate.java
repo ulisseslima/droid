@@ -24,7 +24,7 @@ import com.dvlcube.util.I18n;
 public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDService<T> {
 	private static final int NO_PAGINATION = -1;
 	private long lastModified = 0;
-	public volatile Object lock = new Object();
+	public final Object lock = new Object();
 
 	@Override
 	public Response<T> add(final T entity) {
@@ -40,7 +40,6 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		synchronized (lock) {
 			try {
 				final T match = get(entity).getContent();
-
 				track(entity);
 				if (match != null) {
 					return update(entity);
@@ -49,7 +48,6 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 				}
 			} finally {
 				lock.notifyAll();
-				System.out.println("lock.notifyAll();");
 			}
 		}
 	}
@@ -99,7 +97,6 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 
 	@Override
 	public boolean hasUpdates(long date) {
-		System.out.println("hasUpdates? " + (date < lastModified));
 		return date < lastModified;
 	}
 
