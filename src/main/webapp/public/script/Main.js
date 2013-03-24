@@ -1,5 +1,4 @@
 busy = false;
-
 function Request() {}
 
 function post(action, request, onSuccess) {
@@ -21,11 +20,9 @@ function $qs(obj, selector, value) {
 	if (value) {
 		obj.querySelector(selector).value = value;
 	} else {
-		return obj.querySelector(selector).value;
+		value = obj.querySelector(selector).value;
+		return isNaN(value)? value : parseInt(value);
 	}
-}
-function $qsInt(obj, selector) {
-	return parseInt($qs(obj, selector)); 
 }
 
 /**

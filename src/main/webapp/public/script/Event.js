@@ -1,13 +1,13 @@
-var refreshTimerId = setInterval(refresh, 60);
-var focusedEventTitle = "";
+var refreshTimerId = setInterval(refresh, 200);
+var currentEventTitle;
 
 function refresh() {
 	if (!busy) {
 		busy = true;
 		var request = new Request();
 		request["lastUpdate"] = new Date().getTime();
-		if (focusedEventTitle) {
-			request["focusedEventTitle"] = focusedEventTitle;
+		if (currentEventTitle && currentEventTitle.value) {
+			request["focusedEventTitle"] = currentEventTitle.value;
 		}
 	
 		$.ajax({
@@ -29,8 +29,6 @@ function refresh() {
 						$qs(newEvent[0], ".id", event.id);
 						$qs(newEvent[0], ".title", event.title);
 						$qs(newEvent[0], ".priority", event.priority);
-						console.log("setting priority to "+event.priority);
-						console.log("set "+newEvent[0].querySelector(".priority").value);
 						$qs(newEvent[0], ".description", event.description);
 						newEvent.appendTo("#events");
 					}
@@ -53,10 +51,11 @@ $(document).ready(function () {
     $(".property").bind("blur", function () {
 		add(this.parentNode);
     });
-    $(".event-input").bind("focus", function () {
-    	focusedEventTitle = this.parentNode.querySelector(".title").value;
+    $(".title, .description").bind("focus", function () {
+    	var event = this.parentNode;
+    	currentEventTitle = event.querySelector(".title");
+    	console.log(currentEventTitle.value + " has focus");
     });
-    
     $(".event-vote").bind("click", function () {        
         var priority = this;
         vote(priority, +1);
