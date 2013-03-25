@@ -1,33 +1,9 @@
-create table User (
-  birth datetime,
-  email varchar(255),
-  id int primary key auto_increment,
-  name varchar(255),
-  telephone int
-);
-create table Event (
-  id int primary key auto_increment,
-  creator int,
-  constraint foreign key (creator) references User (id),
-  dateEnd timestamp,
-  dateStart timestamp,
-  description varchar(255),
-  done boolean,
-  privacy varchar(255),
-  repetition varchar(255),
-  title varchar(255)
-);
-create table Location (
-  id int primary key auto_increment,
-  address varchar(255),
-  description varchar(255),
-  founded datetime,
-  image varchar(255),
-  title varchar(255),
-  url varchar(255)
-);
-create table Reminder (
-  id int primary key auto_increment,
-  minutes bigint,
-  notification varchar(255)
-);
+-- currently, the tables are being created and updated by hibernate
+
+-- migration to version 1.6
+alter table Event change creator longblob;
+alter table Role change user longblob;
+alter table Role drop user;
+update Role set user_id = 1 where id = 1;
+update Role set user_id = 2 where id = 2;
+alter table Event drop creator;
