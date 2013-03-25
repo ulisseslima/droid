@@ -10,7 +10,7 @@
 		<div class="transparent event draft">
 			<input:vote priority="0" />
 			<input:hidden field="id" />
-			<input:text field="title" placeholder="new event..." />
+			<input:text field="title" placeholder="event.new.placeholder" />
 			<input:textarea field="description" />
 		</div>
 	</c:when>

@@ -1,6 +1,7 @@
 package com.dvlcube.droid.service;
 
 import com.dvlcube.droid.bean.Event;
+import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.AsyncCRUDService;
 import com.dvlcube.service.Response;
 

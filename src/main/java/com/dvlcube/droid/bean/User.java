@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.dvlcube.droid.service.rr.NewUserRequest;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
 
@@ -33,11 +34,23 @@ public class User implements BasicInfo {
 	private Long id; // id
 	private String name;
 	private String password;
-	private int telephone;
+	private int telephone = 0;
 	private String username;
 
 	public User() {
 
+	}
+
+	/**
+	 * @param userRequest
+	 * @author wonka
+	 * @since 24/03/2013
+	 */
+	public User(NewUserRequest userRequest) {
+		name = username = userRequest.getUsername();
+		password = userRequest.getPassword();
+		telephone = 1234567890;
+		enabled = true;
 	}
 
 	public User(final String name) {

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -28,6 +29,7 @@ public class Event implements BasicInfo, Validatable {
 	}
 
 	private static final long serialVersionUID = 6362154457938757910L;
+	@ManyToOne
 	private User creator; // ref_many2one #not null
 	private Date dateEnd; // timestamp
 	private Date dateModified; // timestamp

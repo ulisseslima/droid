@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dvlcube.droid.bean.Event;
 import com.dvlcube.droid.service.EventService;
-import com.dvlcube.droid.service.NewEventsRequest;
+import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.Response;
 
 /**

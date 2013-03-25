@@ -35,12 +35,6 @@ public class UserServlet {
 	@Autowired
 	private UserService service;
 
-	@RequestMapping("/add")
-	public @ResponseBody
-	Response<User> add(final User user) {
-		return service.add(user);
-	}
-
 	@RequestMapping("/get")
 	public @ResponseBody
 	Response<User> get(final long id) {

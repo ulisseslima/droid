@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.dvlcube.dao.CubeOrder;
 import com.dvlcube.droid.bean.Event;
 import com.dvlcube.droid.dao.EventDao;
+import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.Response;
 import com.dvlcube.service.ServiceTemplate;
 
