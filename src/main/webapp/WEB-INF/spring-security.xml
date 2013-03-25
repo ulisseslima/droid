@@ -11,6 +11,10 @@
 	<http security="none" pattern="/logout" />
 	<http security="none" pattern="/loginfailed" />
 	<http security="none" pattern="/denied" />
+	<http security="none" pattern="/signup" />
+	<http security="none" pattern="/newuser" />
+	<http security="none" pattern="/static/style/*" />
+	<http security="none" pattern="/static/script/*" />
 	
 	<http auto-config="true" access-denied-page="/denied">
 		<intercept-url pattern="/**" access="ROLE_USER" />
@@ -32,7 +36,7 @@
 		      from User where username=?" 
 		   authorities-by-username-query="
 		      select u.username, ur.authority from User u, Role ur 
-		      where u.id = ur.user and u.username =? " 
+		      where u.id = ur.user_id and u.username =? " 
 		/>
 	  </authentication-provider>
 	</authentication-manager>

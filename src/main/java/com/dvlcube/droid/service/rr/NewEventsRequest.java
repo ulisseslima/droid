@@ -1,4 +1,4 @@
-package com.dvlcube.droid.service;
+package com.dvlcube.droid.service.rr;
 
 /**
  * A request for Events that were updated recently.

@@ -6,6 +6,14 @@ body {
 
 .hidden {display:none;}
 
+a {
+    color: #3b5998;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
 h1 {
     font-size: xx-large;    
     margin-bottom: 0.5em;
@@ -13,10 +21,17 @@ h1 {
     border-bottom: 2px solid black;
 }
 
-h2 {
-    border-top: 2px solid red;
-    border-bottom: 2px solid red;
-    color: red;
+.message {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.error {
+    border-color: hsl(0, 5%, 50%);;
+    color: hsl(0, 5%, 80%);;
+}
+.info {
+    border-color: hsl(0, 5%, 80%);;
+    color: hsl(0, 5%, 80%);;
 }
 
 #events, .event, .description {margin: 0 auto;}
@@ -36,23 +51,19 @@ h2 {
     transition: opacity 1s;
 }
 
-.title, .priority, .description {
+.property, .title, .priority, .description {
     border: 1px solid white;
     border-radius: 4px;
 }
-.title, .priority {
+.property, .title, .priority {
     padding: 0.3em;
     margin: 0.3em;  
 }
 .title {
     width: 230px;
 }
-.title:focus, .priority:focus, .title:focus ~ .description {
+.property:focus, .title:focus, .priority:focus, .title:focus ~ .description {
     border: 1px solid gray;
-}
-.title:focus, .priority:focus {
-    padding: 0.3em;
-    margin: 0.3em;      
 }
 
 .event-vote {    
@@ -98,4 +109,11 @@ h2 {
 
 .description {
     border-right: none;
+}
+
+.submit {
+    padding: 0.3em;
+    margin: 0.3em;
+    border: 1px solid gray;
+    border-radius: 4px;
 }

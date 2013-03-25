@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Spring 3.0 MVC Series: Hello World - ViralPatel.net</title>
+		<title>Droid</title>
 	</head>
 	<body>
-		denied
+		access denied
 	</body>
 </html>
