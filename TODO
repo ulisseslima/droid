@@ -1,3 +1,8 @@
+2013-03-24
+Wonka
+	Test automatic mappings for servlets based on the method's name.
+	Check if passwords match (client and server).
+	Try to get rid of @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) either by specifying the property in jackson itself or by moving to an interface.
 2013-03-19
 Wonka
 	DONE. Make async work with spring security.
