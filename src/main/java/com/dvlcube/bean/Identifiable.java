@@ -13,6 +13,4 @@ public interface Identifiable extends Serializable {
 	String getLabel();
 
 	void setId(Long id);
-
-	void setLabel(String label);
 }

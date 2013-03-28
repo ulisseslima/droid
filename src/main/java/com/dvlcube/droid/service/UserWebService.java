@@ -24,6 +24,11 @@ public class UserWebService extends ServiceTemplate<User> implements UserService
 	@Autowired
 	private RoleDao roleDao;
 
+	public User getByUsername(String username) {
+		User user = dao.retrieve(getT(), new User(username));
+		return user;
+	}
+
 	@Override
 	protected UserDao getDao() {
 		return dao;

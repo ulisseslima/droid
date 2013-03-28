@@ -94,6 +94,17 @@ public class Role implements BasicInfo {
 		return user;
 	}
 
+	@Override
+	public boolean hasRequiredAttributes() {
+		if (user == null) {
+			return false;
+		}
+		if (authority == null) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @param authority
 	 *            the authority to set
@@ -126,11 +137,6 @@ public class Role implements BasicInfo {
 	}
 
 	@Override
-	public void setLabel(String label) {
-		throw new UnsupportedOperationException("can't set label on " + getClass());
-	}
-
-	@Override
 	public void setTitle(String title) {
 		setAuthority(title);
 	}
@@ -148,4 +154,8 @@ public class Role implements BasicInfo {
 		return "Role [authority=" + authority + ", id=" + id + ", user=" + user + "]";
 	}
 
+	@Override
+	public void touch() {
+		dateModified = new Date();
+	}
 }

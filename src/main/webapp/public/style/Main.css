@@ -34,7 +34,7 @@ h1 {
     color: hsl(0, 5%, 80%);;
 }
 
-#events, .event, .description {margin: 0 auto;}
+#events, .event, .listing, .description {margin: 0 auto;}
 
 #events {
     width: 305px;
@@ -99,7 +99,7 @@ h1 {
     display: inline-block;
 }
 
-.event {
+.event, .listing {
     width: inherit;
     border: none;
     border-right: 2px black;

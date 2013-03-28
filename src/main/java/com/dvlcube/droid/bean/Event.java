@@ -7,11 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import com.dvlcube.bean.Privacy;
 import com.dvlcube.bean.Repetition;
-import com.dvlcube.bean.Validatable;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
 import com.dvlcube.util.StringUtils;
@@ -22,8 +18,7 @@ import com.dvlcube.util.StringUtils;
  * @since 23/02/2013
  */
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Event implements BasicInfo, Validatable {
+public class Event implements BasicInfo {
 	public enum Field implements FieldName {
 		creator, dateEnd, dateModified, dateStart, description, done, guests, id, priority, reminders, repetition, title
 	}
@@ -41,7 +36,6 @@ public class Event implements BasicInfo, Validatable {
 	@GeneratedValue
 	private Long id; // id
 	private int priority;
-	private Privacy privacy; // String
 	// OneToMany private List<Reminder> reminders;
 	private Repetition repetition; // String
 	private String title;
@@ -98,7 +92,7 @@ public class Event implements BasicInfo, Validatable {
 
 	@Override
 	public String getLabel() {
-		return title;
+		return StringUtils.escapeHTML(getTitle());
 	}
 
 	/**
@@ -106,13 +100,6 @@ public class Event implements BasicInfo, Validatable {
 	 */
 	public int getPriority() {
 		return priority;
-	}
-
-	/**
-	 * @return the privacy
-	 */
-	public Privacy getPrivacy() {
-		return privacy;
 	}
 
 	/**
@@ -128,10 +115,6 @@ public class Event implements BasicInfo, Validatable {
 	@Override
 	public String getTitle() {
 		return title;
-	}
-
-	public String getTitleHtml() {
-		return StringUtils.escapeHTML(getTitle());
 	}
 
 	@Override
@@ -208,25 +191,12 @@ public class Event implements BasicInfo, Validatable {
 		this.id = id;
 	}
 
-	@Override
-	public void setLabel(final String label) {
-		title = label;
-	}
-
 	/**
 	 * @param priority
 	 *            the priority to set
 	 */
 	public void setPriority(final int priority) {
 		this.priority = priority;
-	}
-
-	/**
-	 * @param privacy
-	 *            the privacy to set
-	 */
-	public void setPrivacy(final Privacy privacy) {
-		this.privacy = privacy;
 	}
 
 	/**
@@ -250,5 +220,10 @@ public class Event implements BasicInfo, Validatable {
 	public String toString() {
 		return "Event [id=" + id + ", title=" + title + ", priority=" + priority + ", description="
 				+ description + "]";
+	}
+
+	@Override
+	public void touch() {
+		dateModified = new Date();
 	}
 }

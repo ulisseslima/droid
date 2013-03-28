@@ -143,6 +143,20 @@ public class User implements BasicInfo {
 		return username;
 	}
 
+	@Override
+	public boolean hasRequiredAttributes() {
+		if (email == null) {
+			return false;
+		}
+		if (username == null) {
+			return false;
+		}
+		if (password == null) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * @return the enabled
 	 */
@@ -204,11 +218,6 @@ public class User implements BasicInfo {
 		this.id = id;
 	}
 
-	@Override
-	public void setLabel(final String label) {
-		name = label;
-	}
-
 	/**
 	 * @param name
 	 *            the name to set
@@ -249,5 +258,10 @@ public class User implements BasicInfo {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
+	}
+
+	@Override
+	public void touch() {
+		dateModified = new Date();
 	}
 }

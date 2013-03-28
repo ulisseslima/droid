@@ -1,5 +1,5 @@
+ENTITY_NAME = "event";
 var refreshTimerId = setInterval(refresh, 200);
-var currentEventTitle;
 
 function refresh() {
 	if (!busy) {
@@ -46,16 +46,6 @@ function refresh() {
 }
 
 $(document).ready(function () {
-	$(".draft").children(".title").bind("focus", newEvent);
-	
-    $(".property").bind("blur", function () {
-		add(this.parentNode);
-    });
-    $(".title, .description").bind("focus", function () {
-    	var event = this.parentNode;
-    	currentEventTitle = event.querySelector(".title");
-    	console.log(currentEventTitle.value + " has focus");
-    });
     $(".event-vote").bind("click", function () {        
         var priority = this;
         vote(priority, +1);
@@ -96,34 +86,26 @@ function add(event) {
 
 /**
  * Creates a new Event element.
+ * @see Entities.newEntity()
  */
-function newEvent() {
-	var clone = $(this.parentNode).clone(true);
-	$(this.parentNode).removeClass("transparent");
-	$("input").parent().removeClass("draft");
-	$("input").off("focus");
+function extend_newEntity(clone) {
 	clone.children(".priority").value = "0";
-	clone.appendTo("#events");
 }
 
 /**
  * Reorder Event elements according to the value of their priority element.
+ * @see Entities.reorder();
  */
-function reorder() {
-	var events = $("#events");
-	var event = events.children(".event");
-	event.detach().sort(function (a, b) {	
-		var av = $qsInt(a, ".priority");
-        var bv = $qsInt(b, ".priority");
-        if (av > bv) return -1;
-        else if (av < bv) return 1;
-        else {
-            var at = $qs(a, ".title");
-            var bt = $qs(b, ".title");
-            if (at > bt) return 1;
-            else if (at < bt) return -1;
-            else return 0;
-        }
-	});
-	events.append(event);	
+function extend_reorder(a, b) {
+	var av = $qs(a, ".priority");
+    var bv = $qs(b, ".priority");
+    if (av > bv) return -1;
+    else if (av < bv) return 1;
+    else {
+        var at = $qs(a, ".title");
+        var bt = $qs(b, ".title");
+        if (at > bt) return 1;
+        else if (at < bt) return -1;
+        else return 0;
+    }
 }
