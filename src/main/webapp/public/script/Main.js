@@ -23,11 +23,20 @@ function post(action, request, onSuccess) {
  * @returns the value of the result of the query selection.
  */
 function $qs(obj, selector, value) {
+    var object = obj.querySelector(selector);
 	if (value) {
-		obj.querySelector(selector).value = value;
+		switch (object.tagName) {
+			case "A" : object.setAttribute("href", value); break;
+			default: object.value = value;
+		}		
 	} else {
-		value = obj.querySelector(selector).value;
-		return isNaN(value)? value : parseInt(value);
+        switch (object.tagName) {
+            case "A" : return object.getAttribute("href");
+            default: {
+                value = object.value;
+		        return isNaN(value)? value : parseInt(value);
+            }
+        }		
 	}
 }
 
