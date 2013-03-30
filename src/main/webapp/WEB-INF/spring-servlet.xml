@@ -32,6 +32,12 @@
 			<mvc:mapping path="/**" />
 			<bean class="com.dvlcube.interceptor.I18nInterceptor" />
 		</mvc:interceptor>
+		 <mvc:interceptor>  
+           <mvc:mapping path="/**" />  
+            <bean class="org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor" name="openSessionInViewInterceptor">  
+                <property name="sessionFactory" ref="sessionFactory" />
+           </bean>  
+        </mvc:interceptor>
 	</mvc:interceptors>
 
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -78,5 +84,11 @@
 
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="authenticationHolder" class="com.dvlcube.security.AuthenticationHolder"/>
+	<bean scope="request"
+	    factory-bean="authenticationHolder" factory-method="getAuthentication">
+	    <aop:scoped-proxy/>
 	</bean>
 </beans>
