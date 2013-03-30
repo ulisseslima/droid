@@ -3,10 +3,16 @@ function Request() {}
 
 function post(action, request, onSuccess) {
 	$.ajax({
-	  type: "POST",
-	  url: action,
-	  data: request,
-	  success: onSuccess
+	  "type": "POST",
+	  "headers": { 
+	        'Accept': 'application/json',
+	        'Content-Type': 'application/json' 
+	    },
+	  "url": action,
+	  "contentType": "application/json",
+	  "data": JSON.stringify(request),
+	  "dataType" : "json",
+	  "success": onSuccess
 	});
 }
 
@@ -32,14 +38,9 @@ function $qs(obj, selector, value) {
  * @param action Desired action URL. Will use the forms name if not specified.
  */
 function doSubmit(form, actionName, callback) {
-	var request = new Request();
+	var request = form2js(form.id);
+	console.log("sending " + JSON.stringify(request));
 	var action = getActionName(actionName, form); 
-	
-	$(form).children(".property").each(function(i) {
-		if (this.name && this.value) {
-			request[this.name] = this.value;
-		}
-	});
 	
 	post(action, request, function(response) {
 		if (callback) callback(response);

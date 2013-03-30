@@ -3,15 +3,15 @@ ENTITY_NAME = "listing";
 /**
  * @param event The element that holds all elements with properties of the Event object.
  */
-function add(event) {
-	if (event.querySelector(".title").value) {
-		doSubmit(event, "add", function (response) {
-			var savedEvent = response.content;
-			if (savedEvent) {
-				event.id = "event-"+savedEvent.id;
-				$qs(event, ".id", savedEvent.id);
-				$qs(event, ".title", savedEvent.title);
-				$qs(event, ".description", savedEvent.description);
+function add(listing) {
+	if (listing.querySelector(".title").value) {
+		doSubmit(listing, "add", function (response) {
+			var savedListing = response.content;
+			if (savedListing) {
+				listing.id = "listing-"+savedListing.id;
+				$qs(listing, ".id", savedListing.id);
+				$qs(listing, ".title", savedListing.title);
+				$qs(listing, ".description", savedListing.description);
 			}
 		});
 	}

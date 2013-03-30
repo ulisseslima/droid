@@ -6,13 +6,14 @@ function refresh() {
 		busy = true;
 		var request = new Request();
 		request["lastUpdate"] = new Date().getTime();
-		if (currentEventTitle && currentEventTitle.value) {
-			request["focusedEventTitle"] = currentEventTitle.value;
+		if (currentEntityTitle && currentEntityTitle.value) {
+			request["focusedEventTitle"] = currentEntityTitle.value;
+			request["parentId"] = $(".parentId")[0].value;
 		}
 	
 		$.ajax({
 		  type: "POST",
-		  url: "./refresh",
+		  url: "refresh",
 		  data: request,
 		  success: function(response) {
 			  if (response.contents) {
@@ -27,6 +28,7 @@ function refresh() {
 						var newEvent = $("#events").children(":last").clone(true);
 						newEvent[0].id = "event-"+event.id;
 						$qs(newEvent[0], ".id", event.id);
+						$qs(newEvent[0], ".parent\\.id", event.parent.id);
 						$qs(newEvent[0], ".title", event.title);
 						$qs(newEvent[0], ".priority", event.priority);
 						$qs(newEvent[0], ".description", event.description);
@@ -67,15 +69,16 @@ function vote(priority, times) {
 }
 
 /**
- * @param event The element that holds all elements with properties of the Event object.
+ * @param event The id of the element that holds all elements with properties of the Event object.
  */
 function add(event) {
 	if (event.querySelector(".title").value) {
-		doSubmit(event, "add", function (response) {
+		doSubmit(event, "addevent", function (response) {
 			var savedEvent = response.content;
 			if (savedEvent) {
 				event.id = "event-"+savedEvent.id;
 				$qs(event, ".id", savedEvent.id);
+				$qs(event, ".parent\\.id", savedEvent.parent.id);
 				$qs(event, ".title", savedEvent.title);
 				$qs(event, ".priority", savedEvent.priority);
 				$qs(event, ".description", savedEvent.description);

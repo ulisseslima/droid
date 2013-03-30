@@ -10,7 +10,6 @@ $(document).ready(function () {
     $(".title, .description").bind("focus", function () {
     	var entity = this.parentNode;
     	currentEntityTitle = entity.querySelector(".title");
-    	console.log(currentEntityTitle.value + " has focus");
     });
 });
 
@@ -29,7 +28,7 @@ function newEntity() {
 	$(this.parentNode).removeClass("transparent");
 	$("input").parent().removeClass("draft");
 	$("input").off("focus");
-	if (extend_newEntity) extend_newEntity(clone);
+	if (typeof extend_newEntity == "function") extend_newEntity(clone);
 	clone.appendTo(getEntityCollection());
 }
 
