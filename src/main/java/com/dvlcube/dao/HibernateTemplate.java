@@ -10,10 +10,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dvlcube.bean.Identifiable;
+import com.dvlcube.droid.bean.User;
 import com.dvlcube.util.CubeGenerics;
 
 /**
@@ -116,6 +118,16 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		return id;
 	}
 
+	/**
+	 * @param object
+	 * @return
+	 * @author wonka
+	 * @since 29/03/2013
+	 */
+	private Criteria criteriaByExample(Class<?> classname, Object object) {
+		return getSession().createCriteria(object.getClass()).add(Example.create(object));
+	}
+
 	@Override
 	public boolean delete(final Class<E> entity, final long id) {
 		Object load = getSession().load(entity, id);
@@ -153,11 +165,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 	}
 
 	@Override
-	public List<E> list(
-		final Class<E> entity,
-		final Integer start,
-		final Integer maxResults,
-		final List<Order> orders) {
+	public List<E> list(final Class<E> entity, final Integer start, final Integer maxResults, final List<Order> orders) {
 		return list(entity, start, maxResults, orders);
 	}
 
@@ -177,7 +185,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		if (entity.getId() != null) {
 			return retrieve(entityName, (Long) entity.getId());
 		} else {
-			Criteria criteria = getSession().createCriteria(entityName).add(Example.create(entity));
+			Criteria criteria = criteriaByExample(entityName, entity);
 			final List<E> matches = CubeGenerics.<E> uncheckedList(criteria.list());
 			if (matches != null && !matches.isEmpty()) {
 				return matches.get(0);
@@ -192,6 +200,17 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		Object object = getSession().load(entity, id);
 		E e = CubeGenerics.<E> unchecked(object);
 		return e;
+	}
+
+	@Override
+	public User retrieveOwner(String name) {
+		Criteria criteria = getSession().createCriteria(User.class).add(Restrictions.eq("name", name));
+		final List<User> matches = CubeGenerics.<User> uncheckedList(criteria.list());
+		if (matches != null && !matches.isEmpty()) {
+			return matches.get(0);
+		} else {
+			throw new IllegalArgumentException("Couldn't find registered user with name '" + name + "'");
+		}
 	}
 
 	@Override
