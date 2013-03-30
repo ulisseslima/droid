@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
+import com.dvlcube.util.StringUtils;
 
 /**
  * 
@@ -151,7 +152,7 @@ public class Role implements BasicInfo {
 
 	@Override
 	public String toString() {
-		return "Role [authority=" + authority + ", id=" + id + ", user=" + user + "]";
+		return StringUtils.stringify(this);
 	}
 
 	@Override

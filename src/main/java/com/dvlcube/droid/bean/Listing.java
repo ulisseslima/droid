@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.dvlcube.bean.Privacy;
@@ -19,14 +20,13 @@ import com.dvlcube.util.StringUtils;
  * @since 27/03/2013
  */
 @Entity
-public class Listing implements BasicInfo {
+public class Listing implements BasicInfo, Owned {
 	public enum Field implements FieldName {
-		creator, dateModified, description, events, id, participants, privacy, title
+		dateModified, description, events, id, owner, participants, privacy, title
 	}
 
 	private static final long serialVersionUID = -3623848542561114979L;
 
-	private User creator;
 	private Date dateModified;
 	private String description;
 	@OneToMany
@@ -34,16 +34,24 @@ public class Listing implements BasicInfo {
 	@Id
 	@GeneratedValue
 	private Long id;
+	@ManyToOne
+	private User owner;
+	@OneToMany
 	private List<User> participants;
 	private Privacy privacy; // String
 
 	private String title;
 
+	public Listing() {
+	}
+
 	/**
-	 * @return the creator
+	 * @param id
+	 * @author wonka
+	 * @since 29/03/2013
 	 */
-	public User getCreator() {
-		return creator;
+	public Listing(Long id) {
+		this.id = id;
 	}
 
 	/**
@@ -88,6 +96,14 @@ public class Listing implements BasicInfo {
 	}
 
 	/**
+	 * @return the owner
+	 */
+	@Override
+	public User getOwner() {
+		return owner;
+	}
+
+	/**
 	 * @return the participants
 	 */
 	public List<User> getParticipants() {
@@ -115,14 +131,6 @@ public class Listing implements BasicInfo {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * @param creator
-	 *            the creator to set
-	 */
-	public void setCreator(User creator) {
-		this.creator = creator;
 	}
 
 	/**
@@ -161,6 +169,15 @@ public class Listing implements BasicInfo {
 	}
 
 	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	@Override
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	/**
 	 * @param participants
 	 *            the participants to set
 	 */
@@ -183,6 +200,11 @@ public class Listing implements BasicInfo {
 	@Override
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	@Override
+	public String toString() {
+		return StringUtils.stringify(this);
 	}
 
 	@Override

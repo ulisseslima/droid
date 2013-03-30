@@ -9,6 +9,7 @@ package com.dvlcube.droid.service.rr;
 public class NewEventsRequest {
 	private String focusedEventTitle;
 	private long lastUpdate;
+	private long listingId;
 
 	/**
 	 * @return the focusedEventTitle
@@ -22,6 +23,13 @@ public class NewEventsRequest {
 	 */
 	public long getLastUpdate() {
 		return lastUpdate;
+	}
+
+	/**
+	 * @return the listingId
+	 */
+	public long getListingId() {
+		return listingId;
 	}
 
 	/**
@@ -40,9 +48,17 @@ public class NewEventsRequest {
 		this.lastUpdate = lastUpdate;
 	}
 
+	/**
+	 * @param listingId
+	 *            the listingId to set
+	 */
+	public void setListingId(long listingId) {
+		this.listingId = listingId;
+	}
+
 	@Override
 	public String toString() {
 		return "NewEventsRequest [focusedEventTitle=" + focusedEventTitle + ", lastUpdate=" + lastUpdate
-				+ "]";
+				+ ", listingId=" + listingId + "]";
 	}
 }

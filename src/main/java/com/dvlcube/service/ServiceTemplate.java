@@ -7,11 +7,16 @@ import java.util.List;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dvlcube.bean.Trackable;
 import com.dvlcube.dao.DaoCRUD;
+import com.dvlcube.droid.bean.Owned;
+import com.dvlcube.droid.bean.User;
+import com.dvlcube.service.BasicInfo.Field;
 import com.dvlcube.util.I18n;
 
 /**
@@ -23,11 +28,17 @@ import com.dvlcube.util.I18n;
 @Transactional(rollbackFor = Exception.class)
 public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDService<T> {
 	private static final int NO_PAGINATION = -1;
+
+	@Autowired
+	private Authentication authentication;
+
 	private long lastModified = 0;
+
 	public final Object lock = new Object();
 
 	@Override
 	public Response<T> add(final T entity) {
+		setOwner(entity);
 		final Serializable id = getDao().create(entity);
 		entity.setId((Long) id);
 		final Response<T> response = new Response<T>(true, entity);
@@ -139,6 +150,40 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	@Override
 	public Response<T> list(final Order... orders) {
 		return list(NO_PAGINATION, NO_PAGINATION, Arrays.asList(orders), new Criterion[0]);
+	}
+
+	@Override
+	public Response<T> listByDateModified(boolean desc) {
+		String dateModified = Field.dateModified.name();
+		if (desc) {
+			return list(Order.desc(dateModified));
+		} else {
+			return list(Order.asc(dateModified));
+		}
+	}
+
+	@Override
+	public Response<T> listOld() {
+		return listByDateModified(false);
+	}
+
+	@Override
+	public Response<T> listRecent() {
+		return listByDateModified(true);
+	}
+
+	/**
+	 * @param entity
+	 * @author wonka
+	 * @since 29/03/2013
+	 */
+	private void setOwner(T entity) {
+		if (authentication != null) {
+			if (entity instanceof Owned) {
+				User owner = getDao().retrieveOwner(authentication.getName());
+				((Owned) entity).setOwner(owner);
+			}
+		}
 	}
 
 	/**

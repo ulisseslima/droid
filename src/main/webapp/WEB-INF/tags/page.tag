@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<%@ attribute name="title" required="true" description="Page title message key." %>
-<%@ attribute name="titleBody" required="false" description="Page title as string." %>
+<%@ attribute name="title" required="false" description="Page title message key." %>
+<%@ attribute name="titleText" required="false" description="Page title as string." %>
 <%@ attribute name="js" description="Comma separated list of script files, sans extension." %>
 <%@ attribute name="css" description="Comma separated list of css files, sans extension." %>
 
@@ -12,19 +12,17 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Dvlcube -
-		<c:choose>
-			<c:when test="${not empty title}">
+			<c:if test="${not empty title}">
 				<spring:message code="${title}" />
-			</c:when> 
-			<c:otherwise>
-				${title}
-			</c:otherwise>
-		</c:choose>
+			</c:if> 
+			${titleText}
 		</title>
 		<spring:url var="jspath" value="/static/script" />
 		<spring:url var="csspath" value="/static/style" />
 		<link rel="stylesheet" type="text/css" href="${csspath}/reset.css">
 		<script type="text/javascript" src="${jspath}/jquery.js"></script>
+		<script async="async" type="text/javascript" src="${jspath}/json2.js"></script>
+		<script async="async" type="text/javascript" src="${jspath}/form2js.js"></script>
 		<script async="async" type="text/javascript" src="${jspath}/Main.js"></script>
 		<%
 		if (js != null && !js.isEmpty()) {

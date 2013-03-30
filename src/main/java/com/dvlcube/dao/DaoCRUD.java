@@ -6,6 +6,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
 import com.dvlcube.bean.Identifiable;
+import com.dvlcube.droid.bean.User;
 
 /**
  * @author wonka
@@ -61,12 +62,7 @@ public interface DaoCRUD<E extends Identifiable> extends CRUD<E> {
 	 * @author wonka
 	 * @since 22/09/2012
 	 */
-	List<E> list(
-		Class<E> entity,
-		Integer start,
-		Integer maxResults,
-		List<Order> orders,
-		Criterion... conditions);
+	List<E> list(Class<E> entity, Integer start, Integer maxResults, List<Order> orders, Criterion... conditions);
 
 	/**
 	 * @param entityName
@@ -85,6 +81,14 @@ public interface DaoCRUD<E extends Identifiable> extends CRUD<E> {
 	 * @since 13/09/2012
 	 */
 	E retrieve(Class<E> entityName, long id);
+
+	/**
+	 * @param name
+	 * @return The default implementation of Principal.
+	 * @author wonka
+	 * @since 29/03/2013
+	 */
+	User retrieveOwner(String name);
 
 	/**
 	 * @param entity

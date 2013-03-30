@@ -28,6 +28,19 @@ public class GatekeeperServlet {
 		return "denied";
 	}
 
+	/**
+	 * @param model
+	 * @param principal
+	 * @return
+	 * @author wonka
+	 * @since 29/03/2013
+	 */
+	private String handleEntryPoint(final ModelMap model, final Principal principal) {
+		final String name = principal.getName();
+		model.addAttribute("username", name);
+		return "welcome";
+	}
+
 	@RequestMapping("/login")
 	public String login(final ModelMap model) {
 		return "login";
@@ -52,6 +65,11 @@ public class GatekeeperServlet {
 		return "login";
 	}
 
+	@RequestMapping("/")
+	public String root(final ModelMap model, final Principal principal) {
+		return handleEntryPoint(model, principal);
+	}
+
 	@RequestMapping("/signup")
 	public String signup(final ModelMap model) {
 		return "signup";
@@ -59,9 +77,6 @@ public class GatekeeperServlet {
 
 	@RequestMapping("/welcome")
 	public String welcome(final ModelMap model, final Principal principal) {
-		final String name = principal.getName();
-
-		model.addAttribute("username", name);
-		return "welcome";
+		return handleEntryPoint(model, principal);
 	}
 }

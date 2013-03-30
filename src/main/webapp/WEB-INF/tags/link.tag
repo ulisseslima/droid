@@ -5,8 +5,9 @@
 <%@ attribute name="href" required="true" description="The address."%>
 <%@ attribute name="key" required="false" description="i18n key."%>
 <%@ attribute name="label" required="false" description="Text to display."%>
+<%@ attribute name="round" required="false" description="Whether it's a round link."%>
 
-<a href="${href}">
+<a href="${href}" class="${round? 'round' : ''}">
 	<c:if test="${not empty key}">
 		<spring:message code="${key}" />
 	</c:if>

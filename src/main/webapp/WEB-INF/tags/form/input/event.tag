@@ -7,9 +7,10 @@
 
 <c:choose>
 	<c:when test="${empty var}">
-		<div class="transparent event draft">
+		<div id="event-draft" class="transparent event draft">
 			<input:vote priority="0" />
 			<input:hidden field="id" />
+			<input:hidden field="parent.id" value="${response.contents[0].parent.id}" />
 			<input:text field="title" placeholder="event.new.placeholder" />
 			<input:textarea field="description" />
 		</div>
@@ -18,6 +19,7 @@
 		<div id="event-${var.id}" class="event">
 			<input:vote priority="${var.priority}" />
 			<input:hidden field="id" value="${var.id}" />
+			<input:hidden field="parent.id" value="${var.parent.id}" />
 			<input:text field="title" value="${var.label}" />
 			<input:textarea field="description">${var.description}</input:textarea>
 		</div>

@@ -32,11 +32,11 @@
 	  <authentication-provider>
 		<jdbc-user-service data-source-ref="dataSource"
 		   users-by-username-query="
-		      select username, password, enabled 
-		      from User where username=?" 
+		      select name, password, enabled 
+		      from User where name=?" 
 		   authorities-by-username-query="
-		      select u.username, ur.authority from User u, Role ur 
-		      where u.id = ur.user_id and u.username =? " 
+		      select u.name, ur.authority from User u, Role ur 
+		      where u.id = ur.user_id and u.name =? " 
 		/>
 	  </authentication-provider>
 	</authentication-manager>

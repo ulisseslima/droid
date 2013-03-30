@@ -3,4 +3,5 @@
 
 <%@ attribute name="priority" description="The priority value." rtexprvalue="true"%>
 
-<input type="button" class="event-vote property priority" name="priority" title="priority" value="${priority}" />
+<input type="hidden" name="priority" value="${priority}" />
+<input type="button" class="round event-vote property priority" name="priority" title="priority" value="${priority}" />

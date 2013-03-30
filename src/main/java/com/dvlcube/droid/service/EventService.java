@@ -13,6 +13,14 @@ import com.dvlcube.service.Response;
 public interface EventService extends AsyncCRUDService<Event> {
 
 	/**
+	 * @param listingId
+	 * @return
+	 * @author wonka
+	 * @since 28/03/2013
+	 */
+	Response<Event> listByListing(long listingId);
+
+	/**
 	 * @return All Events ordered by priority.
 	 * @author wonka
 	 * @since 02/03/2013

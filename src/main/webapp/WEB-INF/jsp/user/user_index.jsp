@@ -2,9 +2,9 @@
 
 <dvl:page title="stuff.title">
 	<dvl:body subtitle="stuff.subtitle">
-		<form:async action="add">
-			<input:text code="user" field="name" />
-			<input:text code="user" field="email" />
+		<form:async action="add" key="label.add">
+			<input:text key="user" field="name" />
+			<input:text key="user" field="email" />
 		</form:async>
 
 		<dvl:list id="user-collection">

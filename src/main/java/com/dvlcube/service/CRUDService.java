@@ -122,6 +122,28 @@ public interface CRUDService<T extends BasicInfo> {
 	Response<T> list(Order... orders);
 
 	/**
+	 * @param desc
+	 * @return
+	 * @author wonka
+	 * @since 28/03/2013
+	 */
+	Response<T> listByDateModified(boolean desc);
+
+	/**
+	 * @return
+	 * @author wonka
+	 * @since 28/03/2013
+	 */
+	Response<T> listOld();
+
+	/**
+	 * @return
+	 * @author wonka
+	 * @since 28/03/2013
+	 */
+	Response<T> listRecent();
+
+	/**
 	 * @param id
 	 * @return
 	 * @author wonka

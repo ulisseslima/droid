@@ -1,3 +1,11 @@
+2013-03-29
+Wonka
+	Test criterias by example
+	Make a function to replace dots, in class names, with hyphens.
+	Get rid of parentId on Event
+	Find a combination of jackson versions that work with the option for FAIL_ON_EMPTY_BEANS
+	Extract to method: fillObject() in Entities.js to remove duplicated code in Event.js
+	Refactor service.hasUpdates() taking into account groups of objects pertaining to a specific parent id. (today, as soon as any object is updated on a service, it returns true for hasUpdates(), it should be made so that one can query for updates for children of a specific parent. e.g.: hasUpdates(listingId))
 2013-03-24
 Wonka
 	Test automatic mappings for servlets based on the method's name.

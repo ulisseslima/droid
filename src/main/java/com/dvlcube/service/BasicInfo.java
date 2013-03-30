@@ -14,5 +14,7 @@ import com.dvlcube.bean.Validatable;
  */
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public interface BasicInfo extends Identifiable, Trackable, Describable, Validatable {
-
+	public enum Field {
+		dateModified, description, id, label, title
+	}
 }

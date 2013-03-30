@@ -2,7 +2,9 @@ package com.dvlcube.droid.service;
 
 import java.util.Date;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +37,21 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 	}
 
 	@Override
+	public Response<Event> listByListing(long listingId) {
+		Criterion matchingListingId = Restrictions.eq(Event.Field.parent + ".id", listingId);
+		return list(CubeOrder.desc(Event.Field.priority), matchingListingId);
+	}
+
+	@Override
 	public Response<Event> listByPriority() {
 		return list(CubeOrder.desc(Event.Field.priority));
 	}
 
 	@Override
 	public Response<Event> listNew(final NewEventsRequest request) {
-		return list(Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate())),
-				Restrictions.ne(Event.Field.title.name(), request.getFocusedEventTitle()));
+		SimpleExpression recent = Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate()));
+		Criterion matchingTitle = Restrictions.ne(Event.Field.title.name(), request.getFocusedEventTitle());
+		Criterion matchingListingId = Restrictions.eq(Event.Field.parent + ".id", request.getListingId());
+		return list(recent, matchingTitle, matchingListingId);
 	}
 }

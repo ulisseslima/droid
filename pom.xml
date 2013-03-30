@@ -4,7 +4,7 @@
 	<groupId>droid</groupId>
 	<artifactId>droid</artifactId>
 	<packaging>war</packaging>
-	<version>1.7-SNAPSHOT</version>
+	<version>2.0</version>
 	<name>droid</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
 		<org.springframework.milestone.version>3.2.0.M1</org.springframework.milestone.version>
 		<mysql.connector.version>5.1.21</mysql.connector.version>
 		<digester.version>3.2</digester.version>
-		<jackson.version>1.9.8</jackson.version>
+		<jackson.version>1.9.12</jackson.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -93,17 +93,19 @@
 			<version>3.6.3.Final</version>
 		</dependency>
 		
+		<!-- jackson -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		
 		<!-- Misc -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-digester3</artifactId>
 			<version>${digester.version}</version>
 			<classifier>with-deps</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>

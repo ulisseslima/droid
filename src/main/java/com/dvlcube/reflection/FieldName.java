@@ -6,5 +6,6 @@ package com.dvlcube.reflection;
  * @since 22/09/2012
  */
 public interface FieldName {
+
 	String name();
 }

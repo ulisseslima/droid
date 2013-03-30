@@ -1,5 +1,6 @@
 package com.dvlcube.droid.bean;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +12,14 @@ import javax.persistence.OneToMany;
 import com.dvlcube.droid.service.rr.NewUserRequest;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
+import com.dvlcube.util.StringUtils;
 
 /**
  * @author wonka
  * @since 07/08/2012
  */
 @Entity
-public class User implements BasicInfo {
+public class User implements BasicInfo, Principal {
 	public enum Field implements FieldName {
 		birth, email, events, id, name, telephone
 	}
@@ -29,13 +31,13 @@ public class User implements BasicInfo {
 	private boolean enabled;
 	@OneToMany
 	private List<Event> events;
+	private String fullname;
 	@Id
 	@GeneratedValue
 	private Long id; // id
 	private String name;
 	private String password;
 	private int telephone = 0;
-	private String username;
 
 	public User() {
 
@@ -47,7 +49,7 @@ public class User implements BasicInfo {
 	 * @since 24/03/2013
 	 */
 	public User(NewUserRequest userRequest) {
-		name = username = userRequest.getUsername();
+		name = userRequest.getUsername();
 		password = userRequest.getPassword();
 		telephone = 1234567890;
 		enabled = true;
@@ -55,7 +57,6 @@ public class User implements BasicInfo {
 
 	public User(final String name) {
 		this.name = name;
-		username = name;
 	}
 
 	/**
@@ -98,6 +99,13 @@ public class User implements BasicInfo {
 	}
 
 	/**
+	 * @return the fullname
+	 */
+	public String getFullname() {
+		return fullname;
+	}
+
+	/**
 	 * @return the id
 	 */
 	@Override
@@ -113,6 +121,7 @@ public class User implements BasicInfo {
 	/**
 	 * @return the name
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -136,19 +145,12 @@ public class User implements BasicInfo {
 		return getName();
 	}
 
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
 	@Override
 	public boolean hasRequiredAttributes() {
 		if (email == null) {
 			return false;
 		}
-		if (username == null) {
+		if (name == null) {
 			return false;
 		}
 		if (password == null) {
@@ -210,6 +212,14 @@ public class User implements BasicInfo {
 	}
 
 	/**
+	 * @param fullname
+	 *            the fullname to set
+	 */
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	/**
 	 * @param id
 	 *            the id to set
 	 */
@@ -247,17 +257,9 @@ public class User implements BasicInfo {
 		setName(title);
 	}
 
-	/**
-	 * @param username
-	 *            the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + "]";
+		return StringUtils.stringify(this);
 	}
 
 	@Override

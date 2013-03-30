@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.dvlcube.bean.Child;
 import com.dvlcube.bean.Repetition;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
@@ -18,14 +19,12 @@ import com.dvlcube.util.StringUtils;
  * @since 23/02/2013
  */
 @Entity
-public class Event implements BasicInfo {
+public class Event implements BasicInfo, Owned, Child<Listing> {
 	public enum Field implements FieldName {
-		creator, dateEnd, dateModified, dateStart, description, done, guests, id, priority, reminders, repetition, title
+		dateEnd, dateModified, dateStart, description, done, guests, id, owner, parent, priority, reminders, repetition, title
 	}
 
 	private static final long serialVersionUID = 6362154457938757910L;
-	@ManyToOne
-	private User creator; // ref_many2one #not null
 	private Date dateEnd; // timestamp
 	private Date dateModified; // timestamp
 	private Date dateStart; // timestamp
@@ -35,17 +34,14 @@ public class Event implements BasicInfo {
 	@Id
 	@GeneratedValue
 	private Long id; // id
+	@ManyToOne
+	private User owner; // ref_many2one #not null
+	@ManyToOne
+	private Listing parent;
 	private int priority;
 	// OneToMany private List<Reminder> reminders;
 	private Repetition repetition; // String
 	private String title;
-
-	/**
-	 * @return the creator
-	 */
-	public User getCreator() {
-		return creator;
-	}
 
 	/**
 	 * @return the dateEnd
@@ -96,6 +92,22 @@ public class Event implements BasicInfo {
 	}
 
 	/**
+	 * @return the owner
+	 */
+	@Override
+	public User getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @return the parent
+	 */
+	@Override
+	public Listing getParent() {
+		return parent;
+	}
+
+	/**
 	 * @return the priority
 	 */
 	public int getPriority() {
@@ -130,14 +142,6 @@ public class Event implements BasicInfo {
 	 */
 	public boolean isDone() {
 		return done;
-	}
-
-	/**
-	 * @param creator
-	 *            the creator to set
-	 */
-	public void setCreator(final User creator) {
-		this.creator = creator;
 	}
 
 	/**
@@ -192,6 +196,24 @@ public class Event implements BasicInfo {
 	}
 
 	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	@Override
+	public void setOwner(final User owner) {
+		this.owner = owner;
+	}
+
+	/**
+	 * @param parent
+	 *            the parent to set
+	 */
+	@Override
+	public void setParent(Listing parent) {
+		this.parent = parent;
+	}
+
+	/**
 	 * @param priority
 	 *            the priority to set
 	 */
@@ -218,8 +240,7 @@ public class Event implements BasicInfo {
 
 	@Override
 	public String toString() {
-		return "Event [id=" + id + ", title=" + title + ", priority=" + priority + ", description="
-				+ description + "]";
+		return StringUtils.stringify(this);
 	}
 
 	@Override
