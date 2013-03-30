@@ -4,11 +4,14 @@
 
 <%@ attribute name="subtitle" required="false" description="Body title, localized." %>
 <%@ attribute name="titleText" required="false" description="Body title, as simple text." %>
+<%@ attribute name="href" required="false" description="Link." %>
 
 <h1>
-	<c:if test="${not empty subtitle}">
-		<spring:message code="${subtitle}"/>
-	</c:if>
-	${titleText}
+	<a href="${href}">
+		<c:if test="${not empty subtitle}">
+			<spring:message code="${subtitle}"/>
+		</c:if>
+		${titleText}
+	</a>
 </h1>
 <jsp:doBody />

@@ -9,7 +9,7 @@
 <c:choose>
 	<c:when test="${empty var}">
 		<div id="listing-draft" class="transparent listing draft">
-			<dvl:link href="#" label="#" round="true" />
+			<dvl:link href="#" label=">" css="round link" />
 			<input:hidden field="id" />
 			<input:text field="title" placeholder="listing.new.placeholder" />
 			<input:textarea field="description" />
@@ -17,7 +17,7 @@
 	</c:when>
 	<c:otherwise>
 		<div id="listing-${var.id}" class="listing">
-			<dvl:link href="${var.id}" label=">" round="true" />
+			<dvl:link href="${var.id}" label=">" css="round link" />
 			<input:hidden field="id" value="${var.id}" />
 			<input:text field="title" value="${var.label}" />
 			<input:textarea field="description">${var.description}</input:textarea>

@@ -1,6 +1,15 @@
 ENTITY_NAME = "event";
 var refreshTimerId = setInterval(refresh, 200);
 
+function fill(event, savedEvent) {
+	event.id = "event-"+savedEvent.id;
+	$qs(event, ".id", savedEvent.id);
+	$qs(event, ".parent\\.id", savedEvent.parent.id);
+	$qs(event, ".title", savedEvent.title);
+	$qs(event, ".priority", savedEvent.priority);
+	$qs(event, ".description", savedEvent.description);
+}
+
 function refresh() {
 	if (!busy) {
 		busy = true;
@@ -21,17 +30,10 @@ function refresh() {
 					var event = response.contents[i];
 					var outdatedEvent = $("#event-"+event.id)[0];
 					if (outdatedEvent) {
-						$qs(outdatedEvent, ".title", event.title);
-						$qs(outdatedEvent, ".priority", event.priority);
-						$qs(outdatedEvent, ".description", event.description);
+						fill(outdatedEvent, event);
 					} else {
 						var newEvent = $("#events").children(":last").clone(true);
-						newEvent[0].id = "event-"+event.id;
-						$qs(newEvent[0], ".id", event.id);
-						$qs(newEvent[0], ".parent\\.id", event.parent.id);
-						$qs(newEvent[0], ".title", event.title);
-						$qs(newEvent[0], ".priority", event.priority);
-						$qs(newEvent[0], ".description", event.description);
+						fill(newEvent[0], event);
 						newEvent.appendTo("#events");
 					}
 				}
@@ -76,12 +78,7 @@ function add(event) {
 		doSubmit(event, "addevent", function (response) {
 			var savedEvent = response.content;
 			if (savedEvent) {
-				event.id = "event-"+savedEvent.id;
-				$qs(event, ".id", savedEvent.id);
-				$qs(event, ".parent\\.id", savedEvent.parent.id);
-				$qs(event, ".title", savedEvent.title);
-				$qs(event, ".priority", savedEvent.priority);
-				$qs(event, ".description", savedEvent.description);
+				fill(event, savedEvent);
 			}
 		});
 	}
