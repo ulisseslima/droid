@@ -66,8 +66,4 @@
 			/WEB-INF/spring-servlet.xml
 		</param-value>
 	</context-param>
-	
-	<welcome-file-list>
-		<welcome-file>welcome.jsp</welcome-file>
-	</welcome-file-list>
 </web-app>

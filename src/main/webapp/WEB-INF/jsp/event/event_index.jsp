@@ -2,10 +2,8 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-<c:set var="listing" value="${response.contents[0].parent}"/>
 <dvl:page title="event.events" titleText="- ${listing.title}" js="Entities, Event">
-	<dvl:body titleText="${listing.title}"
-		href="${listing.id}">
+	<dvl:body titleText="${listing.title}" href="${pageContext.request.contextPath}/listing/">
 		
 		<input:hidden field="parentId" value="${listing.id}" />
 		<div id="event-collection">

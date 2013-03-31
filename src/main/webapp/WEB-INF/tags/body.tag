@@ -7,7 +7,7 @@
 <%@ attribute name="href" required="false" description="Link." %>
 
 <h1>
-	<a href="${href}">
+	<a href="${href}" class="h1">
 		<c:if test="${not empty subtitle}">
 			<spring:message code="${subtitle}"/>
 		</c:if>

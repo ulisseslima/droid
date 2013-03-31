@@ -48,7 +48,6 @@ function $qs(obj, selector, value) {
  */
 function doSubmit(form, actionName, callback) {
 	var request = form2js(form.id);
-	console.log("sending " + JSON.stringify(request));
 	var action = getActionName(actionName, form); 
 	
 	post(action, request, function(response) {

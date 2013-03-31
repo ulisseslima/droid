@@ -1,5 +1,4 @@
 ENTITY_NAME = "event";
-var refreshTimerId = setInterval(refresh, 200);
 
 function fill(event, savedEvent) {
 	event.id = "event-"+savedEvent.id;
@@ -10,49 +9,47 @@ function fill(event, savedEvent) {
 	$qs(event, ".description", savedEvent.description);
 }
 
-function refresh() {
-	if (!busy) {
-		busy = true;
-		var request = new Request();
-		request["lastUpdate"] = new Date().getTime();
-		if (currentEntityTitle && currentEntityTitle.value) {
-			request["focusedEventTitle"] = currentEntityTitle.value;
-			request["parentId"] = $(".parentId")[0].value;
-		}
-	
-		$.ajax({
-		  type: "POST",
-		  url: "refresh",
-		  data: request,
-		  success: function(response) {
-			  if (response.contents) {
-				for (var i in response.contents) {
-					var event = response.contents[i];
-					var outdatedEvent = $("#event-"+event.id)[0];
-					if (outdatedEvent) {
-						fill(outdatedEvent, event);
-					} else {
-						var newEvent = $("#events").children(":last").clone(true);
-						fill(newEvent[0], event);
-						newEvent.appendTo("#events");
-					}
-				}
-			  } else if (response.indexOf("!doctype") != -1) {
-				document.location.reload(true);
-			  }
-			  busy = false;
-		  },
-		  error: function(jqXHR, textStatus, errorThrown) {
-			  document.location.reload(true);
-		  }
-		});
+function refresh() {	
+	var request = new Request();
+	request["lastUpdate"] = new Date().getTime();
+	if (currentEntityTitle && currentEntityTitle.value) {
+		request["focusedEventTitle"] = currentEntityTitle.value;
+		request["parentId"] = $(".parentId")[0].value;
 	}
+
+	$.ajax({
+	  type: "POST",
+	  url: "refresh",
+	  data: request,
+	  success: function(response) {
+		  if (response.contents) {
+			for (var i in response.contents) {
+				var event = response.contents[i];
+				var outdatedEvent = $("#event-"+event.id)[0];
+				if (outdatedEvent) {
+					fill(outdatedEvent, event);
+				} else {
+					var newEvent = $("#events").children(":last").clone(true);
+					fill(newEvent[0], event);
+					newEvent.appendTo("#events");
+				}
+			}
+		  } else if (response.indexOf("!doctype") != -1) {
+			document.location.reload(true);
+		  }
+		  setTimeout(refresh, 100);
+	  },
+	  error: function(jqXHR, textStatus, errorThrown) {
+		  document.location.reload(true);
+	  }
+	});
 }
 
 $(document).ready(function () {
     $(".event-vote").bind("click", function () {        
         var priority = this;
         vote(priority, +1);
+        vote(priority.parentNode.querySelector(".hidden-priority"), +1);
     });
 });
 

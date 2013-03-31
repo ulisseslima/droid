@@ -92,6 +92,9 @@ public class Listing implements BasicInfo, Owned {
 
 	@Override
 	public String getLabel() {
+		if (title == null) {
+			return "";
+		}
 		return StringUtils.escapeHTML(title);
 	}
 

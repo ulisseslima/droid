@@ -66,7 +66,9 @@ public class ListingServlet {
 	@RequestMapping("/{listingId}")
 	public String listing(@PathVariable final long listingId, final Map<String, Object> map) {
 		final Response<Event> response = eventService.listByListing(listingId);
+		Listing listing = service.get(listingId).getContent();
 		map.put("response", response);
+		map.put("listing", listing);
 		return "event/event_index";
 	}
 
