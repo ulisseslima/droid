@@ -23,13 +23,13 @@
 		<script type="text/javascript" src="${jspath}/jquery.js"></script>
 		<script async="async" type="text/javascript" src="${jspath}/json2.js"></script>
 		<script async="async" type="text/javascript" src="${jspath}/form2js.js"></script>
-		<script async="async" type="text/javascript" src="${jspath}/Main.js"></script>
+		<script type="text/javascript" src="${jspath}/Main.js"></script>
 		<%
 		if (js != null && !js.isEmpty()) {
 			String[] scripts = js.split(",");
 			for (String script : scripts) {
 				String scriptName = script.trim() + ".js";
-				%><script type="text/javascript" src="${jspath}/<% out.print(scriptName);%>"></script><% 
+				%><script async="async" type="text/javascript" src="${jspath}/<% out.print(scriptName);%>"></script><% 
 			}
 		}
 		%>

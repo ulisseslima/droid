@@ -9,20 +9,23 @@ function fill(event, savedEvent) {
 	$qs(event, ".description", savedEvent.description);
 }
 
-function refresh() {	
+function refresh() {
+	debug("refreshing...");
 	var request = new Request();
 	request["lastUpdate"] = new Date().getTime();
 	if (currentEntityTitle && currentEntityTitle.value) {
 		request["focusedEventTitle"] = currentEntityTitle.value;
 		request["parentId"] = $(".parentId")[0].value;
 	}
+	debug("request: ", request);
 
 	$.ajax({
 	  type: "POST",
 	  url: "refresh",
 	  data: request,
 	  success: function(response) {
-		  if (response.contents) {
+		  debug("response: ",response);
+		  if (response.contents) {			  
 			for (var i in response.contents) {
 				var event = response.contents[i];
 				var outdatedEvent = $("#event-"+event.id)[0];
@@ -37,6 +40,7 @@ function refresh() {
 		  } else if (response.indexOf("!doctype") != -1) {
 			document.location.reload(true);
 		  }
+		  debug("refreshed");
 		  setTimeout(refresh, 100);
 	  },
 	  error: function(jqXHR, textStatus, errorThrown) {
@@ -44,6 +48,7 @@ function refresh() {
 	  }
 	});
 }
+refresh();
 
 $(document).ready(function () {
     $(".event-vote").bind("click", function () {        

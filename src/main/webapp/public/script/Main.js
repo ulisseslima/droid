@@ -1,5 +1,14 @@
 busy = false;
 function Request() {}
+DEBUG = true;
+
+function debug(msg, obj) {
+	if(DEBUG) {
+		var objStr = "";
+		if(obj) objStr = JSON.stringify(obj);
+		console.log(msg, objStr);
+	}
+}
 
 function post(action, request, onSuccess) {
 	$.ajax({

@@ -1,5 +1,6 @@
 package com.dvlcube.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Response<T> {
 	private T content;
-	private List<T> contents;
+	private List<T> contents = new ArrayList<>();
 	private String message;
 	private int size;
 	private final boolean success;
@@ -131,7 +132,7 @@ public class Response<T> {
 
 	@Override
 	public String toString() {
-		return "Response [content=" + content + ", message=" + message + ", size=" + size + ", success="
-				+ success + "]";
+		return "Response [content=" + content + ", message=" + message + ", size=" + size + ", success=" + success
+				+ "]";
 	}
 }

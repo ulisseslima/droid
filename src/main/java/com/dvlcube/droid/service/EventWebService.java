@@ -14,6 +14,7 @@ import com.dvlcube.droid.dao.EventDao;
 import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.Response;
 import com.dvlcube.service.ServiceTemplate;
+import com.dvlcube.util.Debug;
 
 /**
  * 
@@ -49,7 +50,9 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 
 	@Override
 	public Response<Event> listNew(final NewEventsRequest request) {
-		SimpleExpression recent = Restrictions.ge(Event.Field.dateModified.name(), new Date(request.getLastUpdate()));
+		Date date = new Date(request.getLastUpdate() - 30000);
+		Debug.log("searching for events with date >= '%s'", date.toString());
+		SimpleExpression recent = Restrictions.ge(Event.Field.dateModified.name(), date);
 		Criterion matchingTitle = Restrictions.ne(Event.Field.title.name(), request.getFocusedEventTitle());
 		Criterion matchingListingId = Restrictions.eq(Event.Field.parent + ".id", request.getListingId());
 		return list(recent, matchingTitle, matchingListingId);

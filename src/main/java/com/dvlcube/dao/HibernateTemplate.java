@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.dvlcube.bean.Identifiable;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.util.CubeGenerics;
+import com.dvlcube.util.Debug;
 
 /**
  * 
@@ -41,10 +42,10 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		public CubeCriteria(final Class<?> entity, final Integer start, final Integer maxResults,
 				final List<Order> orders, final Criterion... restrictions) {
 			query = getSession().createCriteria(entity);
-
 			orderBy(orders);
 			setPagination(start, maxResults);
 			addConditions(restrictions);
+			Debug.logObj("criteria: ", query);
 		}
 
 		/**

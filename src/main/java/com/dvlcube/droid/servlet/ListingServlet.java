@@ -16,6 +16,7 @@ import com.dvlcube.droid.service.EventService;
 import com.dvlcube.droid.service.ListingService;
 import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.Response;
+import com.dvlcube.util.Debug;
 
 /**
  * 
@@ -91,9 +92,12 @@ public class ListingServlet {
 			public Response<Event> call() throws Exception {
 				synchronized (eventService.getLock()) {
 					while (!eventService.hasUpdates(request.getLastUpdate())) {
+						Debug.log("waiting for updates...");
 						eventService.getLock().wait();
 					}
 					final Response<Event> updatedEvents = eventService.listNew(request);
+					int contents = updatedEvents.getContents().size();
+					Debug.logIf(contents > 0, "got %d updates!", contents);
 					return updatedEvents;
 				}
 			}

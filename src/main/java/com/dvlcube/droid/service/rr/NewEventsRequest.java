@@ -1,5 +1,7 @@
 package com.dvlcube.droid.service.rr;
 
+import com.dvlcube.util.StringUtils;
+
 /**
  * A request for Events that were updated recently.
  * 
@@ -58,7 +60,6 @@ public class NewEventsRequest {
 
 	@Override
 	public String toString() {
-		return "NewEventsRequest [focusedEventTitle=" + focusedEventTitle + ", lastUpdate=" + lastUpdate
-				+ ", listingId=" + listingId + "]";
+		return StringUtils.stringify(this);
 	}
 }
