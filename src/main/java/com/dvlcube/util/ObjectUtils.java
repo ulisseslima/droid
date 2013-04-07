@@ -5,6 +5,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,11 +34,80 @@ public class ObjectUtils {
 			BeanInfo fromBean = Introspector.getBeanInfo(fromClass);
 			BeanInfo toBean = Introspector.getBeanInfo(toClass);
 
+			PropertyDescriptor[] fromDescriptors = fromBean.getPropertyDescriptors();
+			HashMap<String, PropertyDescriptor> toDescriptors = map(toBean.getPropertyDescriptors());
+
+			for (PropertyDescriptor fromDescriptor : fromDescriptors) {
+				PropertyDescriptor toDescriptor = toDescriptors.get(fromDescriptor.getDisplayName());
+				if (toDescriptor != null) {
+					if (fromDescriptor.getWriteMethod() != null) {
+						Object value = get(fromDescriptor, from);
+						if (value == null && ignoreNull) {
+						} else {
+							String packageName = value.getClass().getPackage().getName();
+							if (packageName.startsWith("java")) {
+								toDescriptor.getWriteMethod().invoke(to, get(fromDescriptor, from));
+							} else {
+								copyProperties(get(fromDescriptor, from), get(toDescriptor, to), ignoreNull);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param property
+	 * @param from
+	 * @return
+	 * @author wonka
+	 * @throws InvocationTargetException
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @since 06/04/2013
+	 */
+	private static Object get(PropertyDescriptor property, Object from) throws IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
+		return property.getReadMethod().invoke(from);
+	}
+
+	/**
+	 * @param propertyDescriptors
+	 * @return
+	 * @author wonka
+	 * @since 06/04/2013
+	 */
+	private static HashMap<String, PropertyDescriptor> map(PropertyDescriptor[] propertyDescriptors) {
+		HashMap<String, PropertyDescriptor> map = new HashMap<>();
+		for (PropertyDescriptor descriptor : propertyDescriptors) {
+			String displayName = descriptor.getDisplayName();
+			if (!"class".equals(displayName)) {
+				map.put(displayName, descriptor);
+			}
+		}
+		return map;
+	}
+
+	public static void safeCopyProperties(Object from, Object to, boolean ignoreNull) {
+		try {
+			Class<? extends Object> fromClass = from.getClass();
+			Class<? extends Object> toClass = to.getClass();
+
+			BeanInfo fromBean = Introspector.getBeanInfo(fromClass);
+			BeanInfo toBean = Introspector.getBeanInfo(toClass);
+
 			PropertyDescriptor[] toPd = toBean.getPropertyDescriptors();
 			List<PropertyDescriptor> fromPd = Arrays.asList(fromBean.getPropertyDescriptors());
 
 			for (PropertyDescriptor property : toPd) {
-				PropertyDescriptor descriptor = fromPd.get(fromPd.indexOf(property));
+				int index = fromPd.indexOf(property);
+				if (index < 0) {
+					continue;
+				}
+				PropertyDescriptor descriptor = fromPd.get(index);
 				String displayName = descriptor.getDisplayName();
 				if (displayName.equals(property.getDisplayName()) && !displayName.equals("class")) {
 					if (property.getWriteMethod() != null) {
@@ -58,21 +128,6 @@ public class ObjectUtils {
 		} catch (Exception e) {
 			throw new RuntimeException("Could not update properties", e);
 		}
-	}
-
-	/**
-	 * @param property
-	 * @param from
-	 * @return
-	 * @author wonka
-	 * @throws InvocationTargetException
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 * @since 06/04/2013
-	 */
-	private static Object get(PropertyDescriptor property, Object from) throws IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
-		return property.getReadMethod().invoke(from);
 	}
 
 	/**
