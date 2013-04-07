@@ -48,11 +48,9 @@
 	<body>
 		<section id="main-content">
 			<span id="response-message">
-				<span id="response-message">
-					<c:if test="${not empty response.message}">
-						<spring:message code="${response.message}" />
-					</c:if>
-				</span>
+				<c:if test="${not empty response.message}">
+					<spring:message code="${response.message}" />
+				</c:if>
 			</span>
 			<jsp:doBody />
 		</section>
