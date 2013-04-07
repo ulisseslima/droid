@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class StringUtils {
 	/**
-	 * @param title
+	 * @param name
 	 * @return
 	 * @author wonka
 	 * @since 15/03/2013
