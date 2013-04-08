@@ -1,23 +1,30 @@
 package com.dvlcube.service;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.bean.Trackable;
 import com.dvlcube.dao.DaoCRUD;
 import com.dvlcube.droid.bean.Owned;
+import com.dvlcube.droid.bean.Shared;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.service.BasicInfo.Field;
+import com.dvlcube.util.ArrayUtils;
+import com.dvlcube.util.ClassUtils;
 import com.dvlcube.util.I18n;
+import com.dvlcube.util.ObjectUtils;
 
 /**
  * 
@@ -128,7 +135,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	}
 
 	@Override
-	public Response<T> list(final Integer start, final Integer maxResults, final List<Order> orders) {
+	public Response<T> list(final Integer start, final Integer maxResults, final Set<Order> orders) {
 		return list(start, maxResults, orders, new Criterion[0]);
 	}
 
@@ -136,20 +143,33 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	public Response<T> list(
 		final Integer start,
 		final Integer maxResults,
-		final List<Order> orders,
+		final Set<Order> orders,
 		final Criterion... conditions) {
-		final List<T> list = getDao().list(getT(), start, maxResults, orders, conditions);
+		Set<Criterion> authConditions = new HashSet<>();
+		Set<QueryFieldName> aliases = new HashSet<>();
+		aliases.add(Owned.Field.owner);
+		Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.join(), authentication.getName());
+		Criterion isSharedWithLoggedInUser = Restrictions
+				.eq(Shared.Field.participants.join(), authentication.getName());
+		if (thisIsA(Shared.class)) {
+			aliases.add(Shared.Field.participants);
+			authConditions.add(Restrictions.or(isOwnedByLoggedInUser, isSharedWithLoggedInUser));
+		} else if (thisIsA(Owned.class)) {
+			authConditions.add(isOwnedByLoggedInUser);
+		}
+		Set<Criterion> allConditions = ArrayUtils.concatIntoSet(conditions, authConditions);
+		final List<T> list = getDao().list(getT(), start, maxResults, orders, allConditions, aliases);
 		return new Response<T>(true, list);
 	}
 
 	@Override
-	public Response<T> list(final List<Order> order, final Criterion... restrictions) {
-		return list(NO_PAGINATION, NO_PAGINATION, order, restrictions);
+	public Response<T> list(final Order... orders) {
+		return list(NO_PAGINATION, NO_PAGINATION, ArrayUtils.asSet(orders), new Criterion[0]);
 	}
 
 	@Override
-	public Response<T> list(final Order... orders) {
-		return list(NO_PAGINATION, NO_PAGINATION, Arrays.asList(orders), new Criterion[0]);
+	public Response<T> list(final Set<Order> order, final Criterion... restrictions) {
+		return list(NO_PAGINATION, NO_PAGINATION, order, restrictions);
 	}
 
 	@Override
@@ -163,12 +183,12 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	}
 
 	@Override
-	public Response<T> listOld() {
+	public Response<T> listOldFirst() {
 		return listByDateModified(false);
 	}
 
 	@Override
-	public Response<T> listRecent() {
+	public Response<T> listRecentFirst() {
 		return listByDateModified(true);
 	}
 
@@ -184,6 +204,10 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 				((Owned) entity).setOwner(owner);
 			}
 		}
+	}
+
+	private boolean thisIsA(Class<?>... interfaceClasses) {
+		return ClassUtils.doesImplementAll(getT(), interfaceClasses);
 	}
 
 	/**
@@ -214,7 +238,9 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 			response.setMessage(I18n.Response.FAIL.key());
 			return response;
 		} else {
-			final Response<T> response = new Response<T>(true, getDao().update(entity));
+			T saved = getDao().retrieve(getT(), (Long) entity.getId());
+			ObjectUtils.updateProperties(entity, saved);
+			final Response<T> response = new Response<T>(true, getDao().update(saved));
 			response.setMessage(I18n.Response.SUCCESS.key());
 			return response;
 		}

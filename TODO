@@ -1,5 +1,6 @@
 2013-03-29
 Wonka
+	Centralize the use of utility classes in a $ class, like a jquery thing.
 	Test criterias by example
 	Make a function to replace dots, in class names, with hyphens.
 	Get rid of parentId on Event

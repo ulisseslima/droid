@@ -3,6 +3,9 @@ package com.dvlcube.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dvlcube.bean.Child;
+import com.dvlcube.util.StringUtils;
+
 /**
  * Response format.
  * 
@@ -107,6 +110,21 @@ public class Response<T> {
 	}
 
 	/**
+	 * @return If the response contents contains an object that is a Child, returns its parent.
+	 * @author wonka
+	 * @since 06/04/2013
+	 */
+	public Object getParent() {
+		if (content != null && content instanceof Child) {
+			return ((Child<?>) content).getParent();
+		}
+		if (contents != null && contents.size() > 0 && contents instanceof Child) {
+			return ((Child<?>) contents.get(0)).getParent();
+		}
+		return null;
+	}
+
+	/**
 	 * @return FileDataStore quantidade de itens na resposta.
 	 * @author wonka
 	 * @since 22/09/2012
@@ -132,7 +150,6 @@ public class Response<T> {
 
 	@Override
 	public String toString() {
-		return "Response [content=" + content + ", message=" + message + ", size=" + size + ", success=" + success
-				+ "]";
+		return StringUtils.stringify(this);
 	}
 }

@@ -4,14 +4,15 @@ ENTITY_NAME = "listing";
  * @param event The element that holds all elements with properties of the Event object.
  */
 function add(listing) {
-	if (listing.querySelector(".title").value) {
+	if (listing.querySelector(".name").value) {
 		doSubmit(listing, "add", function (response) {
 			var savedListing = response.content;
 			if (savedListing) {
 				listing.id = "listing-"+savedListing.id;
 				$qs(listing, ".id", savedListing.id);
+				debug("set: "+savedListing.id + " got: "+ $qs(listing, ".id"));
 				$qs(listing, ".link", savedListing.id);
-				$qs(listing, ".title", savedListing.title);
+				$qs(listing, ".name", savedListing.name);
 				$qs(listing, ".description", savedListing.description);
 			}
 		});
@@ -23,8 +24,8 @@ function add(listing) {
  * @see Entities.reorder();
  */
 function extend_reorder(a, b) {
-	var av = $qs(a, ".title");
-    var bv = $qs(b, ".title");
+	var av = $qs(a, ".name");
+    var bv = $qs(b, ".name");
     if (av > bv) return -1;
     else if (av < bv) return 1;
     else  return 0;

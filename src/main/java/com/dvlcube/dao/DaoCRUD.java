@@ -1,11 +1,13 @@
 package com.dvlcube.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
 import com.dvlcube.bean.Identifiable;
+import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.droid.bean.User;
 
 /**
@@ -62,7 +64,26 @@ public interface DaoCRUD<E extends Identifiable> extends CRUD<E> {
 	 * @author wonka
 	 * @since 22/09/2012
 	 */
-	List<E> list(Class<E> entity, Integer start, Integer maxResults, List<Order> orders, Criterion... conditions);
+	List<E> list(Class<E> entity, Integer start, Integer maxResults, Set<Order> orders, Criterion... conditions);
+
+	/**
+	 * @param entity
+	 * @param start
+	 * @param maxResults
+	 * @param orders
+	 * @param conditions
+	 * @param aliases
+	 * @return
+	 * @author wonka
+	 * @since 05/04/2013
+	 */
+	List<E> list(
+		Class<E> entity,
+		Integer start,
+		Integer maxResults,
+		Set<Order> orders,
+		Set<Criterion> conditions,
+		Set<QueryFieldName> aliases);
 
 	/**
 	 * @param entityName

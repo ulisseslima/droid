@@ -9,17 +9,18 @@
 <c:choose>
 	<c:when test="${empty var}">
 		<div id="listing-draft" class="transparent listing draft">
-			<dvl:link href="#" label=">" css="round link" />
+			<dvl:link href="#" label="&gt;" css="round link" />
 			<input:hidden field="id" />
-			<input:text field="title" placeholder="listing.new.placeholder" />
+			<input:text field="name" placeholder="listing.new.placeholder" />
 			<input:textarea field="description" />
 		</div>
 	</c:when>
 	<c:otherwise>
 		<div id="listing-${var.id}" class="listing">
-			<dvl:link href="${var.id}" label=">" css="round link" />
+			<dvl:link href="${var.id}" label="&gt;" css="round link" />
 			<input:hidden field="id" value="${var.id}" />
-			<input:text field="title" value="${var.label}" />
+			<input:text field="name" value="${var.label}" />
+			<dvl:link href="share" label="O" css="round link" />
 			<input:textarea field="description">${var.description}</input:textarea>
 		</div>
 	</c:otherwise>

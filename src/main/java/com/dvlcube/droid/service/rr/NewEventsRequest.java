@@ -9,15 +9,15 @@ import com.dvlcube.util.StringUtils;
  * @since 13/03/2013
  */
 public class NewEventsRequest {
-	private String focusedEventTitle;
+	private String focusedEventName;
 	private long lastUpdate;
-	private long listingId;
+	private long parentId;
 
 	/**
-	 * @return the focusedEventTitle
+	 * @return the focusedEventName
 	 */
-	public String getFocusedEventTitle() {
-		return focusedEventTitle;
+	public String getFocusedEventName() {
+		return focusedEventName;
 	}
 
 	/**
@@ -28,18 +28,18 @@ public class NewEventsRequest {
 	}
 
 	/**
-	 * @return the listingId
+	 * @return the parentId
 	 */
-	public long getListingId() {
-		return listingId;
+	public long getParentId() {
+		return parentId;
 	}
 
 	/**
-	 * @param focusedEventTitle
-	 *            the focusedEventTitle to set
+	 * @param focusedEventName
+	 *            the focusedEventName to set
 	 */
-	public void setFocusedEventTitle(final String focusedEventTitle) {
-		this.focusedEventTitle = focusedEventTitle;
+	public void setFocusedEventName(final String focusedEventName) {
+		this.focusedEventName = focusedEventName;
 	}
 
 	/**
@@ -51,11 +51,11 @@ public class NewEventsRequest {
 	}
 
 	/**
-	 * @param listingId
-	 *            the listingId to set
+	 * @param parentId
+	 *            the parentId to set
 	 */
-	public void setListingId(long listingId) {
-		this.listingId = listingId;
+	public void setParentId(long parentId) {
+		this.parentId = parentId;
 	}
 
 	@Override

@@ -1,7 +1,10 @@
 package com.dvlcube.dao;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,9 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dvlcube.bean.Identifiable;
+import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.util.CubeGenerics;
-import com.dvlcube.util.Debug;
 
 /**
  * 
@@ -39,13 +42,48 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 			this(entity, null, null, null, restrictions);
 		}
 
+		/**
+		 * @param entity
+		 * @param start
+		 * @param maxResults
+		 * @param orders
+		 * @param restrictions
+		 * @author wonka
+		 * @since 05/04/2013
+		 */
 		public CubeCriteria(final Class<?> entity, final Integer start, final Integer maxResults,
-				final List<Order> orders, final Criterion... restrictions) {
+				final Set<Order> orders, final Criterion... restrictions) {
+			this(entity, start, maxResults, orders, new HashSet<Criterion>(Arrays.asList(restrictions)), null);
+		}
+
+		/**
+		 * @param entity
+		 * @param start
+		 * @param maxResults
+		 * @param orders
+		 * @param conditions
+		 * @param aliases
+		 * @author wonka
+		 * @since 05/04/2013
+		 */
+		public CubeCriteria(Class<?> entity, Integer start, Integer maxResults, Set<Order> orders,
+				Set<Criterion> conditions, Set<QueryFieldName> aliases) {
 			query = getSession().createCriteria(entity);
 			orderBy(orders);
 			setPagination(start, maxResults);
-			addConditions(restrictions);
-			Debug.logObj("criteria: ", query);
+			addConditions(conditions.toArray(new Criterion[conditions.size()]));
+			addAliases(aliases);
+		}
+
+		/**
+		 * @param aliases
+		 * @author wonka
+		 * @since 05/04/2013
+		 */
+		private void addAliases(Set<QueryFieldName> aliases) {
+			for (QueryFieldName fieldName : aliases) {
+				query.createAlias(fieldName.name(), fieldName.getAlias());
+			}
 		}
 
 		/**
@@ -70,7 +108,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		 * @author wonka
 		 * @since 22/09/2012
 		 */
-		private void orderBy(final List<Order> orders) {
+		private void orderBy(final Set<Order> orders) {
 			if (orders == null) {
 				query.addOrder(Order.desc("id"));
 			} else {
@@ -98,6 +136,11 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		}
 	}
 
+	/**
+	 * @param <T>
+	 * @author wonka
+	 * @since 05/03/2013
+	 */
 	public class CubeQuery<T> {
 		private final Query query;
 
@@ -175,9 +218,21 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		final Class<E> entity,
 		final Integer start,
 		final Integer maxResults,
-		final List<Order> orders,
+		final Set<Order> orders,
 		final Criterion... conditions) {
 		final List<E> results = new CubeCriteria<E>(entity, start, maxResults, orders, conditions).list();
+		return results;
+	}
+
+	@Override
+	public List<E> list(
+		final Class<E> entity,
+		final Integer start,
+		final Integer maxResults,
+		final Set<Order> orders,
+		final Set<Criterion> conditions,
+		final Set<QueryFieldName> aliases) {
+		final List<E> results = new CubeCriteria<E>(entity, start, maxResults, orders, conditions, aliases).list();
 		return results;
 	}
 
@@ -210,7 +265,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		if (matches != null && !matches.isEmpty()) {
 			return matches.get(0);
 		} else {
-			throw new IllegalArgumentException("Couldn't find registered user with name '" + name + "'");
+			throw new IllegalArgumentException("Couldn't find a registered user with name '" + name + "'");
 		}
 	}
 

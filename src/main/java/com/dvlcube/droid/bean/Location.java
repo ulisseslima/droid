@@ -20,7 +20,7 @@ public class Location {
 	@GeneratedValue
 	private Long id; // id
 	private String image;
-	private String title;
+	private String name;
 	private String url;
 
 	/**
@@ -59,10 +59,10 @@ public class Location {
 	}
 
 	/**
-	 * @return the title
+	 * @return the name
 	 */
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -113,11 +113,11 @@ public class Location {
 	}
 
 	/**
-	 * @param title
-	 *            the title to set
+	 * @param name
+	 *            the name to set
 	 */
-	public void setTitle(final String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -130,6 +130,6 @@ public class Location {
 
 	@Override
 	public String toString() {
-		return "Location [description=" + description + ", title=" + title + ", url=" + url + "]";
+		return "Location [description=" + description + ", name=" + name + ", url=" + url + "]";
 	}
 }

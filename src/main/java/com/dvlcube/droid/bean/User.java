@@ -2,7 +2,7 @@ package com.dvlcube.droid.bean;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,14 +30,14 @@ public class User implements BasicInfo, Principal {
 	private String email;
 	private boolean enabled;
 	@OneToMany
-	private List<Event> events;
+	private Set<Event> events;
 	private String fullname;
 	@Id
 	@GeneratedValue
 	private Long id; // id
 	private String name;
 	private String password;
-	private int telephone = 0;
+	private Integer telephone = 0;
 
 	public User() {
 
@@ -57,6 +57,28 @@ public class User implements BasicInfo, Principal {
 
 	public User(final String name) {
 		this.name = name;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		User other = (User) obj;
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -89,7 +111,7 @@ public class User implements BasicInfo, Principal {
 	/**
 	 * @return the events
 	 */
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
@@ -136,13 +158,16 @@ public class User implements BasicInfo, Principal {
 	/**
 	 * @return the telephone
 	 */
-	public int getTelephone() {
+	public Integer getTelephone() {
 		return telephone;
 	}
 
 	@Override
-	public String getTitle() {
-		return getName();
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (name == null ? 0 : name.hashCode());
+		return result;
 	}
 
 	@Override
@@ -207,7 +232,7 @@ public class User implements BasicInfo, Principal {
 	 * @param events
 	 *            the events to set
 	 */
-	public void setEvents(final List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
@@ -232,6 +257,7 @@ public class User implements BasicInfo, Principal {
 	 * @param name
 	 *            the name to set
 	 */
+	@Override
 	public void setName(final String name) {
 		this.name = name;
 	}
@@ -248,13 +274,8 @@ public class User implements BasicInfo, Principal {
 	 * @param telephone
 	 *            the telephone to set
 	 */
-	public void setTelephone(final int telephone) {
+	public void setTelephone(final Integer telephone) {
 		this.telephone = telephone;
-	}
-
-	@Override
-	public void setTitle(String title) {
-		setName(title);
 	}
 
 	@Override

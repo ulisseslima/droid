@@ -1,13 +1,16 @@
 package com.dvlcube.droid.bean;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 
 import com.dvlcube.bean.Privacy;
 import com.dvlcube.reflection.FieldName;
@@ -20,9 +23,9 @@ import com.dvlcube.util.StringUtils;
  * @since 27/03/2013
  */
 @Entity
-public class Listing implements BasicInfo, Owned {
+public class Listing implements BasicInfo, Owned, Shared {
 	public enum Field implements FieldName {
-		dateModified, description, events, id, owner, participants, privacy, title
+		dateModified, description, events, id, name, owner, participants, privacy
 	}
 
 	private static final long serialVersionUID = -3623848542561114979L;
@@ -30,17 +33,17 @@ public class Listing implements BasicInfo, Owned {
 	private Date dateModified;
 	private String description;
 	@OneToMany
-	private List<Event> events;
+	private Set<Event> events;
 	@Id
 	@GeneratedValue
 	private Long id;
+	private String name;
 	@ManyToOne
 	private User owner;
 	@OneToMany
-	private List<User> participants;
-	private Privacy privacy; // String
+	private Set<User> participants;
 
-	private String title;
+	private Privacy privacy; // String
 
 	public Listing() {
 	}
@@ -52,6 +55,42 @@ public class Listing implements BasicInfo, Owned {
 	 */
 	public Listing(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Listing other = (Listing) obj;
+		if (description == null) {
+			if (other.description != null) {
+				return false;
+			}
+		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (owner == null) {
+			if (other.owner != null) {
+				return false;
+			}
+		} else if (!owner.equals(other.owner)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -73,7 +112,7 @@ public class Listing implements BasicInfo, Owned {
 	/**
 	 * @return the events
 	 */
-	public List<Event> getEvents() {
+	public Set<Event> getEvents() {
 		return events;
 	}
 
@@ -92,10 +131,18 @@ public class Listing implements BasicInfo, Owned {
 
 	@Override
 	public String getLabel() {
-		if (title == null) {
+		if (name == null) {
 			return "";
 		}
-		return StringUtils.escapeHTML(title);
+		return StringUtils.escapeHTML(name);
+	}
+
+	/**
+	 * @return the name
+	 */
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -109,7 +156,8 @@ public class Listing implements BasicInfo, Owned {
 	/**
 	 * @return the participants
 	 */
-	public List<User> getParticipants() {
+	@Override
+	public Set<User> getParticipants() {
 		return participants;
 	}
 
@@ -120,20 +168,27 @@ public class Listing implements BasicInfo, Owned {
 		return privacy;
 	}
 
-	/**
-	 * @return the title
-	 */
 	@Override
-	public String getTitle() {
-		return title;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (description == null ? 0 : description.hashCode());
+		result = prime * result + (name == null ? 0 : name.hashCode());
+		result = prime * result + (owner == null ? 0 : owner.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean hasRequiredAttributes() {
-		if (title == null) {
+		if (name == null) {
 			return false;
 		}
 		return true;
+	}
+
+	public Criterion isSharedWith(String person) {
+		Restrictions.or(Restrictions.eq("owner", owner), Restrictions.eq("participants", person));
+		return null;
 	}
 
 	/**
@@ -158,7 +213,7 @@ public class Listing implements BasicInfo, Owned {
 	 * @param events
 	 *            the events to set
 	 */
-	public void setEvents(List<Event> events) {
+	public void setEvents(Set<Event> events) {
 		this.events = events;
 	}
 
@@ -169,6 +224,15 @@ public class Listing implements BasicInfo, Owned {
 	@Override
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -184,7 +248,8 @@ public class Listing implements BasicInfo, Owned {
 	 * @param participants
 	 *            the participants to set
 	 */
-	public void setParticipants(List<User> participants) {
+	@Override
+	public void setParticipants(Set<User> participants) {
 		this.participants = participants;
 	}
 
@@ -194,15 +259,6 @@ public class Listing implements BasicInfo, Owned {
 	 */
 	public void setPrivacy(final Privacy privacy) {
 		this.privacy = privacy;
-	}
-
-	/**
-	 * @param title
-	 *            the title to set
-	 */
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	@Override

@@ -16,7 +16,6 @@ import com.dvlcube.droid.service.EventService;
 import com.dvlcube.droid.service.ListingService;
 import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.service.Response;
-import com.dvlcube.util.Debug;
 
 /**
  * 
@@ -39,8 +38,7 @@ public class ListingServlet {
 	public @ResponseBody
 	Response<Listing> add(@RequestBody final Listing listing) {
 		if (listing.hasRequiredAttributes()) {
-			final Response<Listing> savedListing = service.addOrUpdate(listing);
-			return savedListing;
+			return service.addOrUpdate(listing);
 		} else {
 			return null;
 		}
@@ -59,7 +57,7 @@ public class ListingServlet {
 
 	@RequestMapping("/")
 	public String index(final Map<String, Object> map) {
-		final Response<Listing> response = service.listRecent();
+		final Response<Listing> response = service.listRecentFirst();
 		map.put("response", response);
 		return index;
 	}
@@ -92,15 +90,19 @@ public class ListingServlet {
 			public Response<Event> call() throws Exception {
 				synchronized (eventService.getLock()) {
 					while (!eventService.hasUpdates(request.getLastUpdate())) {
-						Debug.log("waiting for updates...");
 						eventService.getLock().wait();
 					}
 					final Response<Event> updatedEvents = eventService.listNew(request);
-					int contents = updatedEvents.getContents().size();
-					Debug.logIf(contents > 0, "got %d updates!", contents);
 					return updatedEvents;
 				}
 			}
 		};
+	}
+
+	@RequestMapping("/share")
+	public @ResponseBody
+	Response<Listing> share(@RequestBody final Listing listing) {
+		// get the list of users and add it to this listing
+		return null;
 	}
 }

@@ -84,7 +84,7 @@ public class Role implements BasicInfo {
 	}
 
 	@Override
-	public String getTitle() {
+	public String getName() {
 		return authority;
 	}
 
@@ -138,8 +138,8 @@ public class Role implements BasicInfo {
 	}
 
 	@Override
-	public void setTitle(String title) {
-		setAuthority(title);
+	public void setName(String name) {
+		setAuthority(name);
 	}
 
 	/**

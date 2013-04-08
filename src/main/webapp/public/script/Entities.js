@@ -1,15 +1,15 @@
 ENTITY_NAME = undefined;
-var currentEntityTitle;
+currentEntityName = "";
 
 $(document).ready(function () {
-	$(".draft").children(".title").bind("focus", newEntity);
+	$(".draft").children(".name").bind("focus", newEntity);
 	
     $(".property").bind("blur", function () {
 		add(this.parentNode);
     });
-    $(".title, .description").bind("focus", function () {
+    $(".name, .description").bind("focus", function () {
     	var entity = this.parentNode;
-    	currentEntityTitle = entity.querySelector(".title");
+    	currentEntityName = entity.querySelector(".name");
     });
 });
 

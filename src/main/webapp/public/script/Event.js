@@ -3,8 +3,9 @@ ENTITY_NAME = "event";
 function fill(event, savedEvent) {
 	event.id = "event-"+savedEvent.id;
 	$qs(event, ".id", savedEvent.id);
+	debug("set: "+savedEvent.id + " got: "+ $qs(event, ".id"));
 	$qs(event, ".parent\\.id", savedEvent.parent.id);
-	$qs(event, ".title", savedEvent.title);
+	$qs(event, ".name", savedEvent.name);
 	$qs(event, ".priority", savedEvent.priority);
 	$qs(event, ".description", savedEvent.description);
 }
@@ -13,11 +14,8 @@ function refresh() {
 	debug("refreshing...");
 	var request = new Request();
 	request["lastUpdate"] = new Date().getTime();
-	if (currentEntityTitle && currentEntityTitle.value) {
-		request["focusedEventTitle"] = currentEntityTitle.value;
-		request["parentId"] = $(".parentId")[0].value;
-	}
-	debug("request: ", request);
+	request["parentId"] = $(".parentId")[0].value;
+	if (currentEntityName) request["focusedEventName"] = currentEntityName.value;
 
 	$.ajax({
 	  type: "POST",
@@ -37,10 +35,9 @@ function refresh() {
 					newEvent.appendTo("#events");
 				}
 			}
-		  } else if (response.indexOf("!doctype") != -1) {
+		  } else {
 			document.location.reload(true);
 		  }
-		  debug("refreshed");
 		  setTimeout(refresh, 100);
 	  },
 	  error: function(jqXHR, textStatus, errorThrown) {
@@ -76,7 +73,7 @@ function vote(priority, times) {
  * @param event The id of the element that holds all elements with properties of the Event object.
  */
 function add(event) {
-	if (event.querySelector(".title").value) {
+	if (event.querySelector(".name").value) {
 		doSubmit(event, "addevent", function (response) {
 			var savedEvent = response.content;
 			if (savedEvent) {
@@ -91,7 +88,7 @@ function add(event) {
  * @see Entities.newEntity()
  */
 function extend_newEntity(clone) {
-	clone.children(".priority").value = "0";
+	clone.children(".priority")[0].value = "0";
 }
 
 /**
@@ -104,8 +101,8 @@ function extend_reorder(a, b) {
     if (av > bv) return -1;
     else if (av < bv) return 1;
     else {
-        var at = $qs(a, ".title");
-        var bt = $qs(b, ".title");
+        var at = $qs(a, ".name");
+        var bt = $qs(b, ".name");
         if (at > bt) return 1;
         else if (at < bt) return -1;
         else return 0;

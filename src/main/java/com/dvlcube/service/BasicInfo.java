@@ -6,6 +6,7 @@ import com.dvlcube.bean.Describable;
 import com.dvlcube.bean.Identifiable;
 import com.dvlcube.bean.Trackable;
 import com.dvlcube.bean.Validatable;
+import com.dvlcube.reflection.FieldName;
 
 /**
  * 
@@ -14,7 +15,7 @@ import com.dvlcube.bean.Validatable;
  */
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public interface BasicInfo extends Identifiable, Trackable, Describable, Validatable {
-	public enum Field {
-		dateModified, description, id, label, title
+	public enum Field implements FieldName {
+		dateModified, description, id, label, name
 	}
 }

@@ -49,6 +49,15 @@ function $qs(obj, selector, value) {
 	}
 }
 
+function fillParent(request, child) {
+	var parent = child.parentNode;
+	if (parent) { 
+		var parentForm = parent.querySelector(".parent");
+		if (parentForm) {
+			request["parent"] = form2js(parentForm);
+		}
+	}
+}
 /**
  * Iterates over all inputs (whose class contains "property") of the given element,
  * adding each name and value from the inputs.
@@ -57,6 +66,7 @@ function $qs(obj, selector, value) {
  */
 function doSubmit(form, actionName, callback) {
 	var request = form2js(form.id);
+//	fillParent(request, form);
 	var action = getActionName(actionName, form); 
 	
 	post(action, request, function(response) {

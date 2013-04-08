@@ -21,7 +21,10 @@ import com.dvlcube.util.StringUtils;
 @Entity
 public class Event implements BasicInfo, Owned, Child<Listing> {
 	public enum Field implements FieldName {
-		dateEnd, dateModified, dateStart, description, done, guests, id, owner, parent, priority, reminders, repetition, title
+		dateEnd, dateModified, dateStart, description, done, guests, id, name, owner, parent, priority, reminders, repetition;
+		public String id() {
+			return name() + ".id";
+		}
 	}
 
 	private static final long serialVersionUID = 6362154457938757910L;
@@ -30,18 +33,60 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 	private Date dateStart; // timestamp
 	private String description;
 	private boolean done;
-	// OneToMany private List<User> guests; // ref_one2many
 	@Id
 	@GeneratedValue
 	private Long id; // id
+	private String name;
 	@ManyToOne
 	private User owner; // ref_many2one #not null
 	@ManyToOne
 	private Listing parent;
-	private int priority;
+	private Integer priority;
 	// OneToMany private List<Reminder> reminders;
 	private Repetition repetition; // String
-	private String title;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Event other = (Event) obj;
+		if (description == null) {
+			if (other.description != null) {
+				return false;
+			}
+		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (owner == null) {
+			if (other.owner != null) {
+				return false;
+			}
+		} else if (!owner.equals(other.owner)) {
+			return false;
+		}
+		if (parent == null) {
+			if (other.parent != null) {
+				return false;
+			}
+		} else if (!parent.equals(other.parent)) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * @return the dateEnd
@@ -88,7 +133,15 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 
 	@Override
 	public String getLabel() {
-		return StringUtils.escapeHTML(getTitle());
+		return StringUtils.escapeHTML(getName());
+	}
+
+	/**
+	 * @return the name
+	 */
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -110,7 +163,7 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 	/**
 	 * @return the priority
 	 */
-	public int getPriority() {
+	public Integer getPriority() {
 		return priority;
 	}
 
@@ -121,17 +174,20 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 		return repetition;
 	}
 
-	/**
-	 * @return the title
-	 */
 	@Override
-	public String getTitle() {
-		return title;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (description == null ? 0 : description.hashCode());
+		result = prime * result + (name == null ? 0 : name.hashCode());
+		result = prime * result + (owner == null ? 0 : owner.hashCode());
+		result = prime * result + (parent == null ? 0 : parent.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean hasRequiredAttributes() {
-		if (StringUtils.isBlank(title)) {
+		if (StringUtils.isBlank(name)) {
 			return false;
 		}
 		return true;
@@ -196,6 +252,15 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 	}
 
 	/**
+	 * @param name
+	 *            the name to set
+	 */
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
 	 * @param owner
 	 *            the owner to set
 	 */
@@ -217,7 +282,7 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 	 * @param priority
 	 *            the priority to set
 	 */
-	public void setPriority(final int priority) {
+	public void setPriority(final Integer priority) {
 		this.priority = priority;
 	}
 
@@ -227,15 +292,6 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 	 */
 	public void setRepetition(final Repetition repetition) {
 		this.repetition = repetition;
-	}
-
-	/**
-	 * @param title
-	 *            the title to set
-	 */
-	@Override
-	public void setTitle(final String title) {
-		this.title = title;
 	}
 
 	@Override

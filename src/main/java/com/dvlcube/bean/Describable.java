@@ -12,9 +12,9 @@ public interface Describable {
 
 	FieldName[] getFields();
 
-	String getTitle();
+	String getName();
 
 	void setDescription(String description);
 
-	void setTitle(String title);
+	void setName(String name);
 }

@@ -1,6 +1,6 @@
 package com.dvlcube.service;
 
-import java.util.List;
+import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -91,7 +91,7 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @author wonka
 	 * @since 02/03/2013
 	 */
-	Response<T> list(Integer start, Integer maxResults, List<Order> order);
+	Response<T> list(Integer start, Integer maxResults, Set<Order> order);
 
 	/**
 	 * @param start
@@ -102,16 +102,7 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @author wonka
 	 * @since 22/09/2012
 	 */
-	Response<T> list(Integer start, Integer maxResults, List<Order> order, Criterion... conditions);
-
-	/**
-	 * @param order
-	 * @param conditions
-	 * @return
-	 * @author wonka
-	 * @since 02/03/2013
-	 */
-	Response<T> list(List<Order> order, Criterion... conditions);
+	Response<T> list(Integer start, Integer maxResults, Set<Order> order, Criterion... conditions);
 
 	/**
 	 * @param orders
@@ -120,6 +111,15 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @since 02/03/2013
 	 */
 	Response<T> list(Order... orders);
+
+	/**
+	 * @param order
+	 * @param conditions
+	 * @return
+	 * @author wonka
+	 * @since 02/03/2013
+	 */
+	Response<T> list(Set<Order> order, Criterion... conditions);
 
 	/**
 	 * @param desc
@@ -134,14 +134,14 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @author wonka
 	 * @since 28/03/2013
 	 */
-	Response<T> listOld();
+	Response<T> listOldFirst();
 
 	/**
 	 * @return
 	 * @author wonka
 	 * @since 28/03/2013
 	 */
-	Response<T> listRecent();
+	Response<T> listRecentFirst();
 
 	/**
 	 * @param id
