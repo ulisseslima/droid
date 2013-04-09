@@ -12,6 +12,7 @@
 			<dvl:link href="#" label="&gt;" css="round link" />
 			<input:hidden field="id" />
 			<input:text field="name" placeholder="listing.new.placeholder" />
+			<dvl:link href="share" label="O" css="round link" />
 			<input:textarea field="description" />
 		</div>
 	</c:when>
