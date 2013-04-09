@@ -11,8 +11,8 @@
 			<input:vote priority="0" />
 			<input:hidden field="id" />
 			<input:hidden field="parent.id" value="${listing.id}" />
-			<input:hidden field="parent.name" value="${var.parent.name}" />
-			<input:hidden field="parent.description" value="${var.description.id}" />
+			<input:hidden field="parent.name" value="${listing.name}" />
+			<input:hidden field="parent.description" value="${listing.description}" />
 			<input:text field="name" placeholder="event.new.placeholder" />
 			<input:textarea field="description" />
 		</div>
@@ -21,9 +21,9 @@
 		<div id="event-${var.id}" class="event">
 			<input:vote priority="${var.priority}" />
 			<input:hidden field="id" value="${var.id}" />
-			<input:hidden field="parent.id" value="${var.parent.id}" />
-			<input:hidden field="parent.name" value="${var.parent.name}" />
-			<input:hidden field="parent.description" value="${var.description.id}" />
+			<input:hidden field="parent.id" value="${listing.id}" />
+			<input:hidden field="parent.name" value="${listing.name}" />
+			<input:hidden field="parent.description" value="${listing.description}" />
 			<input:text field="name" value="${var.label}" />
 			<input:textarea field="description">${var.description}</input:textarea>
 		</div>
