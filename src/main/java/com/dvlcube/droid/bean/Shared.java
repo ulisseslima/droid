@@ -12,7 +12,12 @@ import com.dvlcube.bean.QueryFieldName;
  */
 public interface Shared {
 	public enum Field implements QueryFieldName {
-		participants("participant");
+		participants("participant") {
+			@Override
+			public String id() {
+				throw new UnsupportedOperationException("can't get id on a collection");
+			}
+		};
 		private String alias;
 
 		Field(String alias) {
@@ -24,13 +29,19 @@ public interface Shared {
 			return alias;
 		}
 
+		@Override
+		public String id() {
+			return name() + ".id";
+		}
+
 		/**
 		 * @return
 		 * @author wonka
 		 * @since 05/04/2013
 		 */
+		@Override
 		public String join() {
-			return alias + "." + "name";
+			return alias + ".id";
 		}
 	}
 

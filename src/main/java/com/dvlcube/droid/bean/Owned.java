@@ -17,6 +17,11 @@ public interface Owned {
 		};
 
 		@Override
+		public String id() {
+			return name() + ".id";
+		}
+
+		@Override
 		public String join() {
 			return getAlias() + ".name";
 		}

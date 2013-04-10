@@ -10,7 +10,6 @@ function add(listing) {
 			if (savedListing) {
 				listing.id = "listing-"+savedListing.id;
 				$qs(listing, ".id", savedListing.id);
-				debug("set: "+savedListing.id + " got: "+ $qs(listing, ".id"));
 				$qs(listing, ".link", savedListing.id);
 				$qs(listing, ".name", savedListing.name);
 				$qs(listing, ".description", savedListing.description);

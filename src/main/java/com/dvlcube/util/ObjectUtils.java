@@ -40,7 +40,7 @@ public class ObjectUtils {
 			for (PropertyDescriptor fromDescriptor : fromDescriptors) {
 				PropertyDescriptor toDescriptor = toDescriptors.get(fromDescriptor.getDisplayName());
 				if (toDescriptor != null) {
-					if (fromDescriptor.getWriteMethod() != null) {
+					if (toDescriptor.getWriteMethod() != null) {
 						Object value = get(fromDescriptor, from);
 						if (value == null && ignoreNull) {
 						} else {

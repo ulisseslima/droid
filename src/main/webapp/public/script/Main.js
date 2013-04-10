@@ -2,15 +2,28 @@ busy = false;
 function Request() {}
 DEBUG = true;
 
+$(document).ready(function () {
+    $(".auto-width").bind("keypress", autoWidth);
+});
+
+function autoWidth() {
+	if (this.value) {
+		this.style.width = ((this.value.length + 1) * 8) + "px";
+	} else {
+		this.style.width = "10px";
+	}
+}
+
 function debug(msg, obj) {
 	if(DEBUG) {
 		var objStr = "";
 		if(obj) objStr = JSON.stringify(obj);
-		console.log(msg, objStr);
+		console.log(msg + objStr);
 	}
 }
 
 function post(action, request, onSuccess) {
+	debug("sent: ", request);
 	$.ajax({
 	  "type": "POST",
 	  "headers": { 

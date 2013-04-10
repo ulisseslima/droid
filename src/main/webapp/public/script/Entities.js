@@ -29,7 +29,7 @@ function newEntity() {
 	$("input").parent().removeClass("draft");
 	$("input").off("focus");
 	if (typeof extend_newEntity == "function") extend_newEntity(clone);
-	clone.appendTo(getEntityCollection());
+	clone.appendTo(this.parentNode.parentNode);
 }
 
 /**

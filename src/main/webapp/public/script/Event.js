@@ -3,10 +3,10 @@ ENTITY_NAME = "event";
 function fill(event, savedEvent) {
 	event.id = "event-"+savedEvent.id;
 	$qs(event, ".id", savedEvent.id);
-	debug("set: "+savedEvent.id + " got: "+ $qs(event, ".id"));
 	$qs(event, ".parent\\.id", savedEvent.parent.id);
 	$qs(event, ".name", savedEvent.name);
 	$qs(event, ".priority", savedEvent.priority);
+	debug("saved event: "+savedEvent.priority + " event: "+ $qs(event, ".priority"));
 	$qs(event, ".description", savedEvent.description);
 }
 
@@ -15,7 +15,7 @@ function refresh() {
 	var request = new Request();
 	request["lastUpdate"] = new Date().getTime();
 	request["parentId"] = $(".parentId")[0].value;
-	if (currentEntityName) request["focusedEventName"] = currentEntityName.value;
+	if (typeof currentEntityName != undefined) request["focusedEventName"] = currentEntityName.value;
 
 	$.ajax({
 	  type: "POST",

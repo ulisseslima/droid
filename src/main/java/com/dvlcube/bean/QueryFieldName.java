@@ -10,5 +10,7 @@ import com.dvlcube.reflection.FieldName;
 public interface QueryFieldName extends FieldName {
 	String getAlias();
 
+	String id();
+
 	String join();
 }

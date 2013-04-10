@@ -94,6 +94,14 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		return new Response<>(true, match);
 	}
 
+	private User getAuthenticatedUser() {
+		if (authentication != null) {
+			User user = getDao().retrieveOwner(authentication.getName());
+			return user;
+		}
+		throw new IllegalStateException("Couldn't get user authentication context");
+	}
+
 	/**
 	 * @return The implementing DAO.
 	 * @author wonka
@@ -145,15 +153,15 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		final Integer maxResults,
 		final Set<Order> orders,
 		final Criterion... conditions) {
+		User user = getAuthenticatedUser();
 		Set<Criterion> authConditions = new HashSet<>();
 		Set<QueryFieldName> aliases = new HashSet<>();
-		aliases.add(Owned.Field.owner);
-		Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.join(), authentication.getName());
-		Criterion isSharedWithLoggedInUser = Restrictions
-				.eq(Shared.Field.participants.join(), authentication.getName());
+		Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
+		Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
 		if (thisIsA(Shared.class)) {
 			aliases.add(Shared.Field.participants);
-			authConditions.add(Restrictions.or(isOwnedByLoggedInUser, isSharedWithLoggedInUser));
+			authConditions.add(isOwnedByLoggedInUser);
+			authConditions.add(isSharedWithLoggedInUser);
 		} else if (thisIsA(Owned.class)) {
 			authConditions.add(isOwnedByLoggedInUser);
 		}
