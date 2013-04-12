@@ -5,6 +5,7 @@ $(document).ready(function () {
 	$(".draft").children(".name").bind("focus", newEntity);
 	
     $(".property").bind("blur", function () {
+    	debug("adding: "+this.parentNode.className);
 		add(this.parentNode);
     });
     $(".name, .description").bind("focus", function () {
@@ -21,13 +22,14 @@ function getEntitySelector() {
 }
 
 /**
- * Creates a new Event element.
+ * Creates a new element.
  */
 function newEntity() {
+	debug("new entity...");
 	var clone = $(this.parentNode).clone(true);
 	$(this.parentNode).removeClass("transparent");
-	$("input").parent().removeClass("draft");
-	$("input").off("focus");
+	$(this.parentNode).removeClass("draft");
+	$(this.parentNode).children("input").off("focus");
 	if (typeof extend_newEntity == "function") extend_newEntity(clone);
 	clone.appendTo(this.parentNode.parentNode);
 }

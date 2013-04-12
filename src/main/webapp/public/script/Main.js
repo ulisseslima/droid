@@ -78,13 +78,17 @@ function fillParent(request, child) {
  * @param action Desired action URL. Will use the forms name if not specified.
  */
 function doSubmit(form, actionName, callback) {
-	var request = form2js(form.id);
-//	fillParent(request, form);
-	var action = getActionName(actionName, form); 
-	
-	post(action, request, function(response) {
-		if (callback) callback(response);
-	});
+	if (form.id) {
+		var request = form2js(form.id);
+	//	fillParent(request, form);
+		var action = getActionName(actionName, form); 
+		
+		post(action, request, function(response) {
+			if (callback) callback(response);
+		});
+	} else {
+		console.log("Element to submit has no id: " + form.className);
+	}
 }
 
 function getActionName(action, form) {

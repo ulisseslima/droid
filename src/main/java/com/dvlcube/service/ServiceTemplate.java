@@ -156,13 +156,12 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		User user = getAuthenticatedUser();
 		Set<Criterion> authConditions = new HashSet<>();
 		Set<QueryFieldName> aliases = new HashSet<>();
-		Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
-		Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
 		if (thisIsA(Shared.class)) {
+			Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
 			aliases.add(Shared.Field.participants);
-			authConditions.add(isOwnedByLoggedInUser);
 			authConditions.add(isSharedWithLoggedInUser);
 		} else if (thisIsA(Owned.class)) {
+			Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
 			authConditions.add(isOwnedByLoggedInUser);
 		}
 		Set<Criterion> allConditions = ArrayUtils.concatIntoSet(conditions, authConditions);
@@ -210,6 +209,11 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 			if (entity instanceof Owned) {
 				User owner = getDao().retrieveOwner(authentication.getName());
 				((Owned) entity).setOwner(owner);
+				if (entity instanceof Shared) {
+					HashSet<User> set = new HashSet<>();
+					set.add(owner);
+					((Shared) entity).setParticipants(set);
+				}
 			}
 		}
 	}

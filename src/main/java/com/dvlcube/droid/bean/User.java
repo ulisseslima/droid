@@ -37,7 +37,7 @@ public class User implements BasicInfo, Principal {
 	private Long id; // id
 	private String name;
 	private String password;
-	private Integer telephone = 0;
+	private Integer telephone;
 
 	public User() {
 
@@ -57,6 +57,7 @@ public class User implements BasicInfo, Principal {
 
 	public User(final String name) {
 		this.name = name;
+		enabled = true;
 	}
 
 	@Override

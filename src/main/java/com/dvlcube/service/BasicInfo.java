@@ -13,7 +13,7 @@ import com.dvlcube.reflection.FieldName;
  * @author wonka
  * @since 12/03/2013
  */
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" }, ignoreUnknown = true)
 public interface BasicInfo extends Identifiable, Trackable, Describable, Validatable {
 	public enum Field implements FieldName {
 		dateModified, description, id, label, name

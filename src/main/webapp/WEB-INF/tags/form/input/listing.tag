@@ -10,15 +10,16 @@
 	<c:when test="${empty var}">
 		<div id="listing-draft" class="transparent listing draft">
 			<section class="participant-collection">
-				<div class="participant">
-					<input type="text" class="auto-width property name" name="name" placeholder="share..."/>
+				<div id="participant-draft" class="participant draft">
+					<input type="text" class="auto-width property name" name="name" value="" placeholder="share..."/>
+					<input type="hidden" class="property listingId" name="listingId" value="${var.id}"/>
 				</div>
 			</section>
 			
 			<dvl:link href="#" label="&gt;" css="round link" />
 			<input:hidden field="id" />
 			<input:text field="name" placeholder="listing.new.placeholder" />
-			<input:textarea field="description" />			
+			<input:textarea field="description" />
 		</div>
 	</c:when>
 	<c:otherwise>
@@ -27,10 +28,12 @@
 				<c:forEach var="participant" items="${var.participants}">
 					<div id="participant-${participant.id}" class="participant">
 						<input type="text" class="auto-width property name" name="name" value="${participant.name}"/>
+						<input type="hidden" class="property listingId" name="listingId" value="${var.id}"/>
 					</div>
 				</c:forEach>
-				<div class="participant">
-					<input type="text" class="auto-width property name" name="name" placeholder="share..."/>
+				<div id="participant-draft-${var.id}" class="participant draft">
+					<input type="text" class="auto-width property name" name="name" value="" placeholder="share..."/>
+					<input type="hidden" class="property listingId" name="listingId" value="${var.id}"/>
 				</div>
 			</section>
 			

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dvlcube.droid.bean.Event;
 import com.dvlcube.droid.bean.Listing;
+import com.dvlcube.droid.bean.User;
 import com.dvlcube.droid.service.EventService;
 import com.dvlcube.droid.service.ListingService;
 import com.dvlcube.droid.service.rr.NewEventsRequest;
+import com.dvlcube.droid.service.rr.NewParticipantRequest;
 import com.dvlcube.service.Response;
 
 /**
@@ -53,6 +55,12 @@ public class ListingServlet {
 		} else {
 			return null;
 		}
+	}
+
+	@RequestMapping("/addparticipant")
+	public @ResponseBody
+	Response<User> addparticipant(@RequestBody final NewParticipantRequest participant) {
+		return service.addParticipant(participant);
 	}
 
 	@RequestMapping("/")
@@ -97,12 +105,5 @@ public class ListingServlet {
 				}
 			}
 		};
-	}
-
-	@RequestMapping("/share")
-	public @ResponseBody
-	Response<Listing> share(@RequestBody final Listing listing) {
-		// get the list of users and add it to this listing
-		return null;
 	}
 }
