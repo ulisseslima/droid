@@ -57,18 +57,18 @@ h1 {
     transition: opacity 1s;
 }
 
-.property, .title, .priority, .description {
+.property, .name, .priority, .description {
     border: 1px solid white;
     border-radius: 4px;
 }
-.title, .priority {
+.name, .priority {
     padding: 0.3em;
     margin: 0.3em;  
 }
-.title {
+.name {
     width: 230px;
 }
-.property:focus, .title:focus, .priority:focus, .title:focus ~ .description {
+.property:focus, .name:focus, .priority:focus, .name:focus ~ .description {
     border: 1px solid gray;
 }
 
@@ -94,7 +94,7 @@ h1 {
     resize: none;
 }
 
-.description:focus, .title:focus ~ .description {
+.description:focus, .name:focus ~ .description {
     height: 50px;
     opacity: 1;
     -webkit-transition: height 0.5s;
@@ -121,7 +121,6 @@ h1 {
 }
 
 .participant-collection{
- 
 }
 .participant {
     display: inline-block;
@@ -130,8 +129,9 @@ h1 {
 .participant input {
     background:none;border:0;
     display: inline-block;
-    width: 30px;
+    width: 50px;
     opacity: .3;
+    text-align: center;
 }
 .participant input:focus {
     opacity: 1;
