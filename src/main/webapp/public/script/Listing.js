@@ -1,5 +1,12 @@
 ENTITY_NAME = "listing";
 
+$(document).ready(function () {
+    $(".participant-collection").hover(
+      function () {$(this).addClass("hover");},
+      function () {$(this).removeClass("hover");}
+    );    
+});
+
 /**
  * @param event The element that holds all elements with properties of the Event object.
  */

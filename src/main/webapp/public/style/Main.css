@@ -121,6 +121,9 @@ h1 {
 }
 
 .participant-collection{
+    opacity: 0;
+    -webkit-transition: opacity 0.4s;
+    transition: opacity 0.4s;
 }
 .participant {
     display: inline-block;
@@ -135,4 +138,8 @@ h1 {
 }
 .participant input:focus {
     opacity: 1;
+}
+
+.hover {
+    opacity:1;
 }
