@@ -1,5 +1,7 @@
 package com.dvlcube.droid.bean;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -11,7 +13,6 @@ import com.dvlcube.bean.Child;
 import com.dvlcube.bean.Repetition;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
-import com.dvlcube.util.StringUtils;
 
 /**
  * 
@@ -133,7 +134,7 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 
 	@Override
 	public String getLabel() {
-		return StringUtils.escapeHTML(getName());
+		return $(getName()).escapeHTML().string;
 	}
 
 	/**
@@ -187,7 +188,7 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 
 	@Override
 	public boolean hasRequiredAttributes() {
-		if (StringUtils.isBlank(name)) {
+		if ($(name).isBlank()) {
 			return false;
 		}
 		return true;
@@ -296,7 +297,7 @@ public class Event implements BasicInfo, Owned, Child<Listing> {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 
 	@Override

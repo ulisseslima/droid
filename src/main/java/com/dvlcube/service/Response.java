@@ -1,10 +1,11 @@
 package com.dvlcube.service;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dvlcube.bean.Child;
-import com.dvlcube.util.StringUtils;
 
 /**
  * Response format.
@@ -150,6 +151,6 @@ public class Response<T> {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 }

@@ -1,5 +1,7 @@
 package com.dvlcube.util;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.io.File;
 
 /**
@@ -36,6 +38,6 @@ public class Debug {
 	 * @since 01/04/2013
 	 */
 	public static void logObj(String msg, Object obj) {
-		log(msg + "%s", StringUtils.stringify(obj));
+		log(msg + "%s", $(obj).stringify());
 	}
 }

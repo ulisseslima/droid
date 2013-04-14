@@ -1,7 +1,8 @@
 package com.dvlcube.droid.service.rr;
 
+import static com.dvlcube.util.Cuber.$;
+
 /**
- * 
  * @author wonka
  * @since 10/04/2013
  */
@@ -37,5 +38,10 @@ public class NewParticipantRequest {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return $(this).stringify();
 	}
 }

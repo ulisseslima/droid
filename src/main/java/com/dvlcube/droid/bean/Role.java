@@ -1,5 +1,7 @@
 package com.dvlcube.droid.bean;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -9,7 +11,6 @@ import javax.persistence.ManyToOne;
 
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
-import com.dvlcube.util.StringUtils;
 
 /**
  * 
@@ -152,7 +153,7 @@ public class Role implements BasicInfo {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 
 	@Override

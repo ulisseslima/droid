@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <dvl:page title="event.events" titleText="- ${listing.name}" js="Entities, Event">
-	<dvl:body titleText="${listing.name}" href="${pageContext.request.contextPath}/listing/">
+	<dvl:body titleText="${listing.name}" href="${pageContext.request.contextPath}/listing/" tip="${listing.description}">
 		<input:hidden field="parentId" value="${listing.id}" />
 		<div id="event-collection">
 			<c:if test="${not empty response.contents}">

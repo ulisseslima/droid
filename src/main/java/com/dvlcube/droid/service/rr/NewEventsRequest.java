@@ -1,6 +1,6 @@
 package com.dvlcube.droid.service.rr;
 
-import com.dvlcube.util.StringUtils;
+import static com.dvlcube.util.Cuber.$;
 
 /**
  * A request for Events that were updated recently.
@@ -60,6 +60,6 @@ public class NewEventsRequest {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 }

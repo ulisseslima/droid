@@ -1,5 +1,7 @@
 package com.dvlcube.droid.bean;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.security.Principal;
 import java.util.Date;
 import java.util.Set;
@@ -12,7 +14,6 @@ import javax.persistence.OneToMany;
 import com.dvlcube.droid.service.rr.NewUserRequest;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
-import com.dvlcube.util.StringUtils;
 
 /**
  * @author wonka
@@ -281,7 +282,7 @@ public class User implements BasicInfo, Principal {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.dvlcube.droid.bean;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -15,7 +17,6 @@ import org.hibernate.criterion.Restrictions;
 import com.dvlcube.bean.Privacy;
 import com.dvlcube.reflection.FieldName;
 import com.dvlcube.service.BasicInfo;
-import com.dvlcube.util.StringUtils;
 
 /**
  * 
@@ -134,7 +135,7 @@ public class Listing implements BasicInfo, Owned, Shared {
 		if (name == null) {
 			return "";
 		}
-		return StringUtils.escapeHTML(name);
+		return $(getName()).escapeHTML().string;
 	}
 
 	/**
@@ -263,7 +264,7 @@ public class Listing implements BasicInfo, Owned, Shared {
 
 	@Override
 	public String toString() {
-		return StringUtils.stringify(this);
+		return $(this).stringify();
 	}
 
 	@Override

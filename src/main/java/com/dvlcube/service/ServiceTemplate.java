@@ -1,5 +1,7 @@
 package com.dvlcube.service;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,7 +26,6 @@ import com.dvlcube.service.BasicInfo.Field;
 import com.dvlcube.util.ArrayUtils;
 import com.dvlcube.util.ClassUtils;
 import com.dvlcube.util.I18n;
-import com.dvlcube.util.ObjectUtils;
 
 /**
  * 
@@ -251,7 +252,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 			return response;
 		} else {
 			T saved = getDao().retrieve(getT(), (Long) entity.getId());
-			ObjectUtils.updateProperties(entity, saved);
+			$(entity).merge(saved);
 			final Response<T> response = new Response<T>(true, getDao().update(saved));
 			response.setMessage(I18n.Response.SUCCESS.key());
 			return response;
