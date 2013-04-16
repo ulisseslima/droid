@@ -165,7 +165,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 			Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
 			authConditions.add(isOwnedByLoggedInUser);
 		}
-		Set<Criterion> allConditions = ArrayUtils.concatIntoSet(conditions, authConditions);
+		Set<Criterion> allConditions = $(conditions).concatIntoSet(authConditions);
 		final List<T> list = getDao().list(getT(), start, maxResults, orders, allConditions, aliases);
 		return new Response<T>(true, list);
 	}

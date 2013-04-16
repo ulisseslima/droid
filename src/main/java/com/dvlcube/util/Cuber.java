@@ -1,6 +1,5 @@
 package com.dvlcube.util;
 
-
 /**
  * 
  * @author wonka
@@ -13,5 +12,9 @@ public class Cuber {
 
 	public static CubeString $(String string) {
 		return new CubeString(string);
+	}
+
+	public static <T> CubeArray<T> $(T[] array) {
+		return new CubeArray<T>(array);
 	}
 }

@@ -14,7 +14,6 @@ public class CubeString {
 	 * @since 28/02/2013
 	 */
 	public CubeString(final String string) {
-		super();
 		this.string = string;
 	}
 

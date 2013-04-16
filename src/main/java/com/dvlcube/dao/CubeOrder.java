@@ -1,12 +1,13 @@
 package com.dvlcube.dao;
 
+import static com.dvlcube.util.Cuber.$;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.criterion.Order;
 
 import com.dvlcube.reflection.FieldName;
-import com.dvlcube.util.ArrayUtils;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class CubeOrder {
 	}
 
 	public static Set<Order> by(final Order... orders) {
-		return ArrayUtils.asSet(orders);
+		return $(orders).asSet();
 	}
 
 	public static Set<Order> desc(final FieldName... fields) {
