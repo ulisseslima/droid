@@ -6,6 +6,10 @@ package com.dvlcube.util;
  * @since 14/04/2013
  */
 public class Cuber {
+	public static <T> CubeClass<T> $(Class<T> c) {
+		return new CubeClass<T>(c);
+	}
+
 	public static Cube $(Object object) {
 		return new Cube(object);
 	}

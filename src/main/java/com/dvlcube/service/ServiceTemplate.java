@@ -23,8 +23,6 @@ import com.dvlcube.droid.bean.Owned;
 import com.dvlcube.droid.bean.Shared;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.service.BasicInfo.Field;
-import com.dvlcube.util.ArrayUtils;
-import com.dvlcube.util.ClassUtils;
 import com.dvlcube.util.I18n;
 
 /**
@@ -172,7 +170,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 
 	@Override
 	public Response<T> list(final Order... orders) {
-		return list(NO_PAGINATION, NO_PAGINATION, ArrayUtils.asSet(orders), new Criterion[0]);
+		return list(NO_PAGINATION, NO_PAGINATION, $(orders).asSet(), new Criterion[0]);
 	}
 
 	@Override
@@ -220,7 +218,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	}
 
 	private boolean thisIsA(Class<?>... interfaceClasses) {
-		return ClassUtils.doesImplementAll(getT(), interfaceClasses);
+		return $(getT()).doesImplementAll(interfaceClasses);
 	}
 
 	/**
