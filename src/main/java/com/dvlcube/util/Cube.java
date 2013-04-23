@@ -39,6 +39,6 @@ public class Cube {
 	 * @since 14/04/2013
 	 */
 	public String stringify() {
-		return StringUtils.stringify(this);
+		return StringUtils.stringify(object);
 	}
 }
