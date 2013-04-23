@@ -1,13 +1,16 @@
 ENTITY_NAME = "event";
+EVENT = "#"+ENTITY_NAME;
+EVENT_COLLECTION = EVENT + "-collection"; 
 
 function fill(event, savedEvent) {
-	event.id = "event-"+savedEvent.id;
-	$qs(event, ".id", savedEvent.id);
-	$qs(event, ".parent\\.id", savedEvent.parent.id);
-	$qs(event, ".name", savedEvent.name);
-	$qs(event, ".priority", savedEvent.priority);
-	debug("saved event: "+savedEvent.priority + " event: "+ $qs(event, ".priority"));
-	$qs(event, ".description", savedEvent.description);
+	if (savedEvent) {
+		event.id = ENTITY_NAME+"-"+savedEvent.id;
+		$qs(event, ".id", savedEvent.id);
+		$qs(event, ".parent\\.id", savedEvent.parent.id);
+		$qs(event, ".name", savedEvent.name);
+		$qs(event, ".priority", savedEvent.priority);
+		$qs(event, ".description", savedEvent.description);
+	}
 }
 
 function refresh() {
@@ -15,7 +18,7 @@ function refresh() {
 	var request = new Request();
 	request["lastUpdate"] = new Date().getTime();
 	request["parentId"] = $(".parentId")[0].value;
-	if (typeof currentEntityName != undefined) request["focusedEventName"] = currentEntityName.value;
+	if (typeof currentEntityName !== "undefined") request["focusedEventName"] = currentEntityName.value;
 
 	$.ajax({
 	  type: "POST",
@@ -26,13 +29,14 @@ function refresh() {
 		  if (response.contents) {			  
 			for (var i in response.contents) {
 				var event = response.contents[i];
-				var outdatedEvent = $("#event-"+event.id)[0];
+				var outdatedEvent = $(EVENT+"-"+event.id)[0];
 				if (outdatedEvent) {
 					fill(outdatedEvent, event);
 				} else {
-					var newEvent = $("#events").children(":last").clone(true);
+					var newEvent = $(EVENT_COLLECTION).children(":last").clone(true);
+					$(newEvent).removeClass("transparent draft");
 					fill(newEvent[0], event);
-					newEvent.appendTo("#events");
+					newEvent.prependTo(EVENT_COLLECTION);
 				}
 			}
 		  } else {
@@ -76,9 +80,7 @@ function add(event) {
 	if (event.querySelector(".name").value) {
 		doSubmit(event, "addevent", function (response) {
 			var savedEvent = response.content;
-			if (savedEvent) {
-				fill(event, savedEvent);
-			}
+			fill(event, savedEvent);
 		});
 	}
 }

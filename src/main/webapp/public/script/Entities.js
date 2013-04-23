@@ -1,11 +1,11 @@
 ENTITY_NAME = undefined;
-currentEntityName = "";
+currentEntityName = undefined;
+draft_counter = 0;
 
 $(document).ready(function () {
-	$(".draft").children(".name").bind("focus", newEntity);
+	$(".draft").children(".name, .participant-name").bind("focus", newEntity);
 	
     $(".property").bind("blur", function () {
-    	debug("adding: "+this.parentNode.className);
 		add(this.parentNode);
     });
     $(".name, .description").bind("focus", function () {
@@ -25,12 +25,11 @@ function getEntitySelector() {
  * Creates a new element.
  */
 function newEntity() {
-	debug("new entity...");
 	var clone = $(this.parentNode).clone(true);
-	$(this.parentNode).removeClass("transparent");
-	$(this.parentNode).removeClass("draft");
+	$(this.parentNode).removeClass("transparent draft");
 	$(this.parentNode).children("input").off("focus");
-	if (typeof extend_newEntity == "function") extend_newEntity(clone);
+	if (typeof extend_newEntity === "function") extend_newEntity(clone);
+	clone[0].id = "draft-"+(draft_counter++);
 	clone.appendTo(this.parentNode.parentNode);
 }
 

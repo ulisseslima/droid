@@ -107,6 +107,8 @@ h1 {
     border-right: 2px black;
     border-right-style: dotted;
     border-top-right-radius: 10px;
+    -webkit-transition: opacity 1s;
+    transition: opacity 1s;
 }
 
 .description {
