@@ -5,7 +5,6 @@
 <%@taglib prefix="dvl" tagdir="/WEB-INF/tags"%>
 
 <%@ attribute name="var" description="The Listing object." rtexprvalue="true" type="com.dvlcube.droid.bean.Listing"%>
-
 <c:choose>
 	<c:when test="${empty var}">
 		<div id="listing-draft" class="transparent listing draft">
@@ -22,8 +21,10 @@
 	<c:otherwise>
 		<div id="listing-${var.id}" class="listing">
 			<section id="participant-collection-${var.id}" class="participant-collection">
-				<c:forEach var="participant" items="${var.participants}">
-					<input:participant listing="${var}" user="${participant}"/>
+				<c:forEach var="participant" items="${var.participants}">				
+					<c:if test="${pageContext['request'].userPrincipal.name != participant.name}">
+						<input:participant listing="${var}" user="${participant}"/>
+					</c:if>
 				</c:forEach>
 				<input:participant listing="${var}" />
 			</section>
