@@ -6,7 +6,7 @@ package com.dvlcube.util;
  * @since 28/02/2013
  */
 public class CubeString {
-	public final String string;
+	public String string;
 
 	/**
 	 * @param string
@@ -27,5 +27,15 @@ public class CubeString {
 
 	public boolean isNotBlank() {
 		return !isBlank();
+	}
+
+	public CubeString scramble() {
+		string = StringUtils.scramble(string);
+		return this;
+	}
+
+	@Override
+	public String toString() {
+		return string;
 	}
 }
