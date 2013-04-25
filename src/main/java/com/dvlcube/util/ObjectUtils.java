@@ -61,8 +61,11 @@ public class ObjectUtils {
 
 	/**
 	 * @param property
+	 *            the property descriptor.
 	 * @param from
-	 * @return
+	 *            the object to call the getter on.
+	 * @return the result of calling the getter of the property represented by the property descriptor on
+	 *         object "from".
 	 * @author wonka
 	 * @throws InvocationTargetException
 	 * @throws IllegalArgumentException
@@ -76,7 +79,9 @@ public class ObjectUtils {
 
 	/**
 	 * @param propertyDescriptors
-	 * @return
+	 *            the array of property descriptors.
+	 * @return a hash map composed by a property name and a property descriptor. created from an array of
+	 *         property descriptors.
 	 * @author wonka
 	 * @since 06/04/2013
 	 */
