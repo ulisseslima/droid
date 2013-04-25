@@ -8,41 +8,50 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * 
  * @author wonka
  * @since 28/02/2013
  */
 public class StringUtils {
 	/**
-	 * @param name
-	 * @return
+	 * @param string
+	 *            the string to escape.
+	 * @return a string formatted for use in web pages.
 	 * @author wonka
 	 * @since 15/03/2013
 	 */
-	public static String escapeHTML(final String title) {
-		return title.replace("\"", "&quot;");
+	public static String escapeHTML(final String string) {
+		return string.replace("\"", "&quot;");
 	}
 
 	/**
-	 * @param events
-	 * @return
+	 * @param list
+	 *            the list to calculate.
+	 * @return a string representation of a list's size. Returning 0 for null.
 	 * @author wonka
 	 * @since 29/03/2013
 	 */
-	public static String getSize(List<?> events) {
-		return (String) (events != null ? events.size() : "0");
+	public static String getSize(List<?> list) {
+		return (String) (list != null ? list.size() : "0");
 	}
 
-	public static boolean isBlank(final String value) {
-		if (value == null) {
+	/**
+	 * @param string
+	 *            the string to check.
+	 * @return whether a string contains no printable characters.
+	 * @author wonka
+	 * @since 25/04/2013
+	 */
+	public static boolean isBlank(final String string) {
+		if (string == null) {
 			return true;
 		}
-		return value.isEmpty();
+		return string.trim().isEmpty();
 	}
 
 	/**
 	 * @param array
-	 * @return
+	 *            the array to randomize.
+	 * @return an array that is a result of mixing the index values of the first array.
 	 * @author wonka
 	 * @since 23/04/2013
 	 */
@@ -81,6 +90,7 @@ public class StringUtils {
 
 	/**
 	 * @param object
+	 *            object to stringify.
 	 * @return A stringified representation of the Object.
 	 * @author wonka
 	 * @since 29/03/2013
