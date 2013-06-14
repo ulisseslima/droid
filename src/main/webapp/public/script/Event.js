@@ -1,6 +1,12 @@
 ENTITY_NAME = "event";
 EVENT = "#"+ENTITY_NAME;
-EVENT_COLLECTION = EVENT + "-collection"; 
+EVENT_COLLECTION = EVENT + "-collection";
+
+$("#event-collection").on("sortout", function(event, ui) {
+	var event = ui.helper;
+	remove(event[0]);
+	event.remove();
+});
 
 function fill(event, savedEvent) {
 	if (savedEvent) {
@@ -79,6 +85,18 @@ function vote(priority, times) {
 function add(event) {
 	if (event.querySelector(".name").value) {
 		doSubmit(event, "addevent", function (response) {
+			var savedEvent = response.content;
+			fill(event, savedEvent);
+		});
+	}
+}
+
+/**
+ * @param event The id of the element that holds all elements with properties of the Event object.
+ */
+function remove(event) {
+	if (event.querySelector(".name").value) {
+		doSubmit(event, "removeevent", function (response) {
 			var savedEvent = response.content;
 			fill(event, savedEvent);
 		});
