@@ -106,4 +106,15 @@ public class ListingServlet {
 			}
 		};
 	}
+
+	@RequestMapping("/removeevent")
+	public @ResponseBody
+	Response<Event> removeevent(@RequestBody final Event event) {
+		if (event.hasRequiredAttributes()) {
+			final Response<Event> deletedEvent = eventService.delete(event);
+			return deletedEvent;
+		} else {
+			return null;
+		}
+	}
 }
