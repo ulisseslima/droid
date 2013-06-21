@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dvlcube.droid.bean.Shared;
-
 /**
  * 
  * @author wonka
@@ -22,7 +20,7 @@ public class ClassUtils {
 	public static boolean doesImplement(Class<?> class1, Class<?> interfaceClass) {
 		Class<?>[] interfaces = class1.getInterfaces();
 		for (Class<?> class2 : interfaces) {
-			if (class2 == Shared.class) {
+			if (class2 == interfaceClass) {
 				return true;
 			}
 		}
