@@ -1,8 +1,17 @@
 package com.dvlcube.util;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
+import java.awt.image.PixelGrabber;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,8 +23,16 @@ import javax.imageio.ImageIO;
  * @since 24/05/2013
  */
 public class ImageUtils {
-	public static BufferedImage binarize(BufferedImage original) {
+	private static final int[] RGB_MASKS = { 0xFF0000, 0xFF00, 0xFF };
+	private static final ColorModel RGB_OPAQUE = new DirectColorModel(32, RGB_MASKS[0], RGB_MASKS[1], RGB_MASKS[2]);
 
+	/**
+	 * @param original
+	 * @return binarized image.
+	 * @since 21/06/2013
+	 * @author wonka
+	 */
+	public static BufferedImage binarize(BufferedImage original) {
 		int red;
 		int newPixel;
 
@@ -41,7 +58,17 @@ public class ImageUtils {
 		return binarized;
 	}
 
-	// Convert R, G, B, Alpha to standard 8 bit
+	/**
+	 * Convert R, G, B, Alpha to standard 8 bit
+	 * 
+	 * @param alpha
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @return standard 8 bit
+	 * @since 21/06/2013
+	 * @author wonka
+	 */
 	public static int colorToRGB(int alpha, int red, int green, int blue) {
 		int newPixel = 0;
 		newPixel += alpha;
@@ -55,7 +82,35 @@ public class ImageUtils {
 		return newPixel;
 	}
 
-	// Return histogram of grayscale image
+	/**
+	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-jpg-file/4388542#4388542
+	 * <p>
+	 * I needed to make all this stuff with rgb masks and the color model because otherwise pixels wouldn't
+	 * get drawn correctly.
+	 * 
+	 * @param pixels
+	 *            the pixels.
+	 * @param width
+	 *            width.
+	 * @param height
+	 *            height.
+	 * @return a buffered image created from the pixel array.
+	 * @since 25/06/2013
+	 * @author wonka
+	 */
+	public static BufferedImage draw(int[] pixels, int width, int height) {
+		DataBuffer buffer = new DataBufferInt(pixels, width * height);
+		WritableRaster raster = Raster.createPackedRaster(buffer, width, height, width, RGB_MASKS, null);
+		BufferedImage image = new BufferedImage(RGB_OPAQUE, raster, false, null);
+		return image;
+	}
+
+	/**
+	 * @param input
+	 * @return Return histogram of grayscale image
+	 * @since 21/06/2013
+	 * @author wonka
+	 */
 	public static int[] imageHistogram(BufferedImage input) {
 		int[] histogram = new int[256];
 
@@ -113,6 +168,51 @@ public class ImageUtils {
 			}
 		}
 		return threshold;
+	}
+
+	public static int[] pixels(BufferedImage image) {
+		return image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+	}
+
+	public static byte[] pixelsb(BufferedImage image) {
+		DataBuffer dataBuffer = image.getRaster().getDataBuffer();
+		if (dataBuffer instanceof DataBufferByte) {
+			return ((DataBufferByte) dataBuffer).getData();
+		}
+		throw new IllegalArgumentException("image is instanceof " + dataBuffer.getClass());
+	}
+
+	/**
+	 * http://stackoverflow.com/questions/4386446/problem-using-imageio-write-jpg-file/4388542#4388542
+	 * 
+	 * @param image
+	 * @return image pixels.
+	 * @since 26/06/2013
+	 * @author wonka
+	 */
+	public static Object pixelsg(BufferedImage image) {
+		PixelGrabber pg = new PixelGrabber(image, 0, 0, -1, -1, true);
+		try {
+			pg.grabPixels();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return pg.getPixels();
+	}
+
+	/**
+	 * @param image
+	 *            the image.
+	 * @return image pixels.
+	 * @since 21/06/2013
+	 * @author wonka
+	 */
+	public static int[] pixelsi(BufferedImage image) {
+		DataBuffer dataBuffer = image.getRaster().getDataBuffer();
+		if (dataBuffer instanceof DataBufferInt) {
+			return ((DataBufferInt) dataBuffer).getData();
+		}
+		throw new IllegalArgumentException("image is instanceof " + dataBuffer.getClass());
 	}
 
 	/**
@@ -219,7 +319,14 @@ public class ImageUtils {
 		}
 	}
 
-	// The luminance method
+	/**
+	 * The luminance method
+	 * 
+	 * @param original
+	 * @return grayscale image.
+	 * @since 21/06/2013
+	 * @author wonka
+	 */
 	public static BufferedImage toGray(BufferedImage original) {
 		int alpha, red, green, blue;
 		int newPixel;
@@ -243,5 +350,14 @@ public class ImageUtils {
 			}
 		}
 		return lum;
+	}
+
+	public static void write(int[] pixels, Dimension dimension, String file) {
+		BufferedImage image = draw(pixels, dimension.width, dimension.height);
+		try {
+			ImageIO.write(image, "png", new File(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
