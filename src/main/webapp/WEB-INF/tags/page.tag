@@ -7,18 +7,22 @@
 <%@ attribute name="title" description="Page title message key." required="false" %>
 <%@ attribute name="titleText" description="Page title as string." required="false" %>
 
+<spring:url var="jspath" value="/static/script" />
+<spring:url var="csspath" value="/static/style" />
+
 <!doctype html>
 <html>
-	<head>
+	<head profile="http://www.w3.org/2005/10/profile">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="icon" 
+		      type="image/png" 
+		      href="${csspath}/favicon.ico">
 		<title>Dvlcube -
 			<c:if test="${not empty title}">
 				<spring:message code="${title}" />
 			</c:if> 
 			${titleText}
 		</title>
-		<spring:url var="jspath" value="/static/script" />
-		<spring:url var="csspath" value="/static/style" />
 		<link rel="stylesheet" type="text/css" href="${csspath}/reset.css">
 		<script type="text/javascript" src="${jspath}/jquery.js"></script>
 		<script type="text/javascript" src="${jspath}/jquery-ui.js"></script>

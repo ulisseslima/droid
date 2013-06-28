@@ -8,11 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dvlcube.cuber.CubeList;
+import com.dvlcube.cuber.CubeList.Factory;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.droid.service.UserService;
 import com.dvlcube.service.Response;
-import com.dvlcube.util.CubeList;
-import com.dvlcube.util.CubeList.Factory;
 
 /**
  * 

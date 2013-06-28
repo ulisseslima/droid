@@ -1,4 +1,4 @@
-package com.dvlcube.util;
+package com.dvlcube.cuber;
 
 import java.util.Arrays;
 import java.util.Collection;

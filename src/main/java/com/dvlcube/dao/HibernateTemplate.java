@@ -19,8 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import com.dvlcube.bean.Identifiable;
 import com.dvlcube.bean.QueryFieldName;
+import com.dvlcube.cuber.CubeGenerics;
 import com.dvlcube.droid.bean.User;
-import com.dvlcube.util.CubeGenerics;
 
 /**
  * 

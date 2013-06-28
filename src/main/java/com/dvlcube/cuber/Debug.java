@@ -1,6 +1,6 @@
-package com.dvlcube.util;
+package com.dvlcube.cuber;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 import java.io.File;
 

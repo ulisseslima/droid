@@ -1,6 +1,6 @@
-package com.dvlcube.util;
+package com.dvlcube.cuber;
 
-import static com.dvlcube.util.Cuber.$f;
+import static com.dvlcube.cuber.Cuber.$f;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;

@@ -1,6 +1,6 @@
 package com.dvlcube.service;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 import java.util.ArrayList;
 import java.util.List;

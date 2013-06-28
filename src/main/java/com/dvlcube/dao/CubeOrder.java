@@ -1,6 +1,6 @@
 package com.dvlcube.dao;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package com.dvlcube.droid.service.rr;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 /**
  * @author wonka

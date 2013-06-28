@@ -1,6 +1,6 @@
 package com.dvlcube.droid.bean;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 import java.util.Date;
 import java.util.Set;

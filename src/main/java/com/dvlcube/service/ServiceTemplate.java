@@ -1,6 +1,6 @@
 package com.dvlcube.service;
 
-import static com.dvlcube.util.Cuber.$;
+import static com.dvlcube.cuber.Cuber.$;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.bean.Trackable;
+import com.dvlcube.cuber.I18n;
 import com.dvlcube.dao.DaoCRUD;
 import com.dvlcube.droid.bean.Owned;
 import com.dvlcube.droid.bean.Shared;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.service.BasicInfo.Field;
-import com.dvlcube.util.I18n;
 
 /**
  * 
