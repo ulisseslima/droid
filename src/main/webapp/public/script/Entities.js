@@ -5,7 +5,7 @@ draft_counter = 0;
 $(document).ready(function () {
 	$(".draft").children(".name, .participant-name").bind("focus", newEntity);
 	
-    $(".property").bind("blur", function () {
+    $(".property").on("input", function () {
 		add(this.parentNode);
     });
     $(".name, .description").bind("focus", function () {
