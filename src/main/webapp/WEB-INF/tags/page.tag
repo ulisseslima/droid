@@ -35,7 +35,7 @@
 			String[] scripts = js.split(",");
 			for (String script : scripts) {
 				String scriptName = script.trim() + ".js";
-				%><script async type="text/javascript" src="${jspath}/<% out.print(scriptName);%>"></script><% 
+				%><script defer type="text/javascript" src="${jspath}/<% out.print(scriptName);%>"></script><% 
 			}
 		}
 		%>
