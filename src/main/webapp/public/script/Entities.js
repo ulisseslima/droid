@@ -1,12 +1,18 @@
 ENTITY_NAME = undefined;
 currentEntityName = undefined;
 draft_counter = 0;
+var saveTimeout = undefined;
+var DELAY_BEFORE_SAVING = 200;
 
 $(document).ready(function () {
 	$(".draft").children(".name, .participant-name").bind("focus", newEntity);
 	
     $(".property").on("input", function () {
-		add(this.parentNode);
+    	if (saveTimeout) clearTimeout(saveTimeout);
+    	var parent = this.parentNode; 
+    	setTimeout(function (){
+    		add(parent);
+    	}, DELAY_BEFORE_SAVING);
     });
     $(".name, .description").bind("focus", function () {
     	var entity = this.parentNode;
