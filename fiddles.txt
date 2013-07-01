@@ -1,2 +1,4 @@
-Event Page: http://jsfiddle.net/dvlcube/ev3Fj/1/
-Password check: http://jsfiddle.net/dvlcube/xUvbW/16/
+Event Page: http://jsfiddle.net/dvlcube/ev3Fj
+Password check: http://jsfiddle.net/dvlcube/xUvbW
+Memes: http://jsfiddle.net/dvlcube/XEe7A
+Meme full: http://jsfiddle.net/dvlcube/BaLPC
