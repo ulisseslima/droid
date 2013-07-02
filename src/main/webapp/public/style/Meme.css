@@ -1,0 +1,36 @@
+@import url(http://fonts.googleapis.com/css?family=Fjalla+One&subset=latin,latin-ext);
+.meme .name {
+    text-align: center;
+    font-weight: bold;
+}
+.meme img.small {
+    width: 290px;
+    border: 1px solid black;    
+}
+.meme img, .meme-full img {    
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.meme span, .meme-full span {
+    font-size: 70px;
+    font-weight: bolder;
+    font-family: 'Fjalla One', sans-serif;    
+    position: relative;    
+    color: white;
+    cursor: default;
+    -webkit-text-stroke: 2px black;
+    z-index: 99;
+    max-width: 290px;
+    display: block;
+    margin: 0 auto;
+    -webkit-transition: font-size 0.5s;
+    transition: font-size 0.5s;
+}
+.meme-full {
+    text-align: center;
+}
+.meme .property {
+    display: block;
+    margin: 0 auto;
+}
