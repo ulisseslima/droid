@@ -28,8 +28,8 @@ public class Meme implements BasicInfo, Owned {
 
 	private static final long serialVersionUID = 6362154457938757910L;
 	private String caption;
-	private float captionX;
-	private float captionY;
+	private Double captionX;
+	private Double captionY;
 	private Date dateModified; // timestamp
 	private String description;
 	@Id
@@ -93,14 +93,14 @@ public class Meme implements BasicInfo, Owned {
 	/**
 	 * @return the captionX
 	 */
-	public float getCaptionX() {
+	public Double getCaptionX() {
 		return captionX;
 	}
 
 	/**
 	 * @return the captionY
 	 */
-	public float getCaptionY() {
+	public Double getCaptionY() {
 		return captionY;
 	}
 
@@ -198,7 +198,7 @@ public class Meme implements BasicInfo, Owned {
 	 * @param captionX
 	 *            the captionX to set
 	 */
-	public void setCaptionX(int captionX) {
+	public void setCaptionX(Double captionX) {
 		this.captionX = captionX;
 	}
 
@@ -206,7 +206,7 @@ public class Meme implements BasicInfo, Owned {
 	 * @param captionY
 	 *            the captionY to set
 	 */
-	public void setCaptionY(int captionY) {
+	public void setCaptionY(Double captionY) {
 		this.captionY = captionY;
 	}
 
