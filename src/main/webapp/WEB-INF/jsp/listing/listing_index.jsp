@@ -4,7 +4,7 @@
 
 <dvl:page title="listing.app.title" js="Entities, Listing">
 	<dvl:body subtitle="listing.app.title">
-		<div id="listing-collection">			
+		<div id="listing-collection" class="collection">
 			<c:if test="${not empty response.contents}">
 				<c:forEach var="listing" items="${response.contents}">
 					<input:listing var="${listing}" />

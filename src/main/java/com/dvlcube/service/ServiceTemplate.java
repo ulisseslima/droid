@@ -95,10 +95,14 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 
 	private User getAuthenticatedUser() {
 		if (authentication != null) {
-			User user = getDao().retrieveOwner(authentication.getName());
-			return user;
+			try {
+				User user = getDao().retrieveOwner(authentication.getName());
+				return user;
+			} catch (Exception e) {
+				return null;
+			}
 		}
-		throw new IllegalStateException("Couldn't get user authentication context");
+		return null;
 	}
 
 	/**
@@ -155,13 +159,15 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		User user = getAuthenticatedUser();
 		Set<Criterion> authConditions = new HashSet<>();
 		Set<QueryFieldName> aliases = new HashSet<>();
-		if (thisIsA(Shared.class)) {
-			Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
-			aliases.add(Shared.Field.participants);
-			authConditions.add(isSharedWithLoggedInUser);
-		} else if (thisIsA(Owned.class)) {
-			Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
-			authConditions.add(isOwnedByLoggedInUser);
+		if (user != null) {
+			if (thisIsA(Shared.class)) {
+				Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
+				aliases.add(Shared.Field.participants);
+				authConditions.add(isSharedWithLoggedInUser);
+			} else if (thisIsA(Owned.class)) {
+				Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
+				authConditions.add(isOwnedByLoggedInUser);
+			}
 		}
 		Set<Criterion> allConditions = $(conditions).concatIntoSet(authConditions);
 		final List<T> list = getDao().list(getT(), start, maxResults, orders, allConditions, aliases);
@@ -206,12 +212,17 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	private void setOwner(T entity) {
 		if (authentication != null) {
 			if (entity instanceof Owned) {
-				User owner = getDao().retrieveOwner(authentication.getName());
-				((Owned) entity).setOwner(owner);
-				if (entity instanceof Shared) {
-					HashSet<User> set = new HashSet<>();
-					set.add(owner);
-					((Shared) entity).setParticipants(set);
+				try {
+					User owner = getDao().retrieveOwner(authentication.getName());
+					((Owned) entity).setOwner(owner);
+					if (entity instanceof Shared) {
+						HashSet<User> set = new HashSet<>();
+						set.add(owner);
+						((Shared) entity).setParticipants(set);
+					}
+				} catch (Exception e) {
+					// TODO check why null pointer happens when trying to getName() from authentication even
+					// if it's not null
 				}
 			}
 		}

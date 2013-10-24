@@ -2,7 +2,7 @@ ENTITY_NAME = undefined;
 currentEntityName = undefined;
 draft_counter = 0;
 var saveTimeout = undefined;
-var DELAY_BEFORE_SAVING = 200;
+var DELAY_BEFORE_SAVING = 1000;
 
 $(document).ready(function () {
 	$(".draft").children(".name, .participant-name").bind("focus", newEntity);
@@ -10,7 +10,7 @@ $(document).ready(function () {
     $(".property").on("input", function () {
     	if (saveTimeout) clearTimeout(saveTimeout);
     	var parent = this.parentNode; 
-    	setTimeout(function (){
+    	saveTimeout = setTimeout(function () {
     		add(parent);
     	}, DELAY_BEFORE_SAVING);
     });
@@ -35,7 +35,8 @@ function newEntity() {
 	$(this.parentNode).removeClass("transparent draft");
 	$(this.parentNode).children("input").off("focus");
 	if (typeof extend_newEntity === "function") extend_newEntity(clone);
-	clone[0].id = "draft-"+(draft_counter++);
+	var newId = clone[0].id.replace(/\d+$/, ++draft_counter);
+	clone[0].id = newId;
 	clone.appendTo(this.parentNode.parentNode);
 }
 

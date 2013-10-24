@@ -1,6 +1,6 @@
 busy = false;
 function Request() {}
-DEBUG = true;
+DEBUG = false;
 
 $(document).ready(function () {
     $(".auto-width").bind("keypress", autoWidth);
@@ -52,13 +52,15 @@ function $qs(obj, selector, value) {
 			default: object.value = value;
 		}		
 	} else {
-        switch (object.tagName) {
-            case "A" : return object.getAttribute("href");
-            default: {
-                value = object.value;
-		        return isNaN(value)? value : parseInt(value);
-            }
-        }		
+		if (object) {
+	        switch (object.tagName) {
+	            case "A" : return object.getAttribute("href");
+	            default: {
+	                value = object.value;
+			        return isNaN(value)? value : parseInt(value);
+	            }
+	        }
+		}
 	}
 }
 
@@ -80,7 +82,6 @@ function fillParent(request, child) {
 function doSubmit(form, actionName, callback) {
 	if (form.id) {
 		var request = form2js(form.id);
-	//	fillParent(request, form);
 		var action = getActionName(actionName, form); 
 		
 		post(action, request, function(response) {

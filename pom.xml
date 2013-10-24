@@ -12,7 +12,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<org.springframework.version>3.2.2.RELEASE</org.springframework.version>
 		<org.springframework.old.version>3.1.2.RELEASE</org.springframework.old.version>
-		<org.springframework.milestone.version>3.2.0.M2</org.springframework.milestone.version>
+		<org.springframework.milestone.version>3.2.0.RC1</org.springframework.milestone.version>
 		<mysql.connector.version>5.1.21</mysql.connector.version>
 		<digester.version>3.2</digester.version>
 		<jackson.version>1.9.12</jackson.version>

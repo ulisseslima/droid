@@ -9,13 +9,18 @@
 			<li>
 				<dvl:link href="./listing/" key="listing.app.title" />
 			</li>
+			<li>
+				<dvl:link href="./meme/" key="meme.title" />
+			</li>
 		</ul>
 		
-		<p></p>
-		<h3>Username : ${username}</h3>	
-	 	
-	 	<p>
-			<a href="<c:url value='/j_spring_security_logout' />">Logout</a>
-		</p>
+		<c:if test="${not empty username}">
+			<p></p>
+			<h3>Username : ${username}</h3>	
+		 	
+		 	<p>
+				<a href="<c:url value='/j_spring_security_logout' />">Logout</a>
+			</p>
+		</c:if>
 	</dvl:body>
 </dvl:page>

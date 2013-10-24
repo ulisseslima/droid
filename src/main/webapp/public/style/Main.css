@@ -40,9 +40,9 @@ h1 {
     color: hsl(0, 5%, 80%);;
 }
 
-#event-collection, #listing-collection, .event, .listing, .description {margin: 0 auto;}
+#event-collection, #listing-collection, .collection, .event, .listing, .description {margin: 0 auto;}
 
-#event-collection, #listing-collection {
+#event-collection, #listing-collection, .collection {
     width: 305px;
 }
 
@@ -101,7 +101,7 @@ h1 {
     transition: height 0.5s;
 }
 
-.event, .listing {
+.meme, .event, .listing {
     width: inherit;
     border: none;
     border-right: 2px black;

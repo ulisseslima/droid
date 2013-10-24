@@ -36,8 +36,12 @@ public class GatekeeperServlet {
 	 * @since 29/03/2013
 	 */
 	private String handleEntryPoint(final ModelMap model, final Principal principal) {
-		final String name = principal.getName();
-		model.addAttribute("username", name);
+		try {
+			final String name = principal.getName();
+			model.addAttribute("username", name);
+		} catch (Exception e) {
+
+		}
 		return "welcome";
 	}
 

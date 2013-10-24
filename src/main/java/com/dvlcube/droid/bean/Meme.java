@@ -28,8 +28,8 @@ public class Meme implements BasicInfo, Owned {
 
 	private static final long serialVersionUID = 6362154457938757910L;
 	private String caption;
-	private Double captionX;
-	private Double captionY;
+	private Double captionX = 0d;
+	private Double captionY = 0d;
 	private Date dateModified; // timestamp
 	private String description;
 	@Id
@@ -265,8 +265,7 @@ public class Meme implements BasicInfo, Owned {
 
 	@Override
 	public String toString() {
-		return "Meme [caption=" + caption + ", description=" + description + ", id=" + id + ", image=" + image
-				+ ", name=" + name + ", owner=" + owner + "]";
+		return $(this).stringify();
 	}
 
 	@Override

@@ -5,7 +5,7 @@
 <dvl:page title="event.events" titleText="- ${listing.name}" js="Entities, Event">
 	<dvl:body titleText="${listing.name}" href="${pageContext.request.contextPath}/listing/" tip="${listing.description}">
 		<input:hidden field="parentId" value="${listing.id}" />
-		<div id="event-collection">
+		<div id="event-collection" class="collection">
 			<c:if test="${not empty response.contents}">
 				<c:forEach var="event" items="${response.contents}">
 					<input:event var="${event}" />

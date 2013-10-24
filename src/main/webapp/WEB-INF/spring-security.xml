@@ -7,14 +7,19 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 	
+	<http security="none" pattern="/welcome" />
 	<http security="none" pattern="/login" />
 	<http security="none" pattern="/logout" />
 	<http security="none" pattern="/loginfailed" />
 	<http security="none" pattern="/denied" />
 	<http security="none" pattern="/signup" />
 	<http security="none" pattern="/newuser" />
-	<http security="none" pattern="/static/style/*" />
-	<http security="none" pattern="/static/script/*" />
+	<http security="none" pattern="/static/style/**" />
+	<http security="none" pattern="/static/script/**" />
+	<http security="none" pattern="/static/img/**" />
+	
+	<http security="none" pattern="/stuff/**" />
+	<http security="none" pattern="/meme/**" />
 	
 	<http auto-config="true" access-denied-page="/denied">
 		<intercept-url pattern="/**" access="ROLE_USER" />
