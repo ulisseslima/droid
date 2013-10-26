@@ -22,12 +22,14 @@ import com.dvlcube.service.BasicInfo;
 @Entity
 public class User implements BasicInfo, Principal {
 	public enum Field implements FieldName {
-		birth, email, events, id, name, telephone
+		birth, element, email, events, id, image, name, telephone
 	}
 
 	private static final long serialVersionUID = 3262522508885048363L;
+
 	private Date birth; // datetime
 	private Date dateModified; // timestamp
+	private String element;
 	private String email;
 	private boolean enabled;
 	@OneToMany
@@ -36,6 +38,7 @@ public class User implements BasicInfo, Principal {
 	@Id
 	@GeneratedValue
 	private Long id; // id
+	private String image;
 	private String name;
 	private String password;
 	private Integer telephone;
@@ -104,6 +107,13 @@ public class User implements BasicInfo, Principal {
 	}
 
 	/**
+	 * @return the element where this user is currently focused.
+	 */
+	public String getElement() {
+		return element;
+	}
+
+	/**
 	 * @return the email
 	 */
 	public String getEmail() {
@@ -135,6 +145,13 @@ public class User implements BasicInfo, Principal {
 	@Override
 	public Long getId() {
 		return id;
+	}
+
+	/**
+	 * @return the image
+	 */
+	public String getImage() {
+		return image;
 	}
 
 	@Override
@@ -215,6 +232,14 @@ public class User implements BasicInfo, Principal {
 	}
 
 	/**
+	 * @param element
+	 *            the element where this user is currently focused.
+	 */
+	public void setElement(String element) {
+		this.element = element;
+	}
+
+	/**
 	 * @param email
 	 *            the email to set
 	 */
@@ -253,6 +278,14 @@ public class User implements BasicInfo, Principal {
 	@Override
 	public void setId(final Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @param image
+	 *            the image to set
+	 */
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	/**
