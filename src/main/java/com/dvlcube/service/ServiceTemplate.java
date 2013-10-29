@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dvlcube.bean.Child;
 import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.bean.Trackable;
 import com.dvlcube.cuber.I18n;
@@ -33,6 +34,7 @@ import com.dvlcube.service.BasicInfo.Field;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDService<T> {
+	public static final String ENTITY_PACKAGE = "com.dvlcube.droid.bean";
 	private static final int NO_PAGINATION = -1;
 
 	@Autowired
@@ -113,6 +115,11 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	protected abstract DaoCRUD<T> getDao();
 
 	@Override
+	public String getEntityPackage() {
+		return ENTITY_PACKAGE;
+	}
+
+	@Override
 	public Object getLock() {
 		return lock;
 	}
@@ -164,6 +171,11 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 				Criterion isSharedWithLoggedInUser = Restrictions.eq(Shared.Field.participants.join(), user.getId());
 				aliases.add(Shared.Field.participants);
 				authConditions.add(isSharedWithLoggedInUser);
+			} else if (thisIsA(Child.class)) {
+				Criterion isSharedWithLoggedInUser = Restrictions.eq(Child.Field.parent_participants.join(),
+						user.getId());
+				aliases.add(Child.Field.parent_participants);
+				authConditions.add(isSharedWithLoggedInUser);
 			} else if (thisIsA(Owned.class)) {
 				Criterion isOwnedByLoggedInUser = Restrictions.eq(Owned.Field.owner.id(), user.getId());
 				authConditions.add(isOwnedByLoggedInUser);
@@ -202,6 +214,28 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	@Override
 	public Response<T> listRecentFirst() {
 		return listByDateModified(true);
+	}
+
+	@Override
+	public List<String> listSiblings(Child<? extends BasicInfo> child) {
+		BasicInfo parent = child.getParent();
+		return getDao().listSiblings(parent, child);
+	}
+
+	@Override
+	public BasicInfo load(String entity_id) {
+		String[] entity = entity_id.split("-");
+		try {
+			if (!entity[0].equalsIgnoreCase("nowhere")) {
+				String entityName = getEntityPackage() + "." + $(entity[0]).capitalize();
+				Class<?> entityClass = Class.forName(entityName);
+				BasicInfo object = getDao().retrieveBasic(entityClass, $(entity[1]).l());
+				return object;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
