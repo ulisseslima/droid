@@ -2,6 +2,7 @@ package com.dvlcube.droid.servlet;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import com.dvlcube.cuber.CubeList;
 import com.dvlcube.cuber.CubeList.Factory;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.droid.service.UserService;
+import com.dvlcube.droid.service.rr.UpdateLocationRequest;
 import com.dvlcube.service.Response;
 
 /**
@@ -46,6 +48,27 @@ public class UserServlet {
 		final Response<User> response = new Response<>(true, list);
 		map.put("response", response);
 		return index;
+	}
+
+	@RequestMapping("/updateLocation")
+	public @ResponseBody
+	Callable<Response<User>> refresh(final UpdateLocationRequest request) {
+		return new Callable<Response<User>>() {
+			@Override
+			public Response<User> call() throws Exception {
+				service.updateLocation(request);
+				System.out.println("location updated");
+				synchronized (service.getLock()) {
+					while (!service.hasUpdates(request.getLastUpdate())) {
+						System.out.println("waiting...");
+						service.getLock().wait();
+					}
+					Response<User> others = service.listUsersOnSamePage(request);
+					System.out.println("returning users");
+					return others;
+				}
+			}
+		};
 	}
 
 	@RequestMapping("/scroll")
