@@ -19,15 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dvlcube.bean.Child;
 import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.bean.Trackable;
+import com.dvlcube.cuber.Debug;
 import com.dvlcube.cuber.I18n;
 import com.dvlcube.dao.DaoCRUD;
 import com.dvlcube.droid.bean.Owned;
 import com.dvlcube.droid.bean.Shared;
 import com.dvlcube.droid.bean.User;
+import com.dvlcube.droid.service.rr.AsyncRequest;
 import com.dvlcube.service.BasicInfo.Field;
 
 /**
- * 
  * @author wonka
  * @since 15/09/2012
  */
@@ -233,7 +234,6 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 				return object;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -299,6 +299,18 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 			final Response<T> response = new Response<T>(true, getDao().update(saved));
 			response.setMessage(I18n.Response.SUCCESS.key());
 			return response;
+		}
+	}
+
+	@Override
+	public void waitForUpdates(AsyncRequest request) throws InterruptedException {
+		synchronized (lock) {
+			long tid = Thread.currentThread().getId();
+			while (!hasUpdates(request.getLastUpdate())) {
+				Debug.log("Thread %d waiting...", tid);
+				lock.wait();
+			}
+			Debug.log("Thread %d ready.", tid);
 		}
 	}
 }
