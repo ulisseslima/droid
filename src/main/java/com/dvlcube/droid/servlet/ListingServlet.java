@@ -15,6 +15,7 @@ import com.dvlcube.droid.bean.Listing;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.droid.service.EventService;
 import com.dvlcube.droid.service.ListingService;
+import com.dvlcube.droid.service.UserService;
 import com.dvlcube.droid.service.rr.NewEventsRequest;
 import com.dvlcube.droid.service.rr.NewParticipantRequest;
 import com.dvlcube.service.Response;
@@ -31,16 +32,19 @@ public class ListingServlet {
 	private static final String index = _namespace + "index";
 
 	@Autowired
-	private EventService eventService;
+	private EventService events;
 
 	@Autowired
-	private ListingService service;
+	private ListingService listings;
+
+	@Autowired
+	private UserService users;
 
 	@RequestMapping("/add")
 	public @ResponseBody
 	Response<Listing> add(@RequestBody final Listing listing) {
 		if (listing.hasRequiredAttributes()) {
-			return service.addOrUpdate(listing);
+			return listings.addOrUpdate(listing);
 		} else {
 			return null;
 		}
@@ -50,7 +54,7 @@ public class ListingServlet {
 	public @ResponseBody
 	Response<Event> addevent(@RequestBody final Event event) {
 		if (event.hasRequiredAttributes()) {
-			final Response<Event> savedEvent = eventService.addOrUpdate(event);
+			final Response<Event> savedEvent = events.addOrUpdate(event);
 			return savedEvent;
 		} else {
 			return null;
@@ -60,22 +64,26 @@ public class ListingServlet {
 	@RequestMapping("/addparticipant")
 	public @ResponseBody
 	Response<User> addparticipant(@RequestBody final NewParticipantRequest participant) {
-		return service.addParticipant(participant);
+		return listings.addParticipant(participant);
 	}
 
 	@RequestMapping("/")
 	public String index(final Map<String, Object> map) {
-		final Response<Listing> response = service.listRecentFirst();
+		final Response<Listing> response = listings.listRecentFirst();
 		map.put("response", response);
 		return index;
 	}
 
 	@RequestMapping("/{listingId}")
 	public String listing(@PathVariable final long listingId, final Map<String, Object> map) {
-		final Response<Event> response = eventService.listByListing(listingId);
-		Listing listing = service.get(listingId).getContent();
-		map.put("response", response);
+		User me = users.getSession();
+		Listing listing = listings.get(listingId).getContent();
+		final Response<Event> response = events.listByListing(listingId);
+
+		map.put("me", me);
 		map.put("listing", listing);
+		map.put("response", response);
+
 		return "event/event_index";
 	}
 
@@ -96,13 +104,9 @@ public class ListingServlet {
 		return new Callable<Response<Event>>() {
 			@Override
 			public Response<Event> call() throws Exception {
-				synchronized (eventService.getLock()) {
-					while (!eventService.hasUpdates(request.getLastUpdate())) {
-						eventService.getLock().wait();
-					}
-					final Response<Event> updatedEvents = eventService.listNew(request);
-					return updatedEvents;
-				}
+				events.waitForUpdates(request);
+				final Response<Event> updatedEvents = events.listNew(request);
+				return updatedEvents;
 			}
 		};
 	}
@@ -111,7 +115,7 @@ public class ListingServlet {
 	public @ResponseBody
 	Response<Event> removeevent(@RequestBody final Event event) {
 		if (event.hasRequiredAttributes()) {
-			final Response<Event> deletedEvent = eventService.delete(event);
+			final Response<Event> deletedEvent = events.delete(event);
 			return deletedEvent;
 		} else {
 			return null;
