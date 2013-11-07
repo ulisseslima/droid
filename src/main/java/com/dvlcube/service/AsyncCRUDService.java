@@ -1,5 +1,7 @@
 package com.dvlcube.service;
 
+import com.dvlcube.droid.service.rr.AsyncRequest;
+
 /**
  * 
  * @author wonka
@@ -20,4 +22,13 @@ public interface AsyncCRUDService<T extends BasicInfo> extends CRUDService<T> {
 	 * @since 19/03/2013
 	 */
 	boolean hasUpdates(long date);
+
+	/**
+	 * Blocks execution of the current thread until the service decides there are updates.
+	 * 
+	 * @author wonka
+	 * @throws InterruptedException
+	 * @since 06/11/2013
+	 */
+	void waitForUpdates(AsyncRequest request) throws InterruptedException;
 }
