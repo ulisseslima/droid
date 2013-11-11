@@ -2,15 +2,16 @@ package com.dvlcube.droid.servlet;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import com.dvlcube.cuber.CubeList;
 import com.dvlcube.cuber.CubeList.Factory;
+import com.dvlcube.cuber.Debug;
 import com.dvlcube.droid.bean.User;
 import com.dvlcube.droid.service.UserService;
 import com.dvlcube.droid.service.rr.UpdateLocationRequest;
@@ -50,31 +51,34 @@ public class UserServlet {
 		return index;
 	}
 
-	@RequestMapping("/updateLocation")
-	public @ResponseBody
-	Callable<Response<User>> refresh(final UpdateLocationRequest request) {
-		return new Callable<Response<User>>() {
-			@Override
-			public Response<User> call() throws Exception {
-				service.updateLocation(request);
-				System.out.println("location updated");
-				synchronized (service.getLock()) {
-					while (!service.hasUpdates(request.getLastUpdate())) {
-						System.out.println("waiting...");
-						service.getLock().wait();
-					}
-					Response<User> others = service.listUsersOnSamePage(request);
-					System.out.println("returning users");
-					return others;
-				}
-			}
-		};
-	}
-
 	@RequestMapping("/scroll")
 	public @ResponseBody
 	Response<User> scroll() {
 		final Response<User> response = new Response<>(true, list.scroll());
 		return response;
+	}
+
+	@RequestMapping("/updateLocation")
+	public @ResponseBody
+	Response<User> updateLocation(final UpdateLocationRequest request) {
+		service.updateLocation(request);
+		return new Response<>(true);
+	}
+
+	@RequestMapping("/updatePeople")
+	public @ResponseBody
+	DeferredResult<Response<User>> updatePeople(final UpdateLocationRequest request) {
+		Debug.log("Receiving people request");
+		final DeferredResult<Response<User>> deferredResult = new DeferredResult<>();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				service.waitForUpdates(request);
+				Response<User> others = service.listUsersOnSamePage(request);
+				deferredResult.setResult(others);
+			}
+		}).start();
+		return deferredResult;
 	}
 }
