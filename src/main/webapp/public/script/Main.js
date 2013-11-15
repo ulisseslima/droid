@@ -1,6 +1,6 @@
 busy = false;
 function Request() {}
-DEBUG = false;
+DEBUG = true;
 
 $(document).ready(function () {
     $(".auto-width").bind("keypress", autoWidth);
@@ -100,4 +100,40 @@ function getActionName(action, form) {
 	} else {
 		console.log("Missing action name");
 	}
+}
+
+/**
+ * @param name this is the class that is declared before the desired class name.
+ * @param allClasses this is the object's className.
+ * @returns the name of the class that is next to "name" in the list of "allClasses". 
+ */
+function classAfter(name, allClasses) {
+	var classArr = allClasses.split(" ");			
+	
+	for (var i in classArr) {					
+		if (classArr[i] == name) {
+			var j = parseInt(i)+1;
+			return classArr[j];					
+		}
+	}
+	return undefined;
+}
+
+function path(url) {
+	return $("#url-context")[0].value + url;
+}
+
+/**
+ * Marks a selection as being of a certain class, with the option of providing an exception selector, and removing a certain class.
+ * @param className class name to add.
+ * @param selector target elements.
+ * @param exceptionSelector exclusion elements.
+ * @param notClassName if specified, this class will be removed.
+ */
+function markAs(className, selector, exceptionSelector, notClassName) {
+	var collection = $(selector);
+	if (exceptionSelector) collection=collection.not(exceptionSelector);
+	
+	collection.addClass(className);
+	if (notClassName) collection.removeClass(notClassName);
 }
