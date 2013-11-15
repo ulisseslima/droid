@@ -17,6 +17,16 @@ public class CubeString {
 		this.string = string;
 	}
 
+	public CubeString capitalize() {
+		string = StringUtils.capitalize(string);
+		return this;
+	}
+
+	public CubeString decapitalize() {
+		string = StringUtils.decapitalize(string);
+		return this;
+	}
+
 	public CubeString escapeHTML() {
 		return new CubeString(StringUtils.escapeHTML(string));
 	}
@@ -27,6 +37,19 @@ public class CubeString {
 
 	public boolean isNotBlank() {
 		return !isBlank();
+	}
+
+	/**
+	 * @return converts to long. returns null in case of exception.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	public Long l() {
+		try {
+			return Long.parseLong(string);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public CubeString scramble() {

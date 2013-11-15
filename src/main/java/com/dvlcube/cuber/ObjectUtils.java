@@ -16,6 +16,8 @@ public class ObjectUtils {
 	/**
 	 * Adapted from
 	 * http://stackoverflow.com/questions/835416/how-to-copy-properties-from-one-java-bean-to-another
+	 * <p>
+	 * TODO there is still chance of stack overflow when copying objects.
 	 * 
 	 * @param from
 	 *            an object
@@ -23,10 +25,13 @@ public class ObjectUtils {
 	 *            to another object
 	 * @param ignoreNull
 	 *            whether null values should be copied.
+	 * @return true in case any of the properties changed.
 	 * @author wonka
 	 * @since 06/04/2013
 	 */
-	public static void copyProperties(Object from, Object to, boolean ignoreNull) {
+	public static boolean copyProperties(Object from, Object to, boolean ignoreNull) {
+		// TODO return true only if a property changed
+		boolean propertyChanged = true;
 		try {
 			Class<? extends Object> fromClass = from.getClass();
 			Class<? extends Object> toClass = to.getClass();
@@ -57,6 +62,7 @@ public class ObjectUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return propertyChanged;
 	}
 
 	/**
@@ -141,9 +147,10 @@ public class ObjectUtils {
 	 * @param to
 	 *            another object
 	 * @author wonka
+	 * @return
 	 * @since 06/04/2013
 	 */
-	public static void updateProperties(Object from, Object to) {
-		copyProperties(from, to, true);
+	public static boolean updateProperties(Object from, Object to) {
+		return copyProperties(from, to, true);
 	}
 }

@@ -6,9 +6,11 @@ import java.util.Set;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 
+import com.dvlcube.bean.Child;
 import com.dvlcube.bean.Identifiable;
 import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.droid.bean.User;
+import com.dvlcube.service.BasicInfo;
 
 /**
  * @author wonka
@@ -86,6 +88,15 @@ public interface DaoCRUD<E extends Identifiable> extends CRUD<E> {
 		Set<QueryFieldName> aliases);
 
 	/**
+	 * @param parent
+	 * @param child
+	 * @return a list of element ids.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	List<String> listSiblings(BasicInfo parent, Child<? extends BasicInfo> child);
+
+	/**
 	 * @param entityName
 	 * @param entity
 	 * @return And object E that matches the properties in entity.
@@ -102,6 +113,24 @@ public interface DaoCRUD<E extends Identifiable> extends CRUD<E> {
 	 * @since 13/09/2012
 	 */
 	E retrieve(Class<E> entityName, long id);
+
+	/**
+	 * @param entity
+	 * @param id
+	 * @return an entity with the id.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	BasicInfo retrieveBasic(Class<?> entity, long id);
+
+	/**
+	 * @param entityName
+	 * @param name
+	 * @return the found object.
+	 * @author wonka
+	 * @since 15/11/2013
+	 */
+	E retrieveByName(Class<E> entityName, String name);
 
 	/**
 	 * @param name

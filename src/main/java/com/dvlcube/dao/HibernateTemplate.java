@@ -1,5 +1,7 @@
 package com.dvlcube.dao;
 
+import static com.dvlcube.cuber.Cuber.$;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,10 +19,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.dvlcube.bean.Child;
 import com.dvlcube.bean.Identifiable;
 import com.dvlcube.bean.QueryFieldName;
 import com.dvlcube.cuber.CubeGenerics;
 import com.dvlcube.droid.bean.User;
+import com.dvlcube.service.BasicInfo;
 
 /**
  * 
@@ -82,7 +86,7 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		 */
 		private void addAliases(Set<QueryFieldName> aliases) {
 			for (QueryFieldName fieldName : aliases) {
-				query.createAlias(fieldName.name(), fieldName.getAlias());
+				query.createAlias(fieldName.name().replace("_", "."), fieldName.getAlias());
 			}
 		}
 
@@ -237,6 +241,25 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 	}
 
 	@Override
+	public List<String> listSiblings(BasicInfo parent, Child<? extends BasicInfo> child) {
+		StringBuilder q = new StringBuilder();
+		q.append("select ");
+		q.append(String.format("'%s-'", $(child.getClass()).getElementName()));
+		q.append(" || child.id ");
+		q.append("from ");
+		q.append(String.format("%s as parent,", $(parent.getClass()).getName()));
+		q.append(String.format("%s as child ", $(child.getClass()).getName()));
+		q.append("where");
+		q.append(" child.parent.id = parent.id and");
+		q.append(" parent.id = :parentId");
+
+		Query query = getSession().createQuery(q.toString());
+		query.setParameter("parentId", parent.getId());
+		List<?> list = query.list();
+		return CubeGenerics.<String> uncheckedList(list);
+	}
+
+	@Override
 	public E retrieve(final Class<E> entityName, final E entity) {
 		if (entity.getId() != null) {
 			return retrieve(entityName, (Long) entity.getId());
@@ -256,6 +279,23 @@ public abstract class HibernateTemplate<E extends Identifiable> implements DaoCR
 		Object object = getSession().load(entity, id);
 		E e = CubeGenerics.<E> unchecked(object);
 		return e;
+	}
+
+	@Override
+	public BasicInfo retrieveBasic(final Class<?> entity, final long id) {
+		BasicInfo object = (BasicInfo) getSession().load(entity, id);
+		return object;
+	}
+
+	@Override
+	public E retrieveByName(Class<E> entityName, String name) {
+		Criteria criteria = getSession().createCriteria(entityName).add(Restrictions.eq("name", name));
+		final List<E> matches = CubeGenerics.<E> uncheckedList(criteria.list());
+		if (matches != null && !matches.isEmpty()) {
+			return matches.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

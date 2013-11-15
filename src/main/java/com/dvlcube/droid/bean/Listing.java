@@ -155,7 +155,7 @@ public class Listing implements BasicInfo, Owned, Shared {
 	}
 
 	/**
-	 * @return the participants
+	 * @return the parent
 	 */
 	@Override
 	public Set<User> getParticipants() {
@@ -188,7 +188,7 @@ public class Listing implements BasicInfo, Owned, Shared {
 	}
 
 	public Criterion isSharedWith(String person) {
-		Restrictions.or(Restrictions.eq("owner", owner), Restrictions.eq("participants", person));
+		Restrictions.or(Restrictions.eq("owner", owner), Restrictions.eq("parent", person));
 		return null;
 	}
 
@@ -246,8 +246,8 @@ public class Listing implements BasicInfo, Owned, Shared {
 	}
 
 	/**
-	 * @param participants
-	 *            the participants to set
+	 * @param parent
+	 *            the parent to set
 	 */
 	@Override
 	public void setParticipants(Set<User> participants) {

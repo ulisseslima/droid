@@ -39,4 +39,12 @@ public class Cuber {
 	public static CubeImage $img(String path) {
 		return new CubeImage(path);
 	}
+
+	public static void sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }

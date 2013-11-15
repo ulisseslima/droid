@@ -9,4 +9,5 @@ import com.dvlcube.droid.bean.Event;
  * @since 10/09/2012
  */
 public interface EventDao extends DaoCRUD<Event> {
+
 }

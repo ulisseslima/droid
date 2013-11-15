@@ -1,5 +1,6 @@
 package com.dvlcube.cuber;
 
+import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,29 @@ import java.util.Queue;
  * @since 28/02/2013
  */
 public class StringUtils {
+	/**
+	 * @param string
+	 *            string.
+	 * @return the string with the first letter in uppercase.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	public static String capitalize(String string) {
+		Character capital = string.charAt(0);
+		String newString = capital.toString().toUpperCase() + string.substring(1, string.length());
+		return newString;
+	}
+
+	/**
+	 * @param string
+	 * @return the string, with the first letter decapitalized.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	public static String decapitalize(String string) {
+		return Introspector.decapitalize(string);
+	}
+
 	/**
 	 * @param string
 	 *            the string to escape.

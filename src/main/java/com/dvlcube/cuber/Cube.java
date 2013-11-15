@@ -25,11 +25,11 @@ public class Cube {
 	 * @author wonka
 	 * @since 14/04/2013
 	 */
-	public void merge(Object on) {
+	public boolean merge(Object on) {
 		if (on instanceof Cube) {
-			ObjectUtils.updateProperties(object, ((Cube) on).object);
+			return ObjectUtils.updateProperties(object, ((Cube) on).object);
 		} else {
-			ObjectUtils.updateProperties(object, on);
+			return ObjectUtils.updateProperties(object, on);
 		}
 	}
 

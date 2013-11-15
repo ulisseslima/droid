@@ -22,7 +22,7 @@ import com.dvlcube.service.BasicInfo;
 @Entity
 public class Event implements BasicInfo, Owned, Child<Listing> {
 	public enum Field implements FieldName {
-		dateEnd, dateModified, dateStart, description, done, guests, id, name, owner, parent, priority, reminders, repetition;
+		dateEnd, dateModified, dateStart, description, done, id, name, owner, parent, priority, reminders, repetition;
 		public String id() {
 			return name() + ".id";
 		}

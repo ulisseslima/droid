@@ -22,16 +22,17 @@ import com.dvlcube.service.BasicInfo;
 @Entity
 public class User implements BasicInfo, Principal {
 	public enum Field implements FieldName {
-		birth, element, email, events, id, image, name, telephone
+		active, birth, element, email, events, id, image, name, online, telephone
 	}
 
 	private static final long serialVersionUID = 3262522508885048363L;
 
+	private Boolean active = false;
 	private Date birth; // datetime
 	private Date dateModified; // timestamp
-	private String element;
+	private String element = "nowhere-0";
 	private String email;
-	private boolean enabled;
+	private boolean enabled = true;
 	@OneToMany
 	private Set<Event> events;
 	private String fullname;
@@ -40,11 +41,20 @@ public class User implements BasicInfo, Principal {
 	private Long id; // id
 	private String image;
 	private String name;
+	private Boolean online = false;
 	private String password;
-	private Integer telephone;
+	private Integer telephone = 1234567890;
 
 	public User() {
+	}
 
+	/**
+	 * @param id
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	public User(Long id) {
+		this.id = id;
 	}
 
 	/**
@@ -55,8 +65,6 @@ public class User implements BasicInfo, Principal {
 	public User(NewUserRequest userRequest) {
 		name = userRequest.getUsername();
 		password = userRequest.getPassword();
-		telephone = 1234567890;
-		enabled = true;
 	}
 
 	public User(final String name) {
@@ -84,6 +92,13 @@ public class User implements BasicInfo, Principal {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @return the active
+	 */
+	public Boolean getActive() {
+		return active;
 	}
 
 	/**
@@ -168,6 +183,13 @@ public class User implements BasicInfo, Principal {
 	}
 
 	/**
+	 * @return the online
+	 */
+	public Boolean getOnline() {
+		return online;
+	}
+
+	/**
 	 * @return the password
 	 */
 	public String getPassword() {
@@ -208,6 +230,14 @@ public class User implements BasicInfo, Principal {
 	 */
 	public boolean isEnabled() {
 		return enabled;
+	}
+
+	/**
+	 * @param active
+	 *            the active to set
+	 */
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	/**
@@ -295,6 +325,14 @@ public class User implements BasicInfo, Principal {
 	@Override
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param online
+	 *            the online to set
+	 */
+	public void setOnline(Boolean online) {
+		this.online = online;
 	}
 
 	/**
