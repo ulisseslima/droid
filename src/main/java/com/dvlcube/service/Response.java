@@ -142,6 +142,22 @@ public class Response<T> {
 	}
 
 	/**
+	 * @param content
+	 *            the content to set
+	 */
+	public void setContent(T content) {
+		this.content = content;
+	}
+
+	/**
+	 * @param contents
+	 *            the contents to set
+	 */
+	public void setContents(List<T> contents) {
+		this.contents = contents;
+	}
+
+	/**
 	 * @param message
 	 *            the message to set
 	 */

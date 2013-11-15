@@ -8,9 +8,8 @@ import static com.dvlcube.cuber.Cuber.$;
  * @author wonka
  * @since 13/03/2013
  */
-public class NewEventsRequest {
+public class NewEventsRequest extends AsyncRequest {
 	private String focusedEventName;
-	private long lastUpdate;
 	private long parentId;
 
 	/**
@@ -18,13 +17,6 @@ public class NewEventsRequest {
 	 */
 	public String getFocusedEventName() {
 		return focusedEventName;
-	}
-
-	/**
-	 * @return the lastUpdate
-	 */
-	public long getLastUpdate() {
-		return lastUpdate;
 	}
 
 	/**
@@ -40,14 +32,6 @@ public class NewEventsRequest {
 	 */
 	public void setFocusedEventName(final String focusedEventName) {
 		this.focusedEventName = focusedEventName;
-	}
-
-	/**
-	 * @param lastUpdate
-	 *            the lastUpdate to set
-	 */
-	public void setLastUpdate(final long lastUpdate) {
-		this.lastUpdate = lastUpdate;
 	}
 
 	/**

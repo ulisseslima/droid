@@ -36,11 +36,9 @@ public class GatekeeperServlet {
 	 * @since 29/03/2013
 	 */
 	private String handleEntryPoint(final ModelMap model, final Principal principal) {
-		try {
+		if (principal != null) {
 			final String name = principal.getName();
 			model.addAttribute("username", name);
-		} catch (Exception e) {
-
 		}
 		return "welcome";
 	}
@@ -63,9 +61,13 @@ public class GatekeeperServlet {
 
 	@RequestMapping("/newuser")
 	public String newUser(final ModelMap model, final NewUserRequest userRequest) {
-		Response<User> response = service.newUser(userRequest);
-		User user = response.getContent();
-		model.addAttribute("username", user.getName());
+		Response<User> response = service.addUser(userRequest);
+		if (response.isSuccess()) {
+			User user = response.getContent();
+			model.addAttribute("username", user.getName());
+		} else {
+			model.addAttribute("userAlreadyExists", "true");
+		}
 		return "login";
 	}
 

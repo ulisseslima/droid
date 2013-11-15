@@ -6,6 +6,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.dvlcube.bean.Child;
@@ -56,12 +57,8 @@ public class UserWebService extends ServiceTemplate<User> implements UserService
 	}
 
 	public User getByUsername(String username) {
-		List<User> contents = list(Restrictions.eq("name", username)).getContents();
-		if (contents != null && contents.size() > 0) {
-			User user = contents.get(0);
-			return user;
-		}
-		return null;
+		User user = dao.retrieveByName(getT(), username);
+		return user;
 	}
 
 	@Override
@@ -72,7 +69,24 @@ public class UserWebService extends ServiceTemplate<User> implements UserService
 	@Override
 	public User getSession() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return getByUsername(auth.getName());
+		if (auth != null) {
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			return getByUsername(userDetails.getUsername());
+		}
+		return null;
+	}
+
+	@Override
+	public Long getSessionId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			UserDetails userDetails = (UserDetails) auth.getPrincipal();
+			User user = getByUsername(userDetails.getUsername());
+			if (user != null) {
+				return user.getId();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -86,18 +100,19 @@ public class UserWebService extends ServiceTemplate<User> implements UserService
 		if (subject != null && subject instanceof Child) {
 			List<String> listSiblings = listSiblings(CubeGenerics.<Child<? extends BasicInfo>> unchecked(subject));
 			return list(//
+					request,//
 					Restrictions.in("element", listSiblings),//
-					Restrictions.eq("active", true),//
-					Restrictions.not(//
+					Restrictions.eq("online", true), Restrictions.not(//
 							Restrictions.eq("id", request.getUserId())));
 		}
 		return new Response<>(false);
 	}
 
 	@Override
-	public void setOnlineStatus(String userName, boolean isOnline) {
-		if (userName != null) {
-			User user = getByUsername(userName);
+	public void setOnlineStatus(boolean isOnline) {
+		Long userId = getSessionId();
+		if (userId != null) {
+			User user = new User(userId);
 			user.setOnline(isOnline);
 			if (!isOnline) {
 				user.setActive(false);
@@ -108,9 +123,16 @@ public class UserWebService extends ServiceTemplate<User> implements UserService
 
 	@Override
 	public User updateLocation(UpdateLocationRequest request) {
+		User saved = get(request.getUserId()).getContent();
+
+		if (saved.getElement().equals(request.getElement()) && request.isActive() == saved.getActive()) {
+			return saved;
+		}
+
 		User user = new User(request.getUserId());
 		user.setElement(request.getElement());
 		user.setActive(request.isActive());
-		return update(user).getContent();
+		user.setOnline(true);
+		return addOrUpdate(user).getContent();
 	}
 }

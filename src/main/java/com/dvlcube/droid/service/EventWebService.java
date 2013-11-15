@@ -39,12 +39,12 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 	@Override
 	public Response<Event> listByListing(long listingId) {
 		Criterion matchingListingId = Restrictions.eq(Event.Field.parent + ".id", listingId);
-		return list(CubeOrder.desc(Event.Field.priority), matchingListingId);
+		return list(null, CubeOrder.desc(Event.Field.priority), matchingListingId);
 	}
 
 	@Override
 	public Response<Event> listByPriority() {
-		return list(CubeOrder.desc(Event.Field.priority));
+		return list(null, CubeOrder.desc(Event.Field.priority));
 	}
 
 	@Override
@@ -53,6 +53,6 @@ public class EventWebService extends ServiceTemplate<Event> implements EventServ
 		SimpleExpression recent = Restrictions.ge(Event.Field.dateModified.name(), date);
 		Criterion matchingTitle = Restrictions.ne(Event.Field.name.name(), request.getFocusedEventName());
 		Criterion matchingListingId = Restrictions.eq(Event.Field.parent.id(), request.getParentId());
-		return list(recent, matchingTitle, matchingListingId);
+		return list(request, recent, matchingTitle, matchingListingId);
 	}
 }

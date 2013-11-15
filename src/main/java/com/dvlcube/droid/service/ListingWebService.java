@@ -30,7 +30,7 @@ public class ListingWebService extends ServiceTemplate<Listing> implements Listi
 	@Override
 	public Response<User> addParticipant(NewParticipantRequest participant) {
 		if (participant.getName() != null) {
-			User user = userDao.retrieve(User.class, new User(participant.getName()));
+			User user = userDao.retrieveByName(User.class, participant.getName());
 			if (user != null) {
 				Listing listing = dao.retrieve(getT(), participant.getListingId());
 				Set<User> participants = listing.getParticipants();

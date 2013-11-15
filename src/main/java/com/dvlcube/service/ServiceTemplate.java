@@ -1,6 +1,7 @@
 package com.dvlcube.service;
 
 import static com.dvlcube.cuber.Cuber.$;
+import static com.dvlcube.cuber.Cuber.sleep;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +14,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,14 +38,13 @@ import com.dvlcube.service.BasicInfo.Field;
 @Transactional(rollbackFor = Exception.class)
 public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDService<T> {
 	public static final String ENTITY_PACKAGE = "com.dvlcube.droid.bean";
+	public static final Object lock = new Object();
+
 	private static final int NO_PAGINATION = -1;
 
 	@Autowired
 	private Authentication authentication;
-
 	private long lastModified = 0;
-
-	public final Object lock = new Object();
 
 	@Override
 	public Response<T> add(final T entity) {
@@ -96,12 +97,13 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		return new Response<>(true, match);
 	}
 
-	private User getAuthenticatedUser() {
+	public User getAuthenticatedUser() {
 		if (authentication != null) {
 			try {
-				User user = getDao().retrieveOwner(authentication.getName());
+				User user = getDao().retrieveOwner(((UserDetails) authentication.getPrincipal()).getUsername());
 				return user;
 			} catch (Exception e) {
+				e.printStackTrace();
 				return null;
 			}
 		}
@@ -132,6 +134,22 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	 */
 	protected abstract Class<T> getT();
 
+	/**
+	 * @param asyncRequest
+	 * @return the logged in user or the requested user.
+	 * @author wonka
+	 * @since 15/11/2013
+	 */
+	private User getUser(AsyncRequest asyncRequest) {
+		User user = null;
+		if (asyncRequest == null) {
+			user = getAuthenticatedUser();
+		} else {
+			user = asyncRequest.getUser();
+		}
+		return user;
+	}
+
 	@Override
 	public boolean hasUpdates(long date) {
 		return date < lastModified;
@@ -144,27 +162,32 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	}
 
 	@Override
-	public Response<T> list(final Criterion... restrictions) {
-		return list(NO_PAGINATION, NO_PAGINATION, null, restrictions);
+	public Response<T> list(AsyncRequest asyncRequest, final Criterion... restrictions) {
+		return list(asyncRequest, NO_PAGINATION, NO_PAGINATION, null, restrictions);
 	}
 
 	@Override
-	public Response<T> list(final Integer start, final Integer maxResults) {
-		return list(start, maxResults, null);
-	}
-
-	@Override
-	public Response<T> list(final Integer start, final Integer maxResults, final Set<Order> orders) {
-		return list(start, maxResults, orders, new Criterion[0]);
+	public Response<T> list(AsyncRequest asyncRequest, final Integer start, final Integer maxResults) {
+		return list(asyncRequest, start, maxResults, null);
 	}
 
 	@Override
 	public Response<T> list(
+		AsyncRequest asyncRequest,
+		final Integer start,
+		final Integer maxResults,
+		final Set<Order> orders) {
+		return list(asyncRequest, start, maxResults, orders, new Criterion[0]);
+	}
+
+	@Override
+	public Response<T> list(
+		AsyncRequest asyncRequest,
 		final Integer start,
 		final Integer maxResults,
 		final Set<Order> orders,
 		final Criterion... conditions) {
-		User user = getAuthenticatedUser();
+		User user = getUser(asyncRequest);
 		Set<Criterion> authConditions = new HashSet<>();
 		Set<QueryFieldName> aliases = new HashSet<>();
 		if (user != null) {
@@ -184,26 +207,32 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		}
 		Set<Criterion> allConditions = $(conditions).concatIntoSet(authConditions);
 		final List<T> list = getDao().list(getT(), start, maxResults, orders, allConditions, aliases);
+		Debug.log("Service Found %d users on same page", list.size());
 		return new Response<T>(true, list);
 	}
 
 	@Override
-	public Response<T> list(final Order... orders) {
-		return list(NO_PAGINATION, NO_PAGINATION, $(orders).asSet(), new Criterion[0]);
+	public Response<T> list(AsyncRequest asyncRequest, final Order... orders) {
+		return list(asyncRequest, NO_PAGINATION, NO_PAGINATION, $(orders).asSet(), new Criterion[0]);
 	}
 
 	@Override
-	public Response<T> list(final Set<Order> order, final Criterion... restrictions) {
-		return list(NO_PAGINATION, NO_PAGINATION, order, restrictions);
+	public Response<T> list(AsyncRequest asyncRequest, final Set<Order> order, final Criterion... restrictions) {
+		return list(asyncRequest, NO_PAGINATION, NO_PAGINATION, order, restrictions);
+	}
+
+	@Override
+	public Response<T> list(final Criterion... restrictions) {
+		return list(null, NO_PAGINATION, NO_PAGINATION, null, restrictions);
 	}
 
 	@Override
 	public Response<T> listByDateModified(boolean desc) {
 		String dateModified = Field.dateModified.name();
 		if (desc) {
-			return list(Order.desc(dateModified));
+			return list(null, Order.desc(dateModified));
 		} else {
-			return list(Order.asc(dateModified));
+			return list(null, Order.asc(dateModified));
 		}
 	}
 
@@ -277,6 +306,7 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 		Date date = new Date();
 		entity.setDateModified(date);
 		lastModified = date.getTime();
+		Debug.log("last mod: %d", lastModified);
 	}
 
 	@Override
@@ -303,14 +333,19 @@ public abstract class ServiceTemplate<T extends BasicInfo> implements AsyncCRUDS
 	}
 
 	@Override
-	public void waitForUpdates(AsyncRequest request) throws InterruptedException {
-		synchronized (lock) {
+	public void waitForUpdates(AsyncRequest request) {
+		try {
 			long tid = Thread.currentThread().getId();
-			while (!hasUpdates(request.getLastUpdate())) {
-				Debug.log("Thread %d waiting...", tid);
-				lock.wait();
+			String dateString = new Date(request.getLastUpdate()).toString();
+			int waits = 5;
+			int tries = 0;
+			Debug.log("Thread %d (%s) waiting...", tid, dateString);
+			while (!hasUpdates(request.getLastUpdate()) && tries < waits) {
+				tries++;
+				sleep(1000);
 			}
-			Debug.log("Thread %d ready.", tid);
+			Debug.log("Thread %d (%s) gave up.", tid, dateString);
+		} catch (Exception e) {
 		}
 	}
 }

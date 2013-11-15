@@ -1,9 +1,13 @@
 package com.dvlcube.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+
+import com.dvlcube.bean.Child;
+import com.dvlcube.droid.service.rr.AsyncRequest;
 
 /**
  * 
@@ -59,6 +63,8 @@ public interface CRUDService<T extends BasicInfo> {
 	 */
 	Response<T> get(T t);
 
+	String getEntityPackage();
+
 	/**
 	 * @return
 	 * @author wonka
@@ -67,23 +73,29 @@ public interface CRUDService<T extends BasicInfo> {
 	Response<T> list();
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param orders
 	 * @return
 	 * @author wonka
 	 * @since 02/03/2013
 	 */
-	Response<T> list(Criterion... orders);
+	Response<T> list(AsyncRequest asyncRequest, Criterion... orders);
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param start
 	 * @param maxResults
 	 * @return
 	 * @author wonka
 	 * @since 15/09/2012
 	 */
-	Response<T> list(Integer start, Integer maxResults);
+	Response<T> list(AsyncRequest asyncRequest, Integer start, Integer maxResults);
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param start
 	 * @param maxResults
 	 * @param order
@@ -91,9 +103,11 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @author wonka
 	 * @since 02/03/2013
 	 */
-	Response<T> list(Integer start, Integer maxResults, Set<Order> order);
+	Response<T> list(AsyncRequest asyncRequest, Integer start, Integer maxResults, Set<Order> order);
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param start
 	 * @param maxResults
 	 * @param order
@@ -102,24 +116,41 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @author wonka
 	 * @since 22/09/2012
 	 */
-	Response<T> list(Integer start, Integer maxResults, Set<Order> order, Criterion... conditions);
+	Response<T> list(
+		AsyncRequest asyncRequest,
+		Integer start,
+		Integer maxResults,
+		Set<Order> order,
+		Criterion... conditions);
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param orders
 	 * @return
 	 * @author wonka
 	 * @since 02/03/2013
 	 */
-	Response<T> list(Order... orders);
+	Response<T> list(AsyncRequest asyncRequest, Order... orders);
 
 	/**
+	 * @param asyncRequest
+	 *            TODO
 	 * @param order
 	 * @param conditions
 	 * @return
 	 * @author wonka
 	 * @since 02/03/2013
 	 */
-	Response<T> list(Set<Order> order, Criterion... conditions);
+	Response<T> list(AsyncRequest asyncRequest, Set<Order> order, Criterion... conditions);
+
+	/**
+	 * @param restrictions
+	 * @return
+	 * @author wonka
+	 * @since 15/11/2013
+	 */
+	Response<T> list(Criterion... restrictions);
 
 	/**
 	 * @param desc
@@ -142,6 +173,25 @@ public interface CRUDService<T extends BasicInfo> {
 	 * @since 28/03/2013
 	 */
 	Response<T> listRecentFirst();
+
+	/**
+	 * @param child
+	 * @return siblings list.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	List<String> listSiblings(Child<? extends BasicInfo> child);
+
+	/**
+	 * Splits the string, creates a new instance using the entity package, and uses the id to load.
+	 * 
+	 * @param entity_id
+	 *            string in the format "entityName-id".
+	 * @return an entity with the id specified.
+	 * @author wonka
+	 * @since 26/10/2013
+	 */
+	BasicInfo load(String entity_id);
 
 	/**
 	 * @param id

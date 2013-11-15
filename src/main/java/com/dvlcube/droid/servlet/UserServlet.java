@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import com.dvlcube.cuber.CubeList;
 import com.dvlcube.cuber.CubeList.Factory;
@@ -31,7 +30,7 @@ public class UserServlet {
 	private final CubeList<User> list = new CubeList<>(new Factory<User>() {
 		@Override
 		public List<User> f(final int start, final int maxResults) {
-			return service.list(start, maxResults).getContents();
+			return service.list(null, start, maxResults).getContents();
 		}
 	});
 
@@ -65,20 +64,34 @@ public class UserServlet {
 		return new Response<>(true);
 	}
 
+	// @RequestMapping("/updatePeople")
+	// public @ResponseBody
+	// DeferredResult<Response<User>> updatePeople(final UpdateLocationRequest request) {
+	// Debug.log("Receiving people request");
+	// final DeferredResult<Response<User>> deferredResult = new DeferredResult<>();
+	// request.setUser(service.getSession());
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// service.waitForUpdates(request);
+	// Response<User> others = service.listUsersOnSamePage(request);
+	// Debug.log("Servlet Found %d users on same page", others.getContents().size());
+	// deferredResult.setResult(others);
+	// }
+	// }).start();
+	// return deferredResult;
+	// }
+
 	@RequestMapping("/updatePeople")
 	public @ResponseBody
-	DeferredResult<Response<User>> updatePeople(final UpdateLocationRequest request) {
+	Response<User> updatePeople(final UpdateLocationRequest request) {
 		Debug.log("Receiving people request");
-		final DeferredResult<Response<User>> deferredResult = new DeferredResult<>();
-		new Thread(new Runnable() {
+		request.setUser(service.getSession());
 
-			@Override
-			public void run() {
-				service.waitForUpdates(request);
-				Response<User> others = service.listUsersOnSamePage(request);
-				deferredResult.setResult(others);
-			}
-		}).start();
-		return deferredResult;
+		service.waitForUpdates(request);
+		Response<User> others = service.listUsersOnSamePage(request);
+		Debug.log("Servlet Found %d users on same page", others.getContents().size());
+		return others;
 	}
 }

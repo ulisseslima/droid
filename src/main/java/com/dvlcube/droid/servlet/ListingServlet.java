@@ -1,7 +1,6 @@
 package com.dvlcube.droid.servlet;
 
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dvlcube.cuber.Debug;
 import com.dvlcube.droid.bean.Event;
 import com.dvlcube.droid.bean.Listing;
 import com.dvlcube.droid.bean.User;
@@ -98,17 +98,32 @@ public class ListingServlet {
 	 * @author wonka
 	 * @since 19/03/2013
 	 */
+	// @RequestMapping("/refresh")
+	// public @ResponseBody
+	// DeferredResult<Response<Event>> refresh(final NewEventsRequest request) {
+	// Debug.log("Receiving events request");
+	// final DeferredResult<Response<Event>> deferredResult = new DeferredResult<>();
+	// request.setUser(users.getSession());
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// events.waitForUpdates(request);
+	// Response<Event> updatedEvents = events.listNew(request);
+	// deferredResult.setResult(updatedEvents);
+	// }
+	// }).start();
+	// return deferredResult;
+	// }
+
 	@RequestMapping("/refresh")
 	public @ResponseBody
-	Callable<Response<Event>> refresh(final NewEventsRequest request) {
-		return new Callable<Response<Event>>() {
-			@Override
-			public Response<Event> call() throws Exception {
-				events.waitForUpdates(request);
-				final Response<Event> updatedEvents = events.listNew(request);
-				return updatedEvents;
-			}
-		};
+	Response<Event> refresh(final NewEventsRequest request) {
+		Debug.log("Receiving events request");
+		request.setUser(users.getSession());
+		events.waitForUpdates(request);
+		Response<Event> updatedEvents = events.listNew(request);
+		return updatedEvents;
 	}
 
 	@RequestMapping("/removeevent")
