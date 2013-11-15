@@ -24,5 +24,8 @@
 
 		<dvl:msg type="error" key="AbstractUserDetailsAuthenticationProvider.badCredentials" 
 			test="${error}" />
+			
+		<dvl:msg type="error" key="signup.userAlreadyExists" 
+			test="${userAlreadyExists}" />
 	</dvl:body>
 </dvl:page>

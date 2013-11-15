@@ -52,6 +52,7 @@
 		</style>
 	</head>
 	<body>
+		<input type="hidden" id="url-context" value="${pageContext.request.contextPath}">
 		<section id="main-content">
 			<span id="response-message">
 				<c:if test="${not empty response.message}">
@@ -60,5 +61,8 @@
 			</span>
 			<jsp:doBody />
 		</section>
+		<footer>
+			<a href="<c:url value='/j_spring_security_logout' />">Logout</a>
+		</footer>
 	</body>
 </html>

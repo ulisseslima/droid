@@ -58,6 +58,11 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>
+            com.dvlcube.droid.component.UserSessionListener
+        </listener-class>
+  	</listener>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>

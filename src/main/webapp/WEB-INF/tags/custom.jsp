@@ -3,4 +3,5 @@
 
 <%@taglib prefix="dvl" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="form" tagdir="/WEB-INF/tags/form"%>
+<%@taglib prefix="out" tagdir="/WEB-INF/tags/form/output"%>
 <%@taglib prefix="input" tagdir="/WEB-INF/tags/form/input"%>

@@ -17,6 +17,7 @@ public class Debug {
 		} else {
 			ENABLED = false;
 		}
+		log("dvlcube debug is enabled");
 	}
 
 	public static void log(String msg, Object... args) {

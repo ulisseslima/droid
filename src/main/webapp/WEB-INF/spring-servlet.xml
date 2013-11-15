@@ -24,7 +24,7 @@
 	<context:component-scan base-package="com.dvlcube" />
 	<tx:annotation-driven />
 	<mvc:annotation-driven>
-		<mvc:async-support default-timeout="30000"/>
+		<mvc:async-support default-timeout="10000"/>
 	</mvc:annotation-driven>
 	<mvc:resources mapping="/static/**" location="/public/" />
 
@@ -32,7 +32,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<bean class="com.dvlcube.interceptor.I18nInterceptor" />
+			<bean class="com.dvlcube.component.I18nInterceptor" />
 		</mvc:interceptor>
 		 <mvc:interceptor>  
            <mvc:mapping path="/**" />  

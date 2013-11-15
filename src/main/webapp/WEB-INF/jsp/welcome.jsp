@@ -17,10 +17,6 @@
 		<c:if test="${not empty username}">
 			<p></p>
 			<h3>Username : ${username}</h3>	
-		 	
-		 	<p>
-				<a href="<c:url value='/j_spring_security_logout' />">Logout</a>
-			</p>
 		</c:if>
 	</dvl:body>
 </dvl:page>
