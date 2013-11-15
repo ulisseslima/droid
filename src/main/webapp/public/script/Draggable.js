@@ -1,3 +1,3 @@
 // http://api.jqueryui.com/sortable/
 
-$("#event-collection").sortable({revert: 50});
+$(".sortable").sortable({revert: 50});

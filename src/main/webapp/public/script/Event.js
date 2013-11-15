@@ -7,6 +7,9 @@ $("#event-collection").on("sortout", function(event, ui) {
 	remove(event[0]);
 	event.remove();
 });
+$(".property").bind("focus", function () {
+	updateLocation(this.parentNode, true);
+});
 
 function fill(event, savedEvent) {
 	if (savedEvent) {
@@ -20,7 +23,7 @@ function fill(event, savedEvent) {
 }
 
 function refresh() {
-	debug("refreshing...");
+	debug("refreshing events...");
 	var request = new Request();
 	request["lastUpdate"] = new Date().getTime();
 	request["parentId"] = $(".parentId")[0].value;
@@ -31,7 +34,7 @@ function refresh() {
 	  url: "refresh",
 	  data: request,
 	  success: function(response) {
-		  debug("response: ",response);
+		  debug("refreshEvents response: " + response.success);
 		  if (response.contents) {			  
 			for (var i in response.contents) {
 				var event = response.contents[i];
@@ -45,13 +48,12 @@ function refresh() {
 					newEvent.prependTo(EVENT_COLLECTION);
 				}
 			}
-		  } else {
-			document.location.reload(true);
 		  }
 		  setTimeout(refresh, 100);
 	  },
 	  error: function(jqXHR, textStatus, errorThrown) {
-		  document.location.reload(true);
+		  debug("event refresh error: "+errorThrown);
+		  setTimeout(refresh, 5000);
 	  }
 	});
 }
