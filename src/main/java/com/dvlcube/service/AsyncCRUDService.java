@@ -30,5 +30,5 @@ public interface AsyncCRUDService<T extends BasicInfo> extends CRUDService<T> {
 	 * @throws InterruptedException
 	 * @since 06/11/2013
 	 */
-	void waitForUpdates(AsyncRequest request) throws InterruptedException;
+	void waitForUpdates(AsyncRequest request);
 }
