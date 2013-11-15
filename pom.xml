@@ -4,14 +4,14 @@
 	<groupId>com.dvlcube</groupId>
 	<artifactId>droid</artifactId>
 	<packaging>war</packaging>
-	<version>2.1</version>
+	<version>2.3</version>
 	<name>droid</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-		<org.springframework.version>3.2.2.RELEASE</org.springframework.version>
-		<org.springframework.old.version>3.1.2.RELEASE</org.springframework.old.version>
+		<org.springframework.version>4.0.0.BUILD-SNAPSHOT</org.springframework.version>
+		<!-- <org.springframework.version>3.2.2.RELEASE</org.springframework.version> -->
 		<org.springframework.milestone.version>3.2.0.RC1</org.springframework.milestone.version>
 		<mysql.connector.version>5.1.21</mysql.connector.version>
 		<digester.version>3.2</digester.version>
@@ -19,9 +19,17 @@
 	</properties>
 	<repositories>
 		<repository>
-		    <id>repository.springsource.milestone</id>
-		    <name>SpringSource Milestone Repository</name>
-		    <url>http://repo.springsource.org/milestone</url>
+		<id>repository.springsource.milestone</id>
+		<name>SpringSource Milestone Repository</name>
+		<url>http://repo.springsource.org/milestone</url>
+		</repository>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -80,7 +88,7 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${org.springframework.milestone.version}</version>
 		</dependency>
-		
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -92,14 +100,14 @@
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>3.6.3.Final</version>
 		</dependency>
-		
+
 		<!-- jackson -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+
 		<!-- Misc -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
