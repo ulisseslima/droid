@@ -6,12 +6,15 @@ body {
 
 .hidden {display:none;}
 
+.sortable, .draggable {
+    cursor: -moz-grabbing; cursor: -webkit-grabbing;
+}
+
 a {
     color: black;
     text-decoration: none;
 }
-a:visited {
-    
+a:visited {    
 }
 a:hover {
     text-decoration: underline;
@@ -145,3 +148,23 @@ h1 {
 .hover {
     opacity:1;
 }
+
+.online-user {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.online-user {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    -webkit-transition: top 0.3s ease, left 1s ease;
+    -moz-transition: top 0.3s ease, left 1s ease;
+    transition: top 0.3s ease, left 1s ease;
+}
+.online-user img {
+    max-width: 50px;
+}
+
+.active{opacity: 1;}
+.idle {opacity: .5;}
